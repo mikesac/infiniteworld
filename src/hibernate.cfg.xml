@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory name="Infinite-2">
+        <property name="hibernate.connection.autoReconnect">true</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">qemenldan</property>
+        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mikesac</property>
+        <property name="hibernate.connection.username">mikesac</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <mapping resource="org/infinite/db/dao/Npc.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/TomcatUsers.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/TomcatRoles.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/Player.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/Spell.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/Item.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/Locks.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/PlayerOwnItem.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/Area.hbm.xml" />
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.Item" table="Item" catalog="mikesac">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="spell" class="org.infinite.db.dao.Spell" fetch="select">
+            <column name="spell" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" not-null="true">
+                <comment>item name</comment>
+            </column>
+        </property>
+        <property name="descr" type="string">
+            <column name="descr" not-null="true">
+                <comment>item description</comment>
+            </column>
+        </property>
+        <property name="image" type="string">
+            <column name="image" not-null="true">
+                <comment>item image</comment>
+            </column>
+        </property>
+        <property name="costAp" type="int">
+            <column name="costAP" not-null="true" />
+        </property>
+        <property name="reqStr" type="int">
+            <column name="req_str" not-null="true">
+                <comment>required str</comment>
+            </column>
+        </property>
+        <property name="reqInt" type="int">
+            <column name="req_int" not-null="true" />
+        </property>
+        <property name="reqWis" type="int">
+            <column name="req_wis" not-null="true" />
+        </property>
+        <property name="reqDex" type="int">
+            <column name="req_dex" not-null="true" />
+        </property>
+        <property name="reqCha" type="int">
+            <column name="req_cha" not-null="true" />
+        </property>
+        <property name="reqLev" type="int">
+            <column name="req_lev" not-null="true" />
+        </property>
+        <property name="modStr" type="int">
+            <column name="mod_str" not-null="true" />
+        </property>
+        <property name="modInt" type="int">
+            <column name="mod_int" not-null="true" />
+        </property>
+        <property name="modWis" type="int">
+            <column name="mod_wis" not-null="true" />
+        </property>
+        <property name="modDex" type="int">
+            <column name="mod_dex" not-null="true" />
+        </property>
+        <property name="modCha" type="int">
+            <column name="mod_cha" not-null="true" />
+        </property>
+        <property name="price" type="float">
+            <column name="price" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="lev" type="int">
+            <column name="lev" not-null="true">
+                <comment>item level</comment>
+            </column>
+        </property>
+        <property name="damage" type="string">
+            <column name="damage" length="128" not-null="true" />
+        </property>
+        <property name="initiative" type="int">
+            <column name="initiative" not-null="true" />
+        </property>
+        <property name="durability" type="int">
+            <column name="durability" not-null="true" />
+        </property>
+        <property name="type" type="int">
+            <column name="type" not-null="true" />
+        </property>
+        <set name="playerOwnItems" inverse="true">
+            <key>
+                <column name="Itemid" not-null="true" />
+            </key>
+            <one-to-many class="org.infinite.db.dao.PlayerOwnItem" />
+        </set>
+    </class>
+</hibernate-mapping>

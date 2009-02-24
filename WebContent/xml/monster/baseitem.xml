@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spawn>
+	<level1  a="1" h="1" p="1">
+		<handright rate="80">Martello</handright>
+		<handright rate="90">Pugnale</handright>
+		<handright rate="95">Mazza</handright>
+		<handright rate="98">Spada corta</handright>
+		<handright rate="100">Spada lunga</handright>
+		<spellfight rate="90">Dardo Incantato</spellfight>
+		<spellheal rate="90">Cura Minore</spellheal>
+		<spellprotect rate="90">Scudo Minore</spellprotect>
+	</level1>
+</spawn>

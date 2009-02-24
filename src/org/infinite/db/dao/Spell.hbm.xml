@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.Spell" table="Spell" catalog="mikesac">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" not-null="true">
+                <comment>item name</comment>
+            </column>
+        </property>
+        <property name="desc" type="string">
+            <column name="desc" not-null="true">
+                <comment>item description</comment>
+            </column>
+        </property>
+        <property name="image" type="string">
+            <column name="image" not-null="true">
+                <comment>item image</comment>
+            </column>
+        </property>
+        <property name="costMp" type="int">
+            <column name="costMp" not-null="true" />
+        </property>
+        <property name="reqStr" type="int">
+            <column name="req_str" not-null="true">
+                <comment>required str</comment>
+            </column>
+        </property>
+        <property name="reqInt" type="int">
+            <column name="req_int" not-null="true" />
+        </property>
+        <property name="reqWis" type="int">
+            <column name="req_wis" not-null="true" />
+        </property>
+        <property name="reqDex" type="int">
+            <column name="req_dex" not-null="true" />
+        </property>
+        <property name="reqCha" type="int">
+            <column name="req_cha" not-null="true" />
+        </property>
+        <property name="reqLev" type="int">
+            <column name="req_lev" not-null="true" />
+        </property>
+        <property name="modStr" type="int">
+            <column name="mod_str" not-null="true" />
+        </property>
+        <property name="modInt" type="int">
+            <column name="mod_int" not-null="true" />
+        </property>
+        <property name="modWis" type="int">
+            <column name="mod_wis" not-null="true" />
+        </property>
+        <property name="modDex" type="int">
+            <column name="mod_dex" not-null="true" />
+        </property>
+        <property name="modCha" type="int">
+            <column name="mod_cha" not-null="true" />
+        </property>
+        <property name="price" type="float">
+            <column name="price" precision="12" scale="0" not-null="true" />
+        </property>
+        <property name="lev" type="int">
+            <column name="lev" not-null="true">
+                <comment>item level</comment>
+            </column>
+        </property>
+        <property name="duration" type="int">
+            <column name="duration" not-null="true" />
+        </property>
+        <property name="spelltype" type="int">
+            <column name="spelltype" not-null="true" />
+        </property>
+        <property name="damage" type="string">
+            <column name="damage" length="128" not-null="true" />
+        </property>
+        <property name="savingthrow" type="int">
+            <column name="savingthrow" not-null="true" />
+        </property>
+        <property name="initiative" type="int">
+            <column name="initiative" not-null="true">
+                <comment>priority in combat</comment>
+            </column>
+        </property>
+        <set name="players" inverse="false" table="PlayerKnowSpell">
+            <key>
+                <column name="Spellid" not-null="true" />
+            </key>
+            <many-to-many entity-name="org.infinite.db.dao.Player">
+                <column name="Playerid" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="items" inverse="true">
+            <key>
+                <column name="spell" not-null="true" />
+            </key>
+            <one-to-many class="org.infinite.db.dao.Item" />
+        </set>
+        <set name="players_1" inverse="false" table="SpellAffectPlayer">
+            <key>
+                <column name="Spellid" not-null="true" />
+            </key>
+            <many-to-many entity-name="org.infinite.db.dao.Player">
+                <column name="Playerid" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 19-feb-2009 22.03.23 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.NpcOwnItem" table="NpcOwnItem" catalog="mikesac">
+        <composite-id name="id" class="org.infinite.db.dao.NpcOwnItemId">
+            <key-property name="npcid" type="int">
+                <column name="Npcid" />
+            </key-property>
+            <key-property name="itemid" type="int">
+                <column name="Itemid" />
+            </key-property>
+        </composite-id>
+        <property name="status" type="int">
+            <column name="status" not-null="true">
+                <comment>status for equipped item</comment>
+            </column>
+        </property>
+        <property name="bodypart" type="int">
+            <column name="bodypart" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

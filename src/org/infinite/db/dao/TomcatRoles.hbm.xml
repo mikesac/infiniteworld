@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.TomcatRoles" table="tomcat_roles" catalog="mikesac">
+        <id name="user" type="string">
+            <column name="user" length="16" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="tomcatUsers" class="org.infinite.db.dao.TomcatUsers" update="false" insert="false" fetch="select">
+            <column name="user" length="16" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="role" type="string">
+            <column name="role" length="16" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

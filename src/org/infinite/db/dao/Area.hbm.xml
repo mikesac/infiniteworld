@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.Area" table="Area" catalog="mikesac">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="locks" class="org.infinite.db.dao.Locks" fetch="select">
+            <column name="lockid" not-null="true">
+                <comment>lock for accessing the area</comment>
+            </column>
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" not-null="true">
+                <comment>area name</comment>
+            </column>
+        </property>
+        <property name="world" type="int">
+            <column name="world" not-null="true">
+                <comment>the world this area belongs to</comment>
+            </column>
+        </property>
+        <property name="area" type="int">
+            <column name="area" not-null="true">
+                <comment>sub-part of world</comment>
+            </column>
+        </property>
+        <property name="x" type="int">
+            <column name="x" not-null="true">
+                <comment>position in screen grid</comment>
+            </column>
+        </property>
+        <property name="y" type="int">
+            <column name="y" not-null="true">
+                <comment>position in screen grid</comment>
+            </column>
+        </property>
+        <property name="imgBg" type="string">
+            <column name="img_bg" not-null="true">
+                <comment>Background image for this area (usually the map)</comment>
+            </column>
+        </property>
+        <property name="imgFgOn" type="string">
+            <column name="img_fg_on" not-null="true">
+                <comment>Foreground image when this area is activated</comment>
+            </column>
+        </property>
+        <property name="imgFgOff" type="string">
+            <column name="img_fg_off" not-null="true">
+                <comment>Foreground image when this are is not active</comment>
+            </column>
+        </property>
+        <property name="module" type="string">
+            <column name="module">
+                <comment>module to be run when entering the area</comment>
+            </column>
+        </property>
+        <property name="xmlSpawn" type="string">
+            <column name="xml_spawn">
+                <comment>xml file for spawning monsers</comment>
+            </column>
+        </property>
+        <property name="npc" type="java.lang.Integer">
+            <column name="npc">
+                <comment>npc id for this area</comment>
+            </column>
+        </property>
+        <set name="players" inverse="true">
+            <key>
+                <column name="area" not-null="true">
+                    <comment>player location</comment>
+                </column>
+            </key>
+            <one-to-many class="org.infinite.db.dao.Player" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.TomcatUsers" table="tomcat_users" catalog="mikesac">
+        <id name="user" type="string">
+            <column name="user" length="16" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="25" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="128" not-null="true" unique="true" />
+        </property>
+        <set name="tomcatRoleses" inverse="true">
+            <key>
+                <column name="user" length="16" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="org.infinite.db.dao.TomcatRoles" />
+        </set>
+        <set name="players" inverse="true">
+            <key>
+                <column name="aid" length="16" not-null="true" />
+            </key>
+            <one-to-many class="org.infinite.db.dao.Player" />
+        </set>
+    </class>
+</hibernate-mapping>

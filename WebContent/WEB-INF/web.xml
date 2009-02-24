@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>InfiniteWeb</display-name>
+  <welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>PlayerZone</web-resource-name>
+			<url-pattern>/player/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>manager</role-name>
+			<role-name>player</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>AdminZone</web-resource-name>
+			<url-pattern>/admin/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>manager</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>Restricted Area</realm-name>
+		<form-login-config>
+			<form-login-page>/login/login.jsp</form-login-page>
+			<form-error-page>/index.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+
+	<security-role>
+		<role-name>manager</role-name>
+	</security-role>
+
+
+	<!--  SITE MESH -->
+	<filter>
+		<filter-name>sitemesh</filter-name>
+		<filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>sitemesh</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>ERROR</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+
+
+
+	<!--  CAPTCHA -->
+	<servlet>
+		<servlet-name>jcaptcha</servlet-name>
+		<servlet-class>org.infinite.web.account.ImageCaptchaServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>jcaptcha</servlet-name>
+		<url-pattern>/jcaptcha</url-pattern>
+	</servlet-mapping>
+	
+	
+	<!--  Register -->
+	<servlet>
+		<servlet-name>register</servlet-name>
+		<servlet-class>org.infinite.web.account.Register</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>register</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+  
+  
+  <!-- Fight Testbed -->
+  <servlet>
+    <servlet-name>Fight</servlet-name>
+    <servlet-class>org.infinite.web.Fight</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Fight</servlet-name>
+    <url-pattern>/fight</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MonsterXML</servlet-name>
+    <servlet-class>org.infinite.web.MonsterXML</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MonsterXML</servlet-name>
+    <url-pattern>/monsterXML</url-pattern>
+  </servlet-mapping>
+</web-app>

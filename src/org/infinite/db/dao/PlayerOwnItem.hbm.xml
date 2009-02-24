@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.PlayerOwnItem" table="PlayerOwnItem" catalog="mikesac">
+        <composite-id name="id" class="org.infinite.db.dao.PlayerOwnItemId">
+            <key-property name="playerid" type="int">
+                <column name="Playerid" />
+            </key-property>
+            <key-property name="itemid" type="int">
+                <column name="Itemid" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="player" class="org.infinite.db.dao.Player" update="false" insert="false" fetch="select">
+            <column name="Playerid" not-null="true" />
+        </many-to-one>
+        <many-to-one name="item" class="org.infinite.db.dao.Item" update="false" insert="false" fetch="select">
+            <column name="Itemid" not-null="true" />
+        </many-to-one>
+        <property name="status" type="int">
+            <column name="status" not-null="true">
+                <comment>status for equipped item</comment>
+            </column>
+        </property>
+        <property name="bodypart" type="int">
+            <column name="bodypart" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

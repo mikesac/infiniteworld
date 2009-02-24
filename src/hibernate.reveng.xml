@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-catalog="mikesac" match-name="Area" />
+	<table-filter match-catalog="mikesac" match-name="Item" />
+	<table-filter match-catalog="mikesac" match-name="NPC" />
+	<table-filter match-catalog="mikesac" match-name="Spell" />
+	<table-filter match-catalog="mikesac" match-name="locks" />
+	<table-filter match-name="Player" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="PlayerKnowSpell"
+		match-catalog="mikesac">
+	</table-filter>
+	<table-filter match-name="Spell" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="SpellAffectPlayer"
+		match-catalog="mikesac">
+	</table-filter>
+	<table-filter match-name="PlayerOwnItem" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="tomcat_users" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="tomcat_roles" match-catalog="mikesac"></table-filter>
+</hibernate-reverse-engineering>

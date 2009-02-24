@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" not-null="true">
+                <comment>NPC name</comment>
+            </column>
+        </property>
+        <property name="image" type="string">
+            <column name="image" not-null="true">
+                <comment>NPC pic</comment>
+            </column>
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="65535" not-null="true" />
+        </property>
+        <property name="baseStr" type="int">
+            <column name="base_str" not-null="true">
+                <comment>strength</comment>
+            </column>
+        </property>
+        <property name="baseInt" type="int">
+            <column name="base_int" not-null="true">
+                <comment>intelligence</comment>
+            </column>
+        </property>
+        <property name="baseDex" type="int">
+            <column name="base_dex" not-null="true">
+                <comment>agility</comment>
+            </column>
+        </property>
+        <property name="baseCha" type="int">
+            <column name="base_cha" not-null="true">
+                <comment>charisma</comment>
+            </column>
+        </property>
+        <property name="basePl" type="int">
+            <column name="base_pl" not-null="true">
+                <comment>life points</comment>
+            </column>
+        </property>
+        <property name="basePm" type="int">
+            <column name="base_pm" not-null="true">
+                <comment>magic points</comment>
+            </column>
+        </property>
+        <property name="basePa" type="int">
+            <column name="base_pa" not-null="true">
+                <comment>action points</comment>
+            </column>
+        </property>
+        <property name="basePc" type="int">
+            <column name="base_pc" not-null="true">
+                <comment>charm points</comment>
+            </column>
+        </property>
+        <property name="level" type="int">
+            <column name="level" not-null="true">
+                <comment>NPC level</comment>
+            </column>
+        </property>
+        <property name="px" type="int">
+            <column name="px" not-null="true">
+                <comment>Experience points</comment>
+            </column>
+        </property>
+        <property name="status" type="int">
+            <column name="status" not-null="true">
+                <comment>status</comment>
+            </column>
+        </property>
+        <property name="area" type="int">
+            <column name="area" not-null="true">
+                <comment>NPC location</comment>
+            </column>
+        </property>
+        <property name="gold" type="float">
+            <column name="gold" precision="12" scale="0" not-null="true">
+                <comment>money</comment>
+            </column>
+        </property>
+        <property name="xmlDialog" type="string">
+            <column name="xml_dialog" not-null="true">
+                <comment>xml for dialogs</comment>
+            </column>
+        </property>
+        <property name="xmlItems" type="string">
+            <column name="xml_items" not-null="true">
+                <comment>xml for item probability</comment>
+            </column>
+        </property>
+        <property name="xmlBehave" type="string">
+            <column name="xml_behave" not-null="true">
+                <comment>xml for behaviour</comment>
+            </column>
+        </property>
+        <property name="ismonster" type="boolean">
+            <column name="ismonster" not-null="true">
+                <comment>Npc (0) or Monster (1)</comment>
+            </column>
+        </property>
+        <property name="nattack" type="int">
+            <column name="nattack" not-null="true" />
+        </property>
+        <property name="attack" type="string">
+            <column name="attack" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

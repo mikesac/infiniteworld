@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+	<decorator name="HeaderAndFooter" page="login.jsp">
+	<pattern>/*</pattern>
+	</decorator>
+	
+	<decorator name="Character" page="infinite.jsp" >
+		<pattern>/player/*</pattern>
+	</decorator>
+		
+
+	
+<excludes>
+		<pattern>*monsterXML*</pattern>
+	</excludes>
+
+	
+</decorators>
+
