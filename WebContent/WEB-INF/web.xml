@@ -79,12 +79,19 @@
 	<servlet>
 		<servlet-name>register</servlet-name>
 		<servlet-class>org.infinite.web.account.Register</servlet-class>
-		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>newchar</servlet-name>
+		<servlet-class>org.infinite.web.account.NewCharacter</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>register</servlet-name>
 		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>newchar</servlet-name>
+		<url-pattern>/newChar</url-pattern>
 	</servlet-mapping>
   
   

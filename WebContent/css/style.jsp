@@ -247,6 +247,6 @@ font-family: Verdana,Arial;
 .cpt_big{color: white;font-size: 6pt;z-index: 30;position: absolute;}
 .ccp_big{height: 15px;background-color: #9800F0;color: white;font-size: 8pt;position: absolute;z-index: 2;}
 
-
+.avatar{margin:10px 10px 10px 10px;width: 100px;height: 100px;}
 
 </style>

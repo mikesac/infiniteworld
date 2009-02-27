@@ -1,7 +1,6 @@
 package org.infinite.web.account;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -23,6 +22,7 @@ public class Register extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	throws ServletException, IOException {
@@ -53,7 +53,7 @@ public class Register extends HttpServlet {
 					throw new Exception("Invalid email");
 				}
 
-				List l = Manager.listByQery("select u from TomcatUsers u where u.user='"+user+"' or u.email='"+email+"'");
+				List<TomcatUsers> l = Manager.listByQery("select u from TomcatUsers u where u.user='"+user+"' or u.email='"+email+"'");
 
 				if(l.size()!=0){
 					throw new Exception("USERNAME or EMAIL already in use, please choose a different ones");

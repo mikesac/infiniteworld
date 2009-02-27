@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA -->
+<!-- Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac">
         <id name="id" type="int">

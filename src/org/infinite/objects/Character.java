@@ -3,6 +3,7 @@ package org.infinite.objects;
 import java.util.List;
 import java.util.Vector;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Item;
@@ -410,16 +411,9 @@ public class Character {
 
 
 	@SuppressWarnings("unchecked")
-	public static String[] getCharacterListing(){
+	public static List<Player> getCharacterListing(String account){
+		return Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+account+"'  ");
 
-		List<String> l = Manager.listByQery("select m.name from Npc m where m.ismonster=1");
-
-		String[] s = new String[l.size()];
-		for (int i = 0; i < l.size(); i++) {
-			s[i] = l.get(i);
-		}
-
-		return s;
 	}
 
 }

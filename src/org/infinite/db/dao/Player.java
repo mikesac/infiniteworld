@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 23-feb-2009 21.37.11 by Hibernate Tools 3.2.2.GA
+// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,7 +39,7 @@ public class Player implements java.io.Serializable {
 	public Player(int id, TomcatUsers tomcatUsers, Area area, String name,
 			String image, int baseStr, int baseInt, int baseDex, int baseCha,
 			int basePl, int basePm, int basePa, int basePc, int level, int px,
-			int status, float gold, int nattack, String attack) {
+			int status, float gold, int nattack) {
 		this.id = id;
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
@@ -58,7 +58,6 @@ public class Player implements java.io.Serializable {
 		this.status = status;
 		this.gold = gold;
 		this.nattack = nattack;
-		this.attack = attack;
 	}
 
 	public Player(int id, TomcatUsers tomcatUsers, Area area, String name,

@@ -42,7 +42,7 @@
 				</td>
 			</tr>
 			<tr align="center">
-				<td><button onclick="document.location='<%=request.getContextPath()%>/player/fight.jsp'">Play</button></td>
+				<td><button onclick="document.location='<%=request.getContextPath()%>/player/character.jsp'">Play</button></td>
 			</tr>
 			<tr align="center">
 				<td><button onclick="document.location='<%=request.getContextPath()%>/login/register.jsp'">Register</button></td>
