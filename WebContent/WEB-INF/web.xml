@@ -75,7 +75,7 @@
 	</servlet-mapping>
 	
 	
-	<!--  Register -->
+	<!--  Account -->
 	<servlet>
 		<servlet-name>register</servlet-name>
 		<servlet-class>org.infinite.web.account.Register</servlet-class>
@@ -83,6 +83,10 @@
 	<servlet>
 		<servlet-name>newchar</servlet-name>
 		<servlet-class>org.infinite.web.account.NewCharacter</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>logout</servlet-name>
+		<servlet-class>org.infinite.web.account.Logout</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -92,6 +96,10 @@
 	<servlet-mapping>
 		<servlet-name>newchar</servlet-name>
 		<url-pattern>/newChar</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>logout</servlet-name>
+		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
   
   

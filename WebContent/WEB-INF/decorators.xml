@@ -2,6 +2,7 @@
 <decorators defaultdir="/decorators">
 	<decorator name="HeaderAndFooter" page="login.jsp">
 	<pattern>/*</pattern>
+	<pattern>/player/character.jsp</pattern>
 	</decorator>
 	
 	<decorator name="Character" page="infinite.jsp" >
