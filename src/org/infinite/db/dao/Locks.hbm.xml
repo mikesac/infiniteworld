@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA -->
+<!-- Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Locks" table="locks" catalog="mikesac">
         <id name="id" type="java.lang.Integer">
@@ -14,6 +14,14 @@
         <property name="parentId" type="java.lang.Integer">
             <column name="parentId" />
         </property>
+        <set name="areaItems" inverse="true">
+            <key>
+                <column name="lockid" not-null="true">
+                    <comment>lock id</comment>
+                </column>
+            </key>
+            <one-to-many class="org.infinite.db.dao.AreaItem" />
+        </set>
         <set name="areas" inverse="true">
             <key>
                 <column name="lockid" not-null="true">

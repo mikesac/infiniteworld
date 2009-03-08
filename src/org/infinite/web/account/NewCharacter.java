@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +20,7 @@ import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.TomcatUsers;
+import org.infinite.web.PagesCst;
 
 public class NewCharacter extends HttpServlet {
 
@@ -91,7 +91,7 @@ public class NewCharacter extends HttpServlet {
 			List<Area> la = Manager.listByQery("from org.infinite.db.dao.Area u where u.id='1'");
 
 			charName = charName.replaceAll(" ", "");			
-			Player p = new Player(lu.get(0),la.get(0),charName,charPic,5,5,5,5,20,5,10,5,1,0,0,0.0f,1,"{\"base\":1}");
+			Player p = new Player(lu.get(0),la.get(0),charName,charPic,5,5,5,5,20,5,10,5,20,5,10,5,1,0,0,0.0f,1,"{\"base\":1}");
 			Manager.create(p);
 
 			
@@ -103,11 +103,10 @@ public class NewCharacter extends HttpServlet {
 		catch (Exception e) {
 			err = e.getMessage();
 		}
-		req.setAttribute("error", err);
-		//resp.sendRedirect( req.getContextPath() +  "/player/character.jsp");
+		req.getSession().setAttribute("error", err);
+		resp.sendRedirect( req.getContextPath() +  PagesCst.PAGE_CHARACTER);
 		
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/player/character.jsp");
-		dispatcher.forward(req,resp);
+		
 	}
 
 }

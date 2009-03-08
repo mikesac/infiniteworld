@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.infinite.db.Manager;
 import org.infinite.db.dao.TomcatRoles;
 import org.infinite.db.dao.TomcatUsers;
+import org.infinite.web.PagesCst;
 
 import com.octo.captcha.service.CaptchaServiceException;
 
@@ -28,7 +29,7 @@ public class Register extends HttpServlet {
 	throws ServletException, IOException {
 
 		String err = "";
-		String next = "/login/register.jsp";
+		String next = PagesCst.PAGE_REGISTER;
 
 		if(validateCaptchaForId(req))
 		{
@@ -60,13 +61,13 @@ public class Register extends HttpServlet {
 				}
 				
 				TomcatUsers u = new TomcatUsers(user,pass,email);
-				TomcatRoles r = new TomcatRoles(user,u,"player");
+				TomcatRoles r = new TomcatRoles(u,"player");
 				Manager.create(u);
 				Manager.create(r);
 				
 
 				err ="Account created,login as "+user;
-				next = "/index.jsp";
+				next = PagesCst.PAGE_ROOT;
 			}
 			catch (Exception e) {
 				err = e.getMessage();
@@ -77,10 +78,10 @@ public class Register extends HttpServlet {
 			err ="incorrect captcha";
 
 		}
-		req.setAttribute("error", err);
+		req.getSession().setAttribute("error", err);
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(next);
-		dispatcher.forward(req,resp);
+		resp.sendRedirect( req.getContextPath() + next);
+		
 	}
 
 	private boolean validateCaptchaForId(HttpServletRequest req) {

@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,34 +15,35 @@ public class Item implements java.io.Serializable {
 	private String name;
 	private String descr;
 	private String image;
-	private int costAp;
-	private int reqStr;
-	private int reqInt;
-	private int reqWis;
-	private int reqDex;
-	private int reqCha;
-	private int reqLev;
-	private int modStr;
-	private int modInt;
-	private int modWis;
-	private int modDex;
-	private int modCha;
+	private Integer costAp;
+	private Integer reqStr;
+	private Integer reqInt;
+	private Integer reqWis;
+	private Integer reqDex;
+	private Integer reqCha;
+	private Integer reqLev;
+	private Integer modStr;
+	private Integer modInt;
+	private Integer modWis;
+	private Integer modDex;
+	private Integer modCha;
 	private float price;
-	private int lev;
+	private Integer lev;
 	private String damage;
-	private int initiative;
-	private int durability;
-	private int type;
-	private Set playerOwnItems = new HashSet(0);
+	private Integer initiative;
+	private Integer durability;
+	private Integer type;
+	private Set<PlayerOwnItem> playerOwnItems = new HashSet<PlayerOwnItem>(0);
 
 	public Item() {
 	}
 
 	public Item(Spell spell, String name, String descr, String image,
-			int costAp, int reqStr, int reqInt, int reqWis, int reqDex,
-			int reqCha, int reqLev, int modStr, int modInt, int modWis,
-			int modDex, int modCha, float price, int lev, String damage,
-			int initiative, int durability, int type) {
+			Integer costAp, Integer reqStr, Integer reqInt, Integer reqWis,
+			Integer reqDex, Integer reqCha, Integer reqLev, Integer modStr,
+			Integer modInt, Integer modWis, Integer modDex, Integer modCha,
+			float price, Integer lev, String damage, Integer initiative,
+			Integer durability, Integer type) {
 		this.spell = spell;
 		this.name = name;
 		this.descr = descr;
@@ -68,10 +69,11 @@ public class Item implements java.io.Serializable {
 	}
 
 	public Item(Spell spell, String name, String descr, String image,
-			int costAp, int reqStr, int reqInt, int reqWis, int reqDex,
-			int reqCha, int reqLev, int modStr, int modInt, int modWis,
-			int modDex, int modCha, float price, int lev, String damage,
-			int initiative, int durability, int type, Set playerOwnItems) {
+			Integer costAp, Integer reqStr, Integer reqInt, Integer reqWis,
+			Integer reqDex, Integer reqCha, Integer reqLev, Integer modStr,
+			Integer modInt, Integer modWis, Integer modDex, Integer modCha,
+			float price, Integer lev, String damage, Integer initiative,
+			Integer durability, Integer type, Set<PlayerOwnItem> playerOwnItems) {
 		this.spell = spell;
 		this.name = name;
 		this.descr = descr;
@@ -137,99 +139,99 @@ public class Item implements java.io.Serializable {
 		this.image = image;
 	}
 
-	public int getCostAp() {
+	public Integer getCostAp() {
 		return this.costAp;
 	}
 
-	public void setCostAp(int costAp) {
+	public void setCostAp(Integer costAp) {
 		this.costAp = costAp;
 	}
 
-	public int getReqStr() {
+	public Integer getReqStr() {
 		return this.reqStr;
 	}
 
-	public void setReqStr(int reqStr) {
+	public void setReqStr(Integer reqStr) {
 		this.reqStr = reqStr;
 	}
 
-	public int getReqInt() {
+	public Integer getReqInt() {
 		return this.reqInt;
 	}
 
-	public void setReqInt(int reqInt) {
+	public void setReqInt(Integer reqInt) {
 		this.reqInt = reqInt;
 	}
 
-	public int getReqWis() {
+	public Integer getReqWis() {
 		return this.reqWis;
 	}
 
-	public void setReqWis(int reqWis) {
+	public void setReqWis(Integer reqWis) {
 		this.reqWis = reqWis;
 	}
 
-	public int getReqDex() {
+	public Integer getReqDex() {
 		return this.reqDex;
 	}
 
-	public void setReqDex(int reqDex) {
+	public void setReqDex(Integer reqDex) {
 		this.reqDex = reqDex;
 	}
 
-	public int getReqCha() {
+	public Integer getReqCha() {
 		return this.reqCha;
 	}
 
-	public void setReqCha(int reqCha) {
+	public void setReqCha(Integer reqCha) {
 		this.reqCha = reqCha;
 	}
 
-	public int getReqLev() {
+	public Integer getReqLev() {
 		return this.reqLev;
 	}
 
-	public void setReqLev(int reqLev) {
+	public void setReqLev(Integer reqLev) {
 		this.reqLev = reqLev;
 	}
 
-	public int getModStr() {
+	public Integer getModStr() {
 		return this.modStr;
 	}
 
-	public void setModStr(int modStr) {
+	public void setModStr(Integer modStr) {
 		this.modStr = modStr;
 	}
 
-	public int getModInt() {
+	public Integer getModInt() {
 		return this.modInt;
 	}
 
-	public void setModInt(int modInt) {
+	public void setModInt(Integer modInt) {
 		this.modInt = modInt;
 	}
 
-	public int getModWis() {
+	public Integer getModWis() {
 		return this.modWis;
 	}
 
-	public void setModWis(int modWis) {
+	public void setModWis(Integer modWis) {
 		this.modWis = modWis;
 	}
 
-	public int getModDex() {
+	public Integer getModDex() {
 		return this.modDex;
 	}
 
-	public void setModDex(int modDex) {
+	public void setModDex(Integer modDex) {
 		this.modDex = modDex;
 	}
 
-	public int getModCha() {
+	public Integer getModCha() {
 		return this.modCha;
 	}
 
-	public void setModCha(int modCha) {
+	public void setModCha(Integer modCha) {
 		this.modCha = modCha;
 	}
 
@@ -241,11 +243,11 @@ public class Item implements java.io.Serializable {
 		this.price = price;
 	}
 
-	public int getLev() {
+	public Integer getLev() {
 		return this.lev;
 	}
 
-	public void setLev(int lev) {
+	public void setLev(Integer lev) {
 		this.lev = lev;
 	}
 
@@ -257,35 +259,35 @@ public class Item implements java.io.Serializable {
 		this.damage = damage;
 	}
 
-	public int getInitiative() {
+	public Integer getInitiative() {
 		return this.initiative;
 	}
 
-	public void setInitiative(int initiative) {
+	public void setInitiative(Integer initiative) {
 		this.initiative = initiative;
 	}
 
-	public int getDurability() {
+	public Integer getDurability() {
 		return this.durability;
 	}
 
-	public void setDurability(int durability) {
+	public void setDurability(Integer durability) {
 		this.durability = durability;
 	}
 
-	public int getType() {
+	public Integer getType() {
 		return this.type;
 	}
 
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public Set getPlayerOwnItems() {
+	public Set<PlayerOwnItem> getPlayerOwnItems() {
 		return this.playerOwnItems;
 	}
 
-	public void setPlayerOwnItems(Set playerOwnItems) {
+	public void setPlayerOwnItems(Set<PlayerOwnItem> playerOwnItems) {
 		this.playerOwnItems = playerOwnItems;
 	}
 

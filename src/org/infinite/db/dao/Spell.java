@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,37 +14,38 @@ public class Spell implements java.io.Serializable {
 	private String name;
 	private String desc;
 	private String image;
-	private int costMp;
-	private int reqStr;
-	private int reqInt;
-	private int reqWis;
-	private int reqDex;
-	private int reqCha;
-	private int reqLev;
-	private int modStr;
-	private int modInt;
-	private int modWis;
-	private int modDex;
-	private int modCha;
+	private Integer costMp;
+	private Integer reqStr;
+	private Integer reqInt;
+	private Integer reqWis;
+	private Integer reqDex;
+	private Integer reqCha;
+	private Integer reqLev;
+	private Integer modStr;
+	private Integer modInt;
+	private Integer modWis;
+	private Integer modDex;
+	private Integer modCha;
 	private float price;
-	private int lev;
-	private int duration;
-	private int spelltype;
+	private Integer lev;
+	private Integer duration;
+	private Integer spelltype;
 	private String damage;
-	private int savingthrow;
-	private int initiative;
-	private Set players = new HashSet(0);
-	private Set items = new HashSet(0);
-	private Set players_1 = new HashSet(0);
+	private Integer savingthrow;
+	private Integer initiative;
+	private Set<Player> players = new HashSet<Player>(0);
+	private Set<Item> items = new HashSet<Item>(0);
+	private Set<Player> players_1 = new HashSet<Player>(0);
 
 	public Spell() {
 	}
 
-	public Spell(String name, String desc, String image, int costMp,
-			int reqStr, int reqInt, int reqWis, int reqDex, int reqCha,
-			int reqLev, int modStr, int modInt, int modWis, int modDex,
-			int modCha, float price, int lev, int duration, int spelltype,
-			String damage, int savingthrow, int initiative) {
+	public Spell(String name, String desc, String image, Integer costMp,
+			Integer reqStr, Integer reqInt, Integer reqWis, Integer reqDex,
+			Integer reqCha, Integer reqLev, Integer modStr, Integer modInt,
+			Integer modWis, Integer modDex, Integer modCha, float price,
+			Integer lev, Integer duration, Integer spelltype, String damage,
+			Integer savingthrow, Integer initiative) {
 		this.name = name;
 		this.desc = desc;
 		this.image = image;
@@ -69,12 +70,13 @@ public class Spell implements java.io.Serializable {
 		this.initiative = initiative;
 	}
 
-	public Spell(String name, String desc, String image, int costMp,
-			int reqStr, int reqInt, int reqWis, int reqDex, int reqCha,
-			int reqLev, int modStr, int modInt, int modWis, int modDex,
-			int modCha, float price, int lev, int duration, int spelltype,
-			String damage, int savingthrow, int initiative, Set players,
-			Set items, Set players_1) {
+	public Spell(String name, String desc, String image, Integer costMp,
+			Integer reqStr, Integer reqInt, Integer reqWis, Integer reqDex,
+			Integer reqCha, Integer reqLev, Integer modStr, Integer modInt,
+			Integer modWis, Integer modDex, Integer modCha, float price,
+			Integer lev, Integer duration, Integer spelltype, String damage,
+			Integer savingthrow, Integer initiative, Set<Player> players,
+			Set<Item> items, Set<Player> players_1) {
 		this.name = name;
 		this.desc = desc;
 		this.image = image;
@@ -134,99 +136,99 @@ public class Spell implements java.io.Serializable {
 		this.image = image;
 	}
 
-	public int getCostMp() {
+	public Integer getCostMp() {
 		return this.costMp;
 	}
 
-	public void setCostMp(int costMp) {
+	public void setCostMp(Integer costMp) {
 		this.costMp = costMp;
 	}
 
-	public int getReqStr() {
+	public Integer getReqStr() {
 		return this.reqStr;
 	}
 
-	public void setReqStr(int reqStr) {
+	public void setReqStr(Integer reqStr) {
 		this.reqStr = reqStr;
 	}
 
-	public int getReqInt() {
+	public Integer getReqInt() {
 		return this.reqInt;
 	}
 
-	public void setReqInt(int reqInt) {
+	public void setReqInt(Integer reqInt) {
 		this.reqInt = reqInt;
 	}
 
-	public int getReqWis() {
+	public Integer getReqWis() {
 		return this.reqWis;
 	}
 
-	public void setReqWis(int reqWis) {
+	public void setReqWis(Integer reqWis) {
 		this.reqWis = reqWis;
 	}
 
-	public int getReqDex() {
+	public Integer getReqDex() {
 		return this.reqDex;
 	}
 
-	public void setReqDex(int reqDex) {
+	public void setReqDex(Integer reqDex) {
 		this.reqDex = reqDex;
 	}
 
-	public int getReqCha() {
+	public Integer getReqCha() {
 		return this.reqCha;
 	}
 
-	public void setReqCha(int reqCha) {
+	public void setReqCha(Integer reqCha) {
 		this.reqCha = reqCha;
 	}
 
-	public int getReqLev() {
+	public Integer getReqLev() {
 		return this.reqLev;
 	}
 
-	public void setReqLev(int reqLev) {
+	public void setReqLev(Integer reqLev) {
 		this.reqLev = reqLev;
 	}
 
-	public int getModStr() {
+	public Integer getModStr() {
 		return this.modStr;
 	}
 
-	public void setModStr(int modStr) {
+	public void setModStr(Integer modStr) {
 		this.modStr = modStr;
 	}
 
-	public int getModInt() {
+	public Integer getModInt() {
 		return this.modInt;
 	}
 
-	public void setModInt(int modInt) {
+	public void setModInt(Integer modInt) {
 		this.modInt = modInt;
 	}
 
-	public int getModWis() {
+	public Integer getModWis() {
 		return this.modWis;
 	}
 
-	public void setModWis(int modWis) {
+	public void setModWis(Integer modWis) {
 		this.modWis = modWis;
 	}
 
-	public int getModDex() {
+	public Integer getModDex() {
 		return this.modDex;
 	}
 
-	public void setModDex(int modDex) {
+	public void setModDex(Integer modDex) {
 		this.modDex = modDex;
 	}
 
-	public int getModCha() {
+	public Integer getModCha() {
 		return this.modCha;
 	}
 
-	public void setModCha(int modCha) {
+	public void setModCha(Integer modCha) {
 		this.modCha = modCha;
 	}
 
@@ -238,27 +240,27 @@ public class Spell implements java.io.Serializable {
 		this.price = price;
 	}
 
-	public int getLev() {
+	public Integer getLev() {
 		return this.lev;
 	}
 
-	public void setLev(int lev) {
+	public void setLev(Integer lev) {
 		this.lev = lev;
 	}
 
-	public int getDuration() {
+	public Integer getDuration() {
 		return this.duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
-	public int getSpelltype() {
+	public Integer getSpelltype() {
 		return this.spelltype;
 	}
 
-	public void setSpelltype(int spelltype) {
+	public void setSpelltype(Integer spelltype) {
 		this.spelltype = spelltype;
 	}
 
@@ -270,43 +272,43 @@ public class Spell implements java.io.Serializable {
 		this.damage = damage;
 	}
 
-	public int getSavingthrow() {
+	public Integer getSavingthrow() {
 		return this.savingthrow;
 	}
 
-	public void setSavingthrow(int savingthrow) {
+	public void setSavingthrow(Integer savingthrow) {
 		this.savingthrow = savingthrow;
 	}
 
-	public int getInitiative() {
+	public Integer getInitiative() {
 		return this.initiative;
 	}
 
-	public void setInitiative(int initiative) {
+	public void setInitiative(Integer initiative) {
 		this.initiative = initiative;
 	}
 
-	public Set getPlayers() {
+	public Set<Player> getPlayers() {
 		return this.players;
 	}
 
-	public void setPlayers(Set players) {
+	public void setPlayers(Set<Player> players) {
 		this.players = players;
 	}
 
-	public Set getItems() {
+	public Set<Item> getItems() {
 		return this.items;
 	}
 
-	public void setItems(Set items) {
+	public void setItems(Set<Item> items) {
 		this.items = items;
 	}
 
-	public Set getPlayers_1() {
+	public Set<Player> getPlayers_1() {
 		return this.players_1;
 	}
 
-	public void setPlayers_1(Set players_1) {
+	public void setPlayers_1(Set<Player> players_1) {
 		this.players_1 = players_1;
 	}
 

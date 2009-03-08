@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,8 +13,8 @@ public class TomcatUsers implements java.io.Serializable {
 	private String user;
 	private String password;
 	private String email;
-	private Set tomcatRoleses = new HashSet(0);
-	private Set players = new HashSet(0);
+	private TomcatRoles tomcatRoles;
+	private Set<Player> players = new HashSet<Player>(0);
 
 	public TomcatUsers() {
 	}
@@ -26,11 +26,11 @@ public class TomcatUsers implements java.io.Serializable {
 	}
 
 	public TomcatUsers(String user, String password, String email,
-			Set tomcatRoleses, Set players) {
+			TomcatRoles tomcatRoles, Set<Player> players) {
 		this.user = user;
 		this.password = password;
 		this.email = email;
-		this.tomcatRoleses = tomcatRoleses;
+		this.tomcatRoles = tomcatRoles;
 		this.players = players;
 	}
 
@@ -58,19 +58,19 @@ public class TomcatUsers implements java.io.Serializable {
 		this.email = email;
 	}
 
-	public Set getTomcatRoleses() {
-		return this.tomcatRoleses;
+	public TomcatRoles getTomcatRoles() {
+		return this.tomcatRoles;
 	}
 
-	public void setTomcatRoleses(Set tomcatRoleses) {
-		this.tomcatRoleses = tomcatRoleses;
+	public void setTomcatRoles(TomcatRoles tomcatRoles) {
+		this.tomcatRoles = tomcatRoles;
 	}
 
-	public Set getPlayers() {
+	public Set<Player> getPlayers() {
 		return this.players;
 	}
 
-	public void setPlayers(Set players) {
+	public void setPlayers(Set<Player> players) {
 		this.players = players;
 	}
 

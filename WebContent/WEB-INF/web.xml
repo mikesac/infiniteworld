@@ -5,6 +5,14 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+<!-- Hibernate -->
+<listener>
+    <listener-class>org.infinite.db.HibernateListener</listener-class>
+</listener>
+
+
+
+	<!--  AUTH -->
 
 	<security-constraint>
 		<web-resource-collection>
@@ -85,6 +93,10 @@
 		<servlet-class>org.infinite.web.account.NewCharacter</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>start</servlet-name>
+		<servlet-class>org.infinite.web.account.StartPlaying</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>logout</servlet-name>
 		<servlet-class>org.infinite.web.account.Logout</servlet-class>
 	</servlet>
@@ -98,9 +110,23 @@
 		<url-pattern>/newChar</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>start</servlet-name>
+		<url-pattern>/start</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>logout</servlet-name>
 		<url-pattern>/logout</url-pattern>
 	</servlet-mapping>
+  
+  <!-- Map Moving -->
+  <servlet>
+    <servlet-name>MapMove</servlet-name>
+    <servlet-class>org.infinite.web.MapMove</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MapMove</servlet-name>
+    <url-pattern>/map</url-pattern>
+  </servlet-mapping>
   
   
   <!-- Fight Testbed -->

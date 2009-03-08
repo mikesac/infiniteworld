@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
+import static org.hibernate.criterion.Example.create;
 
 /**
  * Home object for domain model class Npc.
@@ -89,7 +89,7 @@ public class NpcHome {
 		}
 	}
 
-	public Npc findById(int id) {
+	public Npc findById(java.lang.Integer id) {
 		log.debug("getting Npc instance with id: " + id);
 		try {
 			Npc instance = (Npc) sessionFactory.getCurrentSession().get(
@@ -106,12 +106,12 @@ public class NpcHome {
 		}
 	}
 
-	public List findByExample(Npc instance) {
+	public List<Npc> findByExample(Npc instance) {
 		log.debug("finding Npc instance by example");
 		try {
-			List results = sessionFactory.getCurrentSession().createCriteria(
-					"org.infinite.db.dao.Npc").add(Example.create(instance))
-					.list();
+			List<Npc> results = (List<Npc>) sessionFactory.getCurrentSession()
+					.createCriteria("org.infinite.db.dao.Npc").add(
+							create(instance)).list();
 			log.debug("find by example successful, result size: "
 					+ results.size());
 			return results;

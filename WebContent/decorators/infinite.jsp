@@ -1,14 +1,10 @@
-<%--
-% This is the main decorator for all SOMECOMPANY INTRANET pages.
-% It includes standard caching, style sheet, header, footer and copyright notice.
---%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
 	prefix="decorator"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<title><decorator:title default="INTRANET" /></title>
-<%@ include file="/css/style.jsp"%>
+<title><decorator:title default="Infinite World" /></title>
+<link  type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/styleext.jsp">
 </head>
 <body>
 

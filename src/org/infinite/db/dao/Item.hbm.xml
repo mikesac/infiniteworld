@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA -->
+<!-- Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Item" table="Item" catalog="mikesac">
         <id name="id" type="java.lang.Integer">
@@ -26,48 +26,48 @@
                 <comment>item image</comment>
             </column>
         </property>
-        <property name="costAp" type="int">
+        <property name="costAp" type="java.lang.Integer">
             <column name="costAP" not-null="true" />
         </property>
-        <property name="reqStr" type="int">
+        <property name="reqStr" type="java.lang.Integer">
             <column name="req_str" not-null="true">
                 <comment>required str</comment>
             </column>
         </property>
-        <property name="reqInt" type="int">
+        <property name="reqInt" type="java.lang.Integer">
             <column name="req_int" not-null="true" />
         </property>
-        <property name="reqWis" type="int">
+        <property name="reqWis" type="java.lang.Integer">
             <column name="req_wis" not-null="true" />
         </property>
-        <property name="reqDex" type="int">
+        <property name="reqDex" type="java.lang.Integer">
             <column name="req_dex" not-null="true" />
         </property>
-        <property name="reqCha" type="int">
+        <property name="reqCha" type="java.lang.Integer">
             <column name="req_cha" not-null="true" />
         </property>
-        <property name="reqLev" type="int">
+        <property name="reqLev" type="java.lang.Integer">
             <column name="req_lev" not-null="true" />
         </property>
-        <property name="modStr" type="int">
+        <property name="modStr" type="java.lang.Integer">
             <column name="mod_str" not-null="true" />
         </property>
-        <property name="modInt" type="int">
+        <property name="modInt" type="java.lang.Integer">
             <column name="mod_int" not-null="true" />
         </property>
-        <property name="modWis" type="int">
+        <property name="modWis" type="java.lang.Integer">
             <column name="mod_wis" not-null="true" />
         </property>
-        <property name="modDex" type="int">
+        <property name="modDex" type="java.lang.Integer">
             <column name="mod_dex" not-null="true" />
         </property>
-        <property name="modCha" type="int">
+        <property name="modCha" type="java.lang.Integer">
             <column name="mod_cha" not-null="true" />
         </property>
         <property name="price" type="float">
             <column name="price" precision="12" scale="0" not-null="true" />
         </property>
-        <property name="lev" type="int">
+        <property name="lev" type="java.lang.Integer">
             <column name="lev" not-null="true">
                 <comment>item level</comment>
             </column>
@@ -75,13 +75,13 @@
         <property name="damage" type="string">
             <column name="damage" length="128" not-null="true" />
         </property>
-        <property name="initiative" type="int">
+        <property name="initiative" type="java.lang.Integer">
             <column name="initiative" not-null="true" />
         </property>
-        <property name="durability" type="int">
+        <property name="durability" type="java.lang.Integer">
             <column name="durability" not-null="true" />
         </property>
-        <property name="type" type="int">
+        <property name="type" type="java.lang.Integer">
             <column name="type" not-null="true" />
         </property>
         <set name="playerOwnItems" inverse="true">

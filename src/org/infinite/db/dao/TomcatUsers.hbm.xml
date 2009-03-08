@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA -->
+<!-- Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.TomcatUsers" table="tomcat_users" catalog="mikesac">
         <id name="user" type="string">
@@ -14,12 +14,7 @@
         <property name="email" type="string">
             <column name="email" length="128" not-null="true" unique="true" />
         </property>
-        <set name="tomcatRoleses" inverse="true">
-            <key>
-                <column name="user" length="16" not-null="true" unique="true" />
-            </key>
-            <one-to-many class="org.infinite.db.dao.TomcatRoles" />
-        </set>
+        <one-to-one name="tomcatRoles" class="org.infinite.db.dao.TomcatRoles"></one-to-one>
         <set name="players" inverse="true">
             <key>
                 <column name="aid" length="16" not-null="true" />

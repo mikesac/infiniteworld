@@ -7,8 +7,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<title><decorator:title default="INTRANET" /></title>
-<%@ include file="/css/style.jsp"%>
+<title><decorator:title default="Infinite World" /></title>
+<link  type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/styleext.jsp">
 </head>
 <body>
 <table style="height:100%;" width="99%">

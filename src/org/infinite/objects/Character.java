@@ -3,9 +3,9 @@ package org.infinite.objects;
 import java.util.List;
 import java.util.Vector;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.infinite.db.Manager;
+import org.infinite.db.dao.Area;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.Spell;
@@ -43,20 +43,25 @@ public class Character {
 	/*
 	 * Current points (total is taken from NPC object)
 	 */
-	int currLifePoint = 0;
-	int currMagicPoint = 0;
-	int currActionPoint = 0;
+	
+	public Character(String name, String accountName){
 
-
-	public Character(String name, int accountID){
-
-		Session s = Manager.openSession();
-		player = (Player)Manager.listByQery(s,"select p from Player as p where aid='"+accountID+"' and name='"+name+"'").get(0);
-		Manager.commitAndCloseSession(s);	
+		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
+	
 		
-		currLifePoint = getLifePoints();
-		currMagicPoint = getMagicPoints();
-		currActionPoint = getActionPoints();
+		initCharacterPoints();
+	}
+
+
+
+	private boolean initCharacterPoints() {
+		//TODO questo andrà sostituito con la procedura di rigenerazione punti
+		
+		getDao().setPl(getMaxLifePoints());
+		getDao().setPm(getMaxMagicPoints());
+		getDao().setPa(getMaxActionPoints());
+		getDao().setPc(getMaxCharmPoints());
+		return saveDao();	
 	}
 
 
@@ -125,7 +130,13 @@ public class Character {
 	public int getRollToAttack(){
 
 		int cost = getHandRight()!=null?getHandRight().getCostAp():1;
-		currActionPoint -= cost;
+		
+		try {
+			addActionPoints( -1 * cost);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		int roll = GenericUtil.rollDice(1, 20, 0);
 		roll +=  ( getStrenght()/5 );
@@ -133,19 +144,36 @@ public class Character {
 	}
 
 	public int inflictDamage(int dmg){
-		currLifePoint -= dmg;
-		return getCurrLifePoint();
+		int pl = -1;
+		try {
+			pl = addLifePoints( -1 * dmg);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pl;
 	}
 
 	public int healDamage(int heal) {
-		currLifePoint += heal;
-		if( getCurrLifePoint() > getLifePoints())
-			currLifePoint = getLifePoints();
-		return getCurrLifePoint();
+			
+		int pl = -1;
+		try {
+			pl=  addLifePoints( heal );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+		return pl;
 	}
 
 	public void restRound(int i) {
-		currActionPoint += i * getDao().getLevel();		
+		try {
+			addActionPoints( i * getDao().getLevel() );
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 
 	public int getSpellDuration(){
@@ -200,14 +228,14 @@ public class Character {
 	}
 
 	public boolean isAlive(){
-		return currLifePoint>0?true:false;
+		return getLifePoints()>0?true:false;
 	}
 
-	public int getRewardPX(){
+	public int getExperience(){
 		return getDao().getPx();
 	}
 
-	public float getRewardGold(){
+	public float getGold(){
 		return getDao().getGold();
 	}
 
@@ -221,18 +249,22 @@ public class Character {
 		return getDao().getName();
 	}
 
-	public int getCurrLifePoint() {
-		return currLifePoint;
+	public int getBaseLifePoint() {
+		return getDao().getBasePl();
 	}
 
 	
-	public int getCurrMagicPoint() {
-		return currMagicPoint;
+	public int getBaseMagicPoint() {
+		return getDao().getBasePm();
 	}
 	
 
-	public int getCurrActionPoint() {
-		return currActionPoint;
+	public int getBaseActionPoint() {
+		return getDao().getBasePa();
+	}
+	
+	public int getBaseCharmPoint() {
+		return getDao().getBasePc();
 	}
 
 
@@ -277,7 +309,11 @@ public class Character {
 
 
 	public Spell castSpell() {
-		currMagicPoint -= preparedSpell.getCostMp();
+		try {
+			addMagicPoints( -1* preparedSpell.getCostMp() );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return preparedSpell;
 	}
 
@@ -328,29 +364,35 @@ public class Character {
 		return player;
 	}
 
-	public int getActionPoints(){
+	private boolean saveDao(){
+		return Manager.update(getDao());
+	}
+	
+	public int getMaxActionPoints(){
 		int mod = getDao().getBasePa();		
 		mod += (getDexterity()/5);
 		return mod;
 	}
 
-	public int getLifePoints(){
+	public int getMaxLifePoints(){
 		int mod = getDao().getBasePl();		
 		mod += (getStrenght()/5);
 		return mod;
 	}
 
-	public int getCharmPoints(){
+	public int getMaxCharmPoints(){
 		int mod = getDao().getBasePc();		
 		mod += (getCharisma()/5);
 		return mod;
 	}
 
-	public int getMagicPoints(){
+	public int getMaxMagicPoints(){
 		int mod = getDao().getBasePm();		
 		mod += (getIntelligence()/5);
 		return mod;
 	}
+	
+	
 
 	
 	public int getDexterity(){
@@ -405,7 +447,10 @@ public class Character {
 		return mod;
 	}
 	
-	
+
+	public int getLevel(){
+		return getDao().getLevel();
+	}
 	
 
 
@@ -414,6 +459,122 @@ public class Character {
 	public static List<Player> getCharacterListing(String account){
 		return Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+account+"'  ");
 
+	}
+
+
+
+	public Area getArea() {		
+		return getDao().getArea();
+	}
+	
+	public boolean moveToArea(Area a){
+		
+		boolean ret = true;
+		//TODO check if player owns lock for that area before moving
+		if(true){
+			getDao().setArea(a);
+			try {
+				addActionPoints( -1 * a.getCost() );
+			} catch (Exception e) {
+				e.printStackTrace();
+				ret = false;
+			}
+		}
+
+		return ret;
+		
+	}
+
+
+	private int addLifePoints(int points) throws Exception {
+		return setLifePoints( getLifePoints() + points );
+	}
+	
+	public int addMagicPoints(int points) throws Exception {
+		return setMagicPoints( getMagicPoints() + points);
+	}
+	
+	public int addActionPoints(int points) throws Exception {
+		return setActionPoints( getActionPoints() + points);
+		}
+	
+	public int addCharmPoints(int points) throws Exception {
+		return setCharmPoints( getCharmPoints() + points);	
+	}
+	
+	public int getActionPoints(){
+		return getDao().getPa();
+	}
+
+	public int getLifePoints(){
+		return getDao().getPl();
+	}
+
+	public int getCharmPoints(){
+		return getDao().getPc();
+	}
+
+	public int getMagicPoints(){
+		return getDao().getPm();
+	}
+	
+	public int setActionPoints(int points) throws Exception{
+		
+		if(points<0)
+			points=0;
+		if(points>getMaxActionPoints())
+			points = getMaxActionPoints();
+		
+		getDao().setPa(points);
+		
+		if(!saveDao())
+			throw new Exception("Could not save DAO object");
+		
+		return getDao().getPa();
+	}
+
+	public int setLifePoints(int points) throws Exception{
+		
+		if(points<0)
+			points=0;
+		if(points>getMaxLifePoints())
+			points = getMaxLifePoints();
+		
+		getDao().setPl(points);
+		
+		if(!saveDao())
+			throw new Exception("Could not save DAO object");
+		
+		return getDao().getPl();
+	}
+
+	public int setCharmPoints(int points) throws Exception{
+		
+		if(points<0)
+			points=0;
+		if(points>getMaxCharmPoints())
+			points = getMaxCharmPoints();
+		
+		getDao().setPc(points);		
+		if(!saveDao())
+			throw new Exception("Could not save DAO object");
+		
+		return getDao().getPc();
+	}
+
+	public int setMagicPoints(int points) throws Exception{
+		
+		if(points<0)
+			points=0;
+		if(points>getMaxMagicPoints())
+			points = getMaxMagicPoints();
+		
+		getDao().setPm(points);
+		
+		if(!saveDao())
+			throw new Exception("Could not save DAO object");
+		
+		return getDao().getPm();
 	}
 
 }

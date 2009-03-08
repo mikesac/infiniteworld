@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,32 +15,37 @@ public class Player implements java.io.Serializable {
 	private Area area;
 	private String name;
 	private String image;
-	private int baseStr;
-	private int baseInt;
-	private int baseDex;
-	private int baseCha;
-	private int basePl;
-	private int basePm;
-	private int basePa;
-	private int basePc;
-	private int level;
-	private int px;
-	private int status;
+	private Integer baseStr;
+	private Integer baseInt;
+	private Integer baseDex;
+	private Integer baseCha;
+	private Integer basePl;
+	private Integer basePm;
+	private Integer basePa;
+	private Integer basePc;
+	private Integer pl;
+	private Integer pm;
+	private Integer pa;
+	private Integer pc;
+	private Integer level;
+	private Integer px;
+	private Integer status;
 	private float gold;
-	private int nattack;
+	private Integer nattack;
 	private String attack;
-	private Set playerOwnItems = new HashSet(0);
-	private Set spells = new HashSet(0);
-	private Set spells_1 = new HashSet(0);
+	private Set<PlayerOwnItem> playerOwnItems = new HashSet<PlayerOwnItem>(0);
+	private Set<Spell> spells = new HashSet<Spell>(0);
+	private Set<Spell> spells_1 = new HashSet<Spell>(0);
 
 	public Player() {
 	}
 
-	public Player(int id, TomcatUsers tomcatUsers, Area area, String name,
-			String image, int baseStr, int baseInt, int baseDex, int baseCha,
-			int basePl, int basePm, int basePa, int basePc, int level, int px,
-			int status, float gold, int nattack) {
-		this.id = id;
+	public Player(TomcatUsers tomcatUsers, Area area, String name,
+			String image, Integer baseStr, Integer baseInt, Integer baseDex,
+			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
+			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
+			Integer level, Integer px, Integer status, float gold,
+			Integer nattack, String attack) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
 		this.name = name;
@@ -53,19 +58,25 @@ public class Player implements java.io.Serializable {
 		this.basePm = basePm;
 		this.basePa = basePa;
 		this.basePc = basePc;
+		this.pl = pl;
+		this.pm = pm;
+		this.pa = pa;
+		this.pc = pc;
 		this.level = level;
 		this.px = px;
 		this.status = status;
 		this.gold = gold;
 		this.nattack = nattack;
+		this.attack = attack;
 	}
 
-	public Player(int id, TomcatUsers tomcatUsers, Area area, String name,
-			String image, int baseStr, int baseInt, int baseDex, int baseCha,
-			int basePl, int basePm, int basePa, int basePc, int level, int px,
-			int status, float gold, int nattack, String attack,
-			Set playerOwnItems, Set spells, Set spells_1) {
-		this.id = id;
+	public Player(TomcatUsers tomcatUsers, Area area, String name,
+			String image, Integer baseStr, Integer baseInt, Integer baseDex,
+			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
+			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
+			Integer level, Integer px, Integer status, float gold,
+			Integer nattack, String attack, Set<PlayerOwnItem> playerOwnItems,
+			Set<Spell> spells, Set<Spell> spells_1) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
 		this.name = name;
@@ -78,6 +89,10 @@ public class Player implements java.io.Serializable {
 		this.basePm = basePm;
 		this.basePa = basePa;
 		this.basePc = basePc;
+		this.pl = pl;
+		this.pm = pm;
+		this.pa = pa;
+		this.pc = pc;
 		this.level = level;
 		this.px = px;
 		this.status = status;
@@ -129,91 +144,123 @@ public class Player implements java.io.Serializable {
 		this.image = image;
 	}
 
-	public int getBaseStr() {
+	public Integer getBaseStr() {
 		return this.baseStr;
 	}
 
-	public void setBaseStr(int baseStr) {
+	public void setBaseStr(Integer baseStr) {
 		this.baseStr = baseStr;
 	}
 
-	public int getBaseInt() {
+	public Integer getBaseInt() {
 		return this.baseInt;
 	}
 
-	public void setBaseInt(int baseInt) {
+	public void setBaseInt(Integer baseInt) {
 		this.baseInt = baseInt;
 	}
 
-	public int getBaseDex() {
+	public Integer getBaseDex() {
 		return this.baseDex;
 	}
 
-	public void setBaseDex(int baseDex) {
+	public void setBaseDex(Integer baseDex) {
 		this.baseDex = baseDex;
 	}
 
-	public int getBaseCha() {
+	public Integer getBaseCha() {
 		return this.baseCha;
 	}
 
-	public void setBaseCha(int baseCha) {
+	public void setBaseCha(Integer baseCha) {
 		this.baseCha = baseCha;
 	}
 
-	public int getBasePl() {
+	public Integer getBasePl() {
 		return this.basePl;
 	}
 
-	public void setBasePl(int basePl) {
+	public void setBasePl(Integer basePl) {
 		this.basePl = basePl;
 	}
 
-	public int getBasePm() {
+	public Integer getBasePm() {
 		return this.basePm;
 	}
 
-	public void setBasePm(int basePm) {
+	public void setBasePm(Integer basePm) {
 		this.basePm = basePm;
 	}
 
-	public int getBasePa() {
+	public Integer getBasePa() {
 		return this.basePa;
 	}
 
-	public void setBasePa(int basePa) {
+	public void setBasePa(Integer basePa) {
 		this.basePa = basePa;
 	}
 
-	public int getBasePc() {
+	public Integer getBasePc() {
 		return this.basePc;
 	}
 
-	public void setBasePc(int basePc) {
+	public void setBasePc(Integer basePc) {
 		this.basePc = basePc;
 	}
 
-	public int getLevel() {
+	public Integer getPl() {
+		return this.pl;
+	}
+
+	public void setPl(Integer pl) {
+		this.pl = pl;
+	}
+
+	public Integer getPm() {
+		return this.pm;
+	}
+
+	public void setPm(Integer pm) {
+		this.pm = pm;
+	}
+
+	public Integer getPa() {
+		return this.pa;
+	}
+
+	public void setPa(Integer pa) {
+		this.pa = pa;
+	}
+
+	public Integer getPc() {
+		return this.pc;
+	}
+
+	public void setPc(Integer pc) {
+		this.pc = pc;
+	}
+
+	public Integer getLevel() {
 		return this.level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 
-	public int getPx() {
+	public Integer getPx() {
 		return this.px;
 	}
 
-	public void setPx(int px) {
+	public void setPx(Integer px) {
 		this.px = px;
 	}
 
-	public int getStatus() {
+	public Integer getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
@@ -225,11 +272,11 @@ public class Player implements java.io.Serializable {
 		this.gold = gold;
 	}
 
-	public int getNattack() {
+	public Integer getNattack() {
 		return this.nattack;
 	}
 
-	public void setNattack(int nattack) {
+	public void setNattack(Integer nattack) {
 		this.nattack = nattack;
 	}
 
@@ -241,27 +288,27 @@ public class Player implements java.io.Serializable {
 		this.attack = attack;
 	}
 
-	public Set getPlayerOwnItems() {
+	public Set<PlayerOwnItem> getPlayerOwnItems() {
 		return this.playerOwnItems;
 	}
 
-	public void setPlayerOwnItems(Set playerOwnItems) {
+	public void setPlayerOwnItems(Set<PlayerOwnItem> playerOwnItems) {
 		this.playerOwnItems = playerOwnItems;
 	}
 
-	public Set getSpells() {
+	public Set<Spell> getSpells() {
 		return this.spells;
 	}
 
-	public void setSpells(Set spells) {
+	public void setSpells(Set<Spell> spells) {
 		this.spells = spells;
 	}
 
-	public Set getSpells_1() {
+	public Set<Spell> getSpells_1() {
 		return this.spells_1;
 	}
 
-	public void setSpells_1(Set spells_1) {
+	public void setSpells_1(Set<Spell> spells_1) {
 		this.spells_1 = spells_1;
 	}
 

@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Example;
+import static org.hibernate.criterion.Example.create;
 
 /**
  * Home object for domain model class Locks.
@@ -106,11 +106,12 @@ public class LocksHome {
 		}
 	}
 
-	public List findByExample(Locks instance) {
+	public List<Locks> findByExample(Locks instance) {
 		log.debug("finding Locks instance by example");
 		try {
-			List results = sessionFactory.getCurrentSession().createCriteria(
-					"org.infinite.db.dao.Locks").add(Example.create(instance))
+			List<Locks> results = (List<Locks>) sessionFactory
+					.getCurrentSession().createCriteria(
+							"org.infinite.db.dao.Locks").add(create(instance))
 					.list();
 			log.debug("find by example successful, result size: "
 					+ results.size());

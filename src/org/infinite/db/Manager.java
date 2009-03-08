@@ -4,33 +4,37 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 
 
 public class Manager {
 
+	/*
 	private static SessionFactory sessionFactory=null;
 
 	static{
 		Configuration config = new Configuration().configure("hibernate.cfg.xml");
 		sessionFactory = config.buildSessionFactory();
-	}
+	}*/
 	
 	public static Session openSession(){
 
-		Session session = sessionFactory.openSession();
+		//Session session = sessionFactory.openSession();
 		//session.beginTransaction();
+		//return session;
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		return session;
+
 	}
 	
 	public static void commitAndCloseSession(Session s){
 		//s.getTransaction().commit();
 		s.flush();
-		s.disconnect();
-		s.close();
+		//s.disconnect();
+		//s.close();
 		//sessionFactory.close();
         
 	}
@@ -42,16 +46,18 @@ public class Manager {
 	
 	@SuppressWarnings("unchecked")
 	public static List listByQery(String query){
-		Session session = openSession();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		session.beginTransaction();
 		List l = listByQery(session, query);
-		commitAndCloseSession(session);
+		session.getTransaction().commit();
 		return l;
 	}
        
 	public static boolean delete(Object o){
-		Session session = openSession();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
+		session.beginTransaction();
 		boolean b = delete(session, o);
-		commitAndCloseSession(session);
+		session.getTransaction().commit();
 		return b;
 	}
 	
@@ -73,9 +79,10 @@ public class Manager {
     
 	
 	public static boolean create(Object o){
-		Session session = openSession();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
+		session.beginTransaction();
 		boolean b = create(session, o);
-		commitAndCloseSession(session);
+		session.getTransaction().commit();
 		return b;
 	}
 	
@@ -98,9 +105,9 @@ public class Manager {
 	
 	
 	public static boolean update(Object o){
-		Session session = openSession();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
 		boolean b = update(session, o);
-		commitAndCloseSession(session);
 		return b;
 	}
 	

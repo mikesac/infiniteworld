@@ -2,12 +2,21 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
 
 <hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="INTEGER"
+			hibernate-type="java.lang.Integer" />
+	</type-mapping>
+
+
+
 	<table-filter match-catalog="mikesac" match-name="Area" />
 	<table-filter match-catalog="mikesac" match-name="Item" />
 	<table-filter match-catalog="mikesac" match-name="NPC" />
 	<table-filter match-catalog="mikesac" match-name="Spell" />
 	<table-filter match-catalog="mikesac" match-name="locks" />
-	<table-filter match-name="Player" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="Player" match-catalog="mikesac">
+		<meta attribute="dynamic-insert">true</meta>
+	</table-filter>
 	<table-filter match-name="PlayerKnowSpell"
 		match-catalog="mikesac">
 	</table-filter>
@@ -18,4 +27,11 @@
 	<table-filter match-name="PlayerOwnItem" match-catalog="mikesac"></table-filter>
 	<table-filter match-name="tomcat_users" match-catalog="mikesac"></table-filter>
 	<table-filter match-name="tomcat_roles" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="AreaItem" match-catalog="mikesac"></table-filter>
+	<table catalog="mikesac" name="Player">
+		<meta attribute="not-null">false</meta>
+		<column name="id" type="int">
+			<meta attribute="not-null">true</meta>
+		</column>
+	</table>
 </hibernate-reverse-engineering>

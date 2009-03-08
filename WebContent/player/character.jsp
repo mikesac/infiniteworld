@@ -10,24 +10,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Choose Your Character</title>
 
-<script type="text/javascript">
-function play(name){
-	var f = document.forms["play"];
-	f.name.value = name;
-	f.submit();
-}
-
-</script>
-
-
 </head>
 <body>
 <center>
 <div class="char">
-<table width="100%">
-	<tr><td colspan=5 " align="center">Choose you character</td></tr>
+<table width="99%">
+	<tr><td colspan=5 " align="center">Choose your character</td></tr>
 	<%
-		String err = (String)request.getAttribute("error");
+		String err = (String)session.getAttribute("error");
 		if(err!=null && err.length()>0){
 			%><tr><td colspan=5 " align="center"><div class="error"><% out.print(err);%></div></td></tr><%
 		}
@@ -35,10 +25,10 @@ function play(name){
 </table>
 </div>
 
-<div class="char" style="width:80%; height:430px;overflow: auto;padding: 1% 1% 1% 1%;">
+<div class="char" style="width:1200px; height:430px;overflow: auto;padding: 1% 1% 1% 1%;">
 <div>
-<form name="newchar" method="POST" action="<%=request.getContextPath()%>/newChar" enctype="multipart/form-data">
-<table width="100%">
+
+<table width="99%">
 	
 	<%
 		List<Player> l = Character.getCharacterListing( request.getUserPrincipal().getName() );
@@ -79,31 +69,40 @@ function play(name){
 			</table>
 			
 			</td>
-			<td><button onclick="play('l.get(i).getName()')">Play</button></td>
+			<td><button onclick="javascript:goplay('<%=l.get(i).getName()%>')">Play</button></td>
 		</tr>
 		<tr><td colspan=6" align="center"><hr width="90%"/></td></tr>
 		<%	}  %>
-		
+	<form name="newchar" method="POST" action="<%=request.getContextPath()%>/newChar" enctype="multipart/form-data">	
 		<tr>
-		<td><img class="avatar" alt="No Character" src="<%=request.getContextPath()%>/imgs/web/pg_void.png"></td>
+		<td><img class="avatar" alt="No Character" src="<%=request.getContextPath()%>/imgs/player/pg_void.png"></td>
 		<td>Character Name</td>
 		<td><input type="text" name="new_name" /></td>
 		<td>Character Picture</td>
 		<td><input type="file" name="new_pic" /></td>
 		<td><input type="submit" /></td>
 	</tr>
-	
+	</form>
 </table>
-</form>
+
 
 </div>
 </div>
 
 </center>
 
-<form name="play" action="/play" method="post">
-<input type="hidden" value="" name="name">
+<form  name="start" action="<%=request.getContextPath()%>/start" method="post">
+<input type="hidden" value="" name="chname">
 </form>
 
+<script type="text/javascript">
+function goplay(name){
+	document.forms.start.chname.value = name;
+	document.forms.start.submit();
+}
+
+</script>
+
 </body>
+
 </html>

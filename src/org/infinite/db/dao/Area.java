@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA
+// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,62 +10,50 @@ import java.util.Set;
  */
 public class Area implements java.io.Serializable {
 
-	private int id;
+	private Integer id;
 	private Locks locks;
 	private String name;
-	private int world;
-	private int area;
-	private int x;
-	private int y;
-	private String imgBg;
-	private String imgFgOn;
-	private String imgFgOff;
-	private String module;
-	private String xmlSpawn;
-	private Integer npc;
-	private Set players = new HashSet(0);
+	private String description;
+	private Integer world;
+	private Integer nx;
+	private Integer ny;
+	private Integer cost;
+	private Set<Player> players = new HashSet<Player>(0);
+	private Set<AreaItem> areaItems = new HashSet<AreaItem>(0);
 
 	public Area() {
 	}
 
-	public Area(int id, Locks locks, String name, int world, int area, int x,
-			int y, String imgBg, String imgFgOn, String imgFgOff) {
-		this.id = id;
+	public Area(Locks locks, String name, String description, Integer world,
+			Integer nx, Integer ny, Integer cost) {
 		this.locks = locks;
 		this.name = name;
+		this.description = description;
 		this.world = world;
-		this.area = area;
-		this.x = x;
-		this.y = y;
-		this.imgBg = imgBg;
-		this.imgFgOn = imgFgOn;
-		this.imgFgOff = imgFgOff;
+		this.nx = nx;
+		this.ny = ny;
+		this.cost = cost;
 	}
 
-	public Area(int id, Locks locks, String name, int world, int area, int x,
-			int y, String imgBg, String imgFgOn, String imgFgOff,
-			String module, String xmlSpawn, Integer npc, Set players) {
-		this.id = id;
+	public Area(Locks locks, String name, String description, Integer world,
+			Integer nx, Integer ny, Integer cost, Set<Player> players,
+			Set<AreaItem> areaItems) {
 		this.locks = locks;
 		this.name = name;
+		this.description = description;
 		this.world = world;
-		this.area = area;
-		this.x = x;
-		this.y = y;
-		this.imgBg = imgBg;
-		this.imgFgOn = imgFgOn;
-		this.imgFgOff = imgFgOff;
-		this.module = module;
-		this.xmlSpawn = xmlSpawn;
-		this.npc = npc;
+		this.nx = nx;
+		this.ny = ny;
+		this.cost = cost;
 		this.players = players;
+		this.areaItems = areaItems;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -85,92 +73,60 @@ public class Area implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public int getWorld() {
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getWorld() {
 		return this.world;
 	}
 
-	public void setWorld(int world) {
+	public void setWorld(Integer world) {
 		this.world = world;
 	}
 
-	public int getArea() {
-		return this.area;
+	public Integer getNx() {
+		return this.nx;
 	}
 
-	public void setArea(int area) {
-		this.area = area;
+	public void setNx(Integer nx) {
+		this.nx = nx;
 	}
 
-	public int getX() {
-		return this.x;
+	public Integer getNy() {
+		return this.ny;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setNy(Integer ny) {
+		this.ny = ny;
 	}
 
-	public int getY() {
-		return this.y;
+	public Integer getCost() {
+		return this.cost;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void setCost(Integer cost) {
+		this.cost = cost;
 	}
 
-	public String getImgBg() {
-		return this.imgBg;
-	}
-
-	public void setImgBg(String imgBg) {
-		this.imgBg = imgBg;
-	}
-
-	public String getImgFgOn() {
-		return this.imgFgOn;
-	}
-
-	public void setImgFgOn(String imgFgOn) {
-		this.imgFgOn = imgFgOn;
-	}
-
-	public String getImgFgOff() {
-		return this.imgFgOff;
-	}
-
-	public void setImgFgOff(String imgFgOff) {
-		this.imgFgOff = imgFgOff;
-	}
-
-	public String getModule() {
-		return this.module;
-	}
-
-	public void setModule(String module) {
-		this.module = module;
-	}
-
-	public String getXmlSpawn() {
-		return this.xmlSpawn;
-	}
-
-	public void setXmlSpawn(String xmlSpawn) {
-		this.xmlSpawn = xmlSpawn;
-	}
-
-	public Integer getNpc() {
-		return this.npc;
-	}
-
-	public void setNpc(Integer npc) {
-		this.npc = npc;
-	}
-
-	public Set getPlayers() {
+	public Set<Player> getPlayers() {
 		return this.players;
 	}
 
-	public void setPlayers(Set players) {
+	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+
+	public Set<AreaItem> getAreaItems() {
+		return this.areaItems;
+	}
+
+	public void setAreaItems(Set<AreaItem> areaItems) {
+		this.areaItems = areaItems;
 	}
 
 }

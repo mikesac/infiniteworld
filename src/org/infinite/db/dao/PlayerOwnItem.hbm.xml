@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA -->
+<!-- Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.PlayerOwnItem" table="PlayerOwnItem" catalog="mikesac">
         <composite-id name="id" class="org.infinite.db.dao.PlayerOwnItemId">
-            <key-property name="playerid" type="int">
+            <key-property name="playerid" type="java.lang.Integer">
                 <column name="Playerid" />
             </key-property>
-            <key-property name="itemid" type="int">
+            <key-property name="itemid" type="java.lang.Integer">
                 <column name="Itemid" />
             </key-property>
         </composite-id>
@@ -18,12 +18,12 @@
         <many-to-one name="item" class="org.infinite.db.dao.Item" update="false" insert="false" fetch="select">
             <column name="Itemid" not-null="true" />
         </many-to-one>
-        <property name="status" type="int">
+        <property name="status" type="java.lang.Integer">
             <column name="status" not-null="true">
                 <comment>status for equipped item</comment>
             </column>
         </property>
-        <property name="bodypart" type="int">
+        <property name="bodypart" type="java.lang.Integer">
             <column name="bodypart" not-null="true" />
         </property>
     </class>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 27-feb-2009 22.51.40 by Hibernate Tools 3.2.2.GA -->
+<!-- Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac">
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="assigned" />
         </id>
@@ -21,62 +21,62 @@
         <property name="description" type="string">
             <column name="description" length="65535" not-null="true" />
         </property>
-        <property name="baseStr" type="int">
+        <property name="baseStr" type="java.lang.Integer">
             <column name="base_str" not-null="true">
                 <comment>strength</comment>
             </column>
         </property>
-        <property name="baseInt" type="int">
+        <property name="baseInt" type="java.lang.Integer">
             <column name="base_int" not-null="true">
                 <comment>intelligence</comment>
             </column>
         </property>
-        <property name="baseDex" type="int">
+        <property name="baseDex" type="java.lang.Integer">
             <column name="base_dex" not-null="true">
                 <comment>agility</comment>
             </column>
         </property>
-        <property name="baseCha" type="int">
+        <property name="baseCha" type="java.lang.Integer">
             <column name="base_cha" not-null="true">
                 <comment>charisma</comment>
             </column>
         </property>
-        <property name="basePl" type="int">
+        <property name="basePl" type="java.lang.Integer">
             <column name="base_pl" not-null="true">
                 <comment>life points</comment>
             </column>
         </property>
-        <property name="basePm" type="int">
+        <property name="basePm" type="java.lang.Integer">
             <column name="base_pm" not-null="true">
                 <comment>magic points</comment>
             </column>
         </property>
-        <property name="basePa" type="int">
+        <property name="basePa" type="java.lang.Integer">
             <column name="base_pa" not-null="true">
                 <comment>action points</comment>
             </column>
         </property>
-        <property name="basePc" type="int">
+        <property name="basePc" type="java.lang.Integer">
             <column name="base_pc" not-null="true">
                 <comment>charm points</comment>
             </column>
         </property>
-        <property name="level" type="int">
+        <property name="level" type="java.lang.Integer">
             <column name="level" not-null="true">
                 <comment>NPC level</comment>
             </column>
         </property>
-        <property name="px" type="int">
+        <property name="px" type="java.lang.Integer">
             <column name="px" not-null="true">
                 <comment>Experience points</comment>
             </column>
         </property>
-        <property name="status" type="int">
+        <property name="status" type="java.lang.Integer">
             <column name="status" not-null="true">
                 <comment>status</comment>
             </column>
         </property>
-        <property name="area" type="int">
+        <property name="area" type="java.lang.Integer">
             <column name="area" not-null="true">
                 <comment>NPC location</comment>
             </column>
@@ -106,7 +106,7 @@
                 <comment>Npc (0) or Monster (1)</comment>
             </column>
         </property>
-        <property name="nattack" type="int">
+        <property name="nattack" type="java.lang.Integer">
             <column name="nattack" not-null="true" />
         </property>
         <property name="attack" type="string">
