@@ -144,7 +144,7 @@ public class AIEngine {
 
 		//get all available spells which can be cast
 		for (int i = 0; i < m.getSpellBookFight().size(); i++) {						
-			if(m.getSpellBookFight().elementAt(i).getCostMp() <= m.getCurrMagicPoint() ){
+			if(m.getSpellBookFight().elementAt(i).getCostMp() <= m.getPointsMagic() ){
 				availableAttacks.add( m.getSpellBookFight().elementAt(i));
 				totalCost += m.getSpellBookFight().elementAt(i).getCostMp();
 				totalInit += m.getSpellBookFight().elementAt(i).getInitiative();
@@ -153,7 +153,7 @@ public class AIEngine {
 			}
 		}
 
-		int totalPoints = m.getCurrActionPoint() + m.getCurrMagicPoint();
+		int totalPoints = m.getPointsAction() + m.getPointsMagic();
 		int n = availableAttacks.size();
 		int[] probs = new int[n];
 		for (int i = 0; i < probs.length; i++) {
@@ -171,7 +171,7 @@ public class AIEngine {
 				dMax = GenericUtil.getMaxRollDice( item.getDamage() );
 				dMin = GenericUtil.getMinRollDice( item.getDamage() );
 				init = item.getInitiative();
-				points = m.getCurrActionPoint();
+				points = m.getPointsAction();
 				szName = item.getName();
 			}
 			else if(availableAttacks.elementAt(i) instanceof Spell){
@@ -180,7 +180,7 @@ public class AIEngine {
 				dMax = GenericUtil.getMaxRollDice( spell.getDamage() );
 				dMin = GenericUtil.getMinRollDice( spell.getDamage() );
 				init = spell.getInitiative();
-				points = m.getCurrMagicPoint();
+				points = m.getPointsMagic();
 				szName = spell.getName();
 			}
 

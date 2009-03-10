@@ -4,7 +4,7 @@
 <html>
 <head>
 <title><decorator:title default="Infinite World" /></title>
-<link  type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/styleext.jsp">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/stylecss.jsp">
 </head>
 <body>
 

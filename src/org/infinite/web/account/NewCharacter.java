@@ -91,7 +91,20 @@ public class NewCharacter extends HttpServlet {
 			List<Area> la = Manager.listByQery("from org.infinite.db.dao.Area u where u.id='1'");
 
 			charName = charName.replaceAll(" ", "");			
-			Player p = new Player(lu.get(0),la.get(0),charName,charPic,5,5,5,5,20,5,10,5,20,5,10,5,1,0,0,0.0f,1,"{\"base\":1}");
+			Player p = new Player(
+					lu.get(0),  //user
+					la.get(0),  //Area
+					charName,
+					charPic,
+					5,5,5,5, //str,int,dex,cha
+					20,5,10,5, //base
+					20,5,10,5, //curr
+					(long)0, //stats mod
+					1,1,(short)0, //level, px, assign
+					0,//status
+					0.0f, //gold
+					1,"{\"base\":1}" //nattack, attack
+					);
 			Manager.create(p);
 
 			

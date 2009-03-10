@@ -34,6 +34,11 @@ public class InfiniteCst {
 	public static final int ATTACK_TYPE_WEAPON = 0;
 	public static final int ATTACK_TYPE_MAGIC = 1;
 	public static final int ATTACK_TYPE_ITEM = 2;
+
+	/**
+	 * Amount of milliseconds for let regeneration occurs on Character stats
+	 */
+	public static final long CHARACTER_REGENERATION_TIME = 5 * 60 * 1000; 
 	
 	
 }

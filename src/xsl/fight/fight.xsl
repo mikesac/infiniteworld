@@ -4,16 +4,13 @@
 	<xsl:output method="html" indent="yes" />
 
 	<xsl:template match="/">
-		<html>
-			<link rel="stylesheet" type="text/css" href="/InfiniteWeb/out/fight.css" />
-			<body>
+		
 				<center>
 					<div>
 						<xsl:apply-templates select="//fight" />
 					</div>
 				</center>
-			</body>
-		</html>
+			
 	</xsl:template>
 
 	<xsl:template match="//fight">
@@ -71,7 +68,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<img width="50" height="50">
-				<xsl:attribute name="src">imgs/monster/<xsl:value-of
+				<xsl:attribute name="src">../imgs/monster/<xsl:value-of
 					select="@img" />.png</xsl:attribute>
 				<xsl:attribute name="alt"><xsl:value-of select="@name" /></xsl:attribute>
 				<xsl:attribute name="title"><xsl:value-of select="@name" /></xsl:attribute>
@@ -144,7 +141,7 @@
 	<xsl:template match="melee">
 		<td>
 			<img width="50">
-				<xsl:attribute name="src">./imgs/item/<xsl:value-of
+				<xsl:attribute name="src">../imgs/item/<xsl:value-of
 					select="@img" />.png</xsl:attribute>
 				<xsl:attribute name="alt"><xsl:value-of select="@type" /></xsl:attribute>
 				<xsl:attribute name="title"><xsl:value-of select="@type" /></xsl:attribute>
@@ -178,7 +175,7 @@
 	<xsl:template match="magic">
 	<td>
 			<img width="50">
-				<xsl:attribute name="src">./imgs/spell/<xsl:value-of
+				<xsl:attribute name="src">../imgs/spell/<xsl:value-of
 					select="@img" />.png</xsl:attribute>
 				<xsl:attribute name="alt"><xsl:value-of select="@name" /></xsl:attribute>
 				<xsl:attribute name="title"><xsl:value-of select="@name" /></xsl:attribute>
@@ -208,13 +205,13 @@
 
 	<xsl:template match="death">
 		<td>
-			<img width="50" heigth="50" src="./imgs/web/die.png" alt="opponent dies" title="opponent dies" />
+			<img width="50" heigth="50" src="../imgs/web/die.png" alt="opponent dies" title="opponent dies" />
 		</td>
 		<td>
 		<table class="rewards">
-			<tr><td><img width="15" src="./imgs/web/gc.gif"/></td><td>Gold</td><td><xsl:value-of select="./gold" /></td></tr>
-			<tr><td><img width="15" src="./imgs/web/px.gif"/></td><td>Experience</td><td><xsl:value-of select="./xp" /></td></tr>
-			<tr><td><img width="15" src="./imgs/web/loot.png"/></td><td>Items</td><td><xsl:value-of select="./items" /></td></tr>
+			<tr><td><img width="15" src="../imgs/web/gc.gif"/></td><td>Gold</td><td><xsl:value-of select="./gold" /></td></tr>
+			<tr><td><img width="15" src="../imgs/web/px.gif"/></td><td>Experience</td><td><xsl:value-of select="./xp" /></td></tr>
+			<tr><td><img width="15" src="../imgs/web/loot.png"/></td><td>Items</td><td><xsl:value-of select="./items" /></td></tr>
 		</table>
 		</td>
 	</xsl:template>

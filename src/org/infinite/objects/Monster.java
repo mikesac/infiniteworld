@@ -9,10 +9,11 @@ import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Npc;
 import org.infinite.db.dao.Spell;
 import org.infinite.engines.AI.AIEngine;
+import org.infinite.engines.fight.FightEngine;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
-public class Monster {
+public class Monster implements FightInterface{
 
 	//TODO multiple attack
 
@@ -48,6 +49,7 @@ public class Monster {
 	int currLifePoint = 0;
 	int currMagicPoint = 0;
 	int currActionPoint = 0;
+	int currCharmPoint = 0;
 
 
 	public Monster(String name){
@@ -58,9 +60,10 @@ public class Monster {
 		
 		iBehaveStatus= InfiniteCst.NPC_BEHAVE_FIGHT;
 
-		currLifePoint = getLifePoints();
-		currMagicPoint = getMagicPoints();
-		currActionPoint = getActionPoints();
+		currLifePoint = getPointsLifeMax();
+		currMagicPoint = getPointsMagicMax();
+		currActionPoint = getPointsActionMax();
+		currCharmPoint = getPointsCharmMax();
 	}
 
 
@@ -95,7 +98,7 @@ public class Monster {
 		return ca;
 	}
 
-	public int getAttackType(Monster defender){
+	public int getAttackType(FightInterface defender){
 
 		//TODO invoke chooseBestAttack
 		AIEngine.chooseBestAttack(this);
@@ -116,7 +119,7 @@ public class Monster {
 				setPreparedSpell( spellBookFight.elementAt(ichoose) );
 
 				//if cannot cast choosed spell revert to melee
-				if(getCurrMagicPoint()>=getPreparedSpell().getCostMp())
+				if(getPointsMagic()>=getPreparedSpell().getCostMp())
 					iNumTypes++;
 			}
 			break;
@@ -129,7 +132,7 @@ public class Monster {
 			}
 			break;
 		case InfiniteCst.NPC_BEHAVE_DEFEND:
-			if(spellBookProtect.size()>0 && getCurrMagicPoint()>0 ){
+			if(spellBookProtect.size()>0 && getPointsMagic()>0 ){
 				//TODO AI must choose best spell
 				int ichoose = (int)Math.round( Math.random() * (spellBookProtect.size()-1) ); 
 				setPreparedSpell( spellBookProtect.elementAt(ichoose) );
@@ -142,9 +145,9 @@ public class Monster {
 		//TODO include item usage ---> not just [0-1]
 
 		//check if available attack cannot be performed due to point lack
-		if(iNumTypes==0 && getCurrActionPoint()<=0)
+		if(iNumTypes==0 && getPointsAction()<=0)
 			iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
-		else if(iNumTypes==1 && getCurrActionPoint()<=0)
+		else if(iNumTypes==1 && getPointsAction()<=0)
 			iAttackKind = InfiniteCst.ATTACK_TYPE_MAGIC;
 		else
 			iAttackKind = (int)Math.round( Math.random()*iNumTypes  );
@@ -213,14 +216,14 @@ public class Monster {
 
 	public int inflictDamage(int dmg){
 		currLifePoint -= dmg;
-		return getCurrLifePoint();
+		return getPointsLife();
 	}
 
 	public int healDamage(int heal) {
 		currLifePoint += heal;
-		if( getCurrLifePoint() > getLifePoints())
-			currLifePoint = getLifePoints();
-		return getCurrLifePoint();
+		if( getPointsLife() > getPointsLifeMax())
+			currLifePoint = getPointsLifeMax();
+		return getPointsLife();
 	}
 
 	public void restRound(int i) {
@@ -300,19 +303,7 @@ public class Monster {
 		return getDao().getName();
 	}
 
-	public int getCurrLifePoint() {
-		return currLifePoint;
-	}
-
 	
-	public int getCurrMagicPoint() {
-		return currMagicPoint;
-	}
-	
-
-	public int getCurrActionPoint() {
-		return currActionPoint;
-	}
 
 
 	public Item getHandRight() {
@@ -405,17 +396,9 @@ public class Monster {
 		return preparedSpell;
 	}
 
-	public boolean rollSavingThrow(Spell s, Monster caster){
-
-		int roll = GenericUtil.rollDice(1 , 20 , 0 ); 
-		int success = s.getSavingthrow() - getIntelligence() + caster.getIntelligence();
-
-		return (roll>=success || roll==20);
+	public boolean rollSavingThrow(Spell s, FightInterface caster){
+		return FightEngine.rollSavingThrow(s, caster, this);
 	}
-
-
-
-
 
 
 	public Item parseUnarmedAttack() {
@@ -452,29 +435,7 @@ public class Monster {
 		return npc;
 	}
 
-	public int getActionPoints(){
-		int mod = getDao().getBasePa();		
-		mod += (getDexterity()/5);
-		return mod;
-	}
-
-	public int getLifePoints(){
-		int mod = getDao().getBasePl();		
-		mod += (getStrenght()/5);
-		return mod;
-	}
-
-	public int getCharmPoints(){
-		int mod = getDao().getBasePc();		
-		mod += (getCharisma()/5);
-		return mod;
-	}
-
-	public int getMagicPoints(){
-		int mod = getDao().getBasePm();		
-		mod += (getIntelligence()/5);
-		return mod;
-	}
+	
 
 	
 	public int getDexterity(){
@@ -546,5 +507,51 @@ public class Monster {
 
 		return s;
 	}
+	
+	
+	
+	public int getPointsLife() {
+		return currLifePoint;
+	}
+
+	
+	public int getPointsMagic() {
+		return currMagicPoint;
+	}
+	
+
+	public int getPointsAction() {
+		return currActionPoint;
+	}
+	
+	public int getPointsCharm() {
+		return currCharmPoint;
+	}	
+
+	public int getPointsLifeMax(){
+		int mod = getDao().getBasePl();		
+		mod += (getStrenght()/5);
+		return mod;
+	}
+
+	public int getPointsMagicMax(){
+		int mod = getDao().getBasePm();		
+		mod += (getIntelligence()/5);
+		return mod;
+	}
+	
+	public int getPointsActionMax(){
+		int mod = getDao().getBasePa();		
+		mod += (getDexterity()/5);
+		return mod;
+	}
+	
+	public int getPointsCharmMax(){
+		int mod = getDao().getBasePc();		
+		mod += (getCharisma()/5);
+		return mod;
+	}
+
+	
 
 }

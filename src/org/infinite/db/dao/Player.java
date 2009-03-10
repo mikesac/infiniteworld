@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1
+// Generated 10-mar-2009 9.53.27 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,8 +27,10 @@ public class Player implements java.io.Serializable {
 	private Integer pm;
 	private Integer pa;
 	private Integer pc;
+	private long statsMod;
 	private Integer level;
 	private Integer px;
+	private short assign;
 	private Integer status;
 	private float gold;
 	private Integer nattack;
@@ -44,8 +46,8 @@ public class Player implements java.io.Serializable {
 			String image, Integer baseStr, Integer baseInt, Integer baseDex,
 			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
-			Integer level, Integer px, Integer status, float gold,
-			Integer nattack, String attack) {
+			long statsMod, Integer level, Integer px, short assign,
+			Integer status, float gold, Integer nattack, String attack) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
 		this.name = name;
@@ -62,8 +64,10 @@ public class Player implements java.io.Serializable {
 		this.pm = pm;
 		this.pa = pa;
 		this.pc = pc;
+		this.statsMod = statsMod;
 		this.level = level;
 		this.px = px;
+		this.assign = assign;
 		this.status = status;
 		this.gold = gold;
 		this.nattack = nattack;
@@ -74,9 +78,10 @@ public class Player implements java.io.Serializable {
 			String image, Integer baseStr, Integer baseInt, Integer baseDex,
 			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
-			Integer level, Integer px, Integer status, float gold,
-			Integer nattack, String attack, Set<PlayerOwnItem> playerOwnItems,
-			Set<Spell> spells, Set<Spell> spells_1) {
+			long statsMod, Integer level, Integer px, short assign,
+			Integer status, float gold, Integer nattack, String attack,
+			Set<PlayerOwnItem> playerOwnItems, Set<Spell> spells,
+			Set<Spell> spells_1) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
 		this.name = name;
@@ -93,8 +98,10 @@ public class Player implements java.io.Serializable {
 		this.pm = pm;
 		this.pa = pa;
 		this.pc = pc;
+		this.statsMod = statsMod;
 		this.level = level;
 		this.px = px;
+		this.assign = assign;
 		this.status = status;
 		this.gold = gold;
 		this.nattack = nattack;
@@ -240,6 +247,14 @@ public class Player implements java.io.Serializable {
 		this.pc = pc;
 	}
 
+	public long getStatsMod() {
+		return this.statsMod;
+	}
+
+	public void setStatsMod(long statsMod) {
+		this.statsMod = statsMod;
+	}
+
 	public Integer getLevel() {
 		return this.level;
 	}
@@ -254,6 +269,14 @@ public class Player implements java.io.Serializable {
 
 	public void setPx(Integer px) {
 		this.px = px;
+	}
+
+	public short getAssign() {
+		return this.assign;
+	}
+
+	public void setAssign(short assign) {
+		this.assign = assign;
 	}
 
 	public Integer getStatus() {

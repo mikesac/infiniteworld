@@ -52,6 +52,10 @@
 	<security-role>
 		<role-name>manager</role-name>
 	</security-role>
+	
+	<security-role>
+		<role-name>player</role-name>
+	</security-role>
 
 
 	<!--  SITE MESH -->
@@ -131,12 +135,12 @@
   
   <!-- Fight Testbed -->
   <servlet>
-    <servlet-name>Fight</servlet-name>
-    <servlet-class>org.infinite.web.Fight</servlet-class>
+    <servlet-name>FightMap</servlet-name>
+    <servlet-class>org.infinite.web.FightMap</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Fight</servlet-name>
-    <url-pattern>/fight</url-pattern>
+    <servlet-name>FightMap</servlet-name>
+    <url-pattern>/mapfight</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -147,4 +151,5 @@
     <servlet-name>MonsterXML</servlet-name>
     <url-pattern>/monsterXML</url-pattern>
   </servlet-mapping>
+  
 </web-app>

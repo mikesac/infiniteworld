@@ -8,7 +8,7 @@
 <html>
 <head>
 <title><decorator:title default="Infinite World" /></title>
-<link  type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/styleext.jsp">
+<link  type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/stylecss.jsp">
 </head>
 <body>
 <table style="height:100%;" width="99%">

@@ -18,12 +18,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Map - <% out.print(m.getAreaName()); %></title>
+
+
 </head>
 <body>
 
 <%
 	if(session.getAttribute("error")!=null){
-		out.print("<div class=\"error\">"+session.getAttribute("error")+"</div>");
+		out.print("<div class=\"char\" align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
 		session.removeAttribute("error");
 	}
 %>
@@ -34,12 +36,13 @@
 for(int y=0;y<m.getNy();y++){
 	%><tr> <%
 	for(int x=0;x<m.getNx();x++){
-		out.print("<td style=\"width:"+ (Map.MAP_WIDTH / m.getNx())+";height:"+ (Map.MAP_HEIGHT / m.getNy())+";background-image:url('"+request.getContextPath()+"/imgs/maps/"+m.getAreaName()+"/"+m.getAreaName()+"_"+y+x+".jpg');\">");
+		out.print("<td  style=\"width:"+ (Map.MAP_WIDTH / m.getNx())+";height:"+ (Map.MAP_HEIGHT / m.getNy())+";background-image:url('"+request.getContextPath()+"/imgs/maps/"+m.getAreaName()+"/"+m.getAreaName()+"_"+y+x+".jpg');\">");
 		List<AreaItem> l = m.getAreaItem(x,y);
 		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
 			AreaItem areaItem = (AreaItem) iterator.next();
+			
 			out.print("<a href=\""+request.getContextPath()+areaItem.getUrl()+"\">");
-			out.print("<img width=20 height=20 src=\""+request.getContextPath()+"/imgs/maps/icons/"+areaItem.getIcon()+".png\" alt=\""+areaItem.getName()+"\" style=\"position:relative;top:"+areaItem.getY()+"px;left:"+areaItem.getX()+"px;\">");
+			out.print("<img width=25 height=25 src=\""+request.getContextPath()+"/imgs/maps/icons/"+areaItem.getIcon()+".png\" alt=\""+areaItem.getName()+"\" title=\""+areaItem.getName()+"\" style=\"border:1px outset gray;position:relative;top:"+areaItem.getY()+"px;left:"+areaItem.getX()+"px;\">");
 			out.print("</a>");
 		}
 		out.print("</td>");

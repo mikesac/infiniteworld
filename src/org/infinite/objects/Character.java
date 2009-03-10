@@ -1,18 +1,19 @@
 package org.infinite.objects;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import org.hibernate.Session;
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.Spell;
+import org.infinite.engines.fight.FightEngine;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
-public class Character {
+public class Character implements FightInterface {
 
 	//TODO multiple attack
 
@@ -43,24 +44,24 @@ public class Character {
 	/*
 	 * Current points (total is taken from NPC object)
 	 */
-	
+
 	public Character(String name, String accountName){
 
 		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
-	
-		
-		initCharacterPoints();
+
+
+		//initCharacterPoints();
 	}
 
 
 
 	private boolean initCharacterPoints() {
 		//TODO questo andrà sostituito con la procedura di rigenerazione punti
-		
-		getDao().setPl(getMaxLifePoints());
-		getDao().setPm(getMaxMagicPoints());
-		getDao().setPa(getMaxActionPoints());
-		getDao().setPc(getMaxCharmPoints());
+
+		getDao().setPl(getPointsLifeMax());
+		getDao().setPm(getPointsMagicMax());
+		getDao().setPa(getPointsActionMax());
+		getDao().setPc(getPointsCharmMax());
 		return saveDao();	
 	}
 
@@ -96,15 +97,7 @@ public class Character {
 		return ca;
 	}
 
-	public int getAttackType(Monster defender){
-	//TODO getAttackType
-		return -1;
-	}
-
-	public String[] getAttackName(){
-		//TODO getAttackName
-		return null;
-	}
+	
 
 
 	public int getInitiative(){
@@ -130,7 +123,7 @@ public class Character {
 	public int getRollToAttack(){
 
 		int cost = getHandRight()!=null?getHandRight().getCostAp():1;
-		
+
 		try {
 			addActionPoints( -1 * cost);
 		} catch (Exception e) {
@@ -155,14 +148,14 @@ public class Character {
 	}
 
 	public int healDamage(int heal) {
-			
+
 		int pl = -1;
 		try {
 			pl=  addLifePoints( heal );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			
+
 		}
 		return pl;
 	}
@@ -228,7 +221,7 @@ public class Character {
 	}
 
 	public boolean isAlive(){
-		return getLifePoints()>0?true:false;
+		return getPointsLife()>0?true:false;
 	}
 
 	public int getExperience(){
@@ -249,21 +242,21 @@ public class Character {
 		return getDao().getName();
 	}
 
-	public int getBaseLifePoint() {
+	public int getPointsLifeBase() {
 		return getDao().getBasePl();
 	}
 
-	
-	public int getBaseMagicPoint() {
+
+	public int getPointsMagicBase() {
 		return getDao().getBasePm();
 	}
-	
 
-	public int getBaseActionPoint() {
+
+	public int getPointsActionBase() {
 		return getDao().getBasePa();
 	}
-	
-	public int getBaseCharmPoint() {
+
+	public int getPointsCharmBase() {
 		return getDao().getBasePc();
 	}
 
@@ -291,7 +284,7 @@ public class Character {
 	}
 
 
-	
+
 	public void learnSpells(String spellsName){
 		//TODO add to PlayerKnowSpell and push to spellbook
 	}
@@ -367,34 +360,34 @@ public class Character {
 	private boolean saveDao(){
 		return Manager.update(getDao());
 	}
-	
-	public int getMaxActionPoints(){
+
+	public int getPointsActionMax(){
 		int mod = getDao().getBasePa();		
 		mod += (getDexterity()/5);
 		return mod;
 	}
 
-	public int getMaxLifePoints(){
+	public int getPointsLifeMax(){
 		int mod = getDao().getBasePl();		
 		mod += (getStrenght()/5);
 		return mod;
 	}
 
-	public int getMaxCharmPoints(){
+	public int getPointsCharmMax(){
 		int mod = getDao().getBasePc();		
 		mod += (getCharisma()/5);
 		return mod;
 	}
 
-	public int getMaxMagicPoints(){
+	public int getPointsMagicMax(){
 		int mod = getDao().getBasePm();		
 		mod += (getIntelligence()/5);
 		return mod;
 	}
-	
-	
 
-	
+
+
+
 	public int getDexterity(){
 
 		int mod = getDao().getBaseDex();
@@ -446,12 +439,12 @@ public class Character {
 		}
 		return mod;
 	}
-	
+
 
 	public int getLevel(){
 		return getDao().getLevel();
 	}
-	
+
 
 
 
@@ -466,9 +459,9 @@ public class Character {
 	public Area getArea() {		
 		return getDao().getArea();
 	}
-	
+
 	public boolean moveToArea(Area a){
-		
+
 		boolean ret = true;
 		//TODO check if player owns lock for that area before moving
 		if(true){
@@ -482,99 +475,244 @@ public class Character {
 		}
 
 		return ret;
-		
+
 	}
 
 
 	private int addLifePoints(int points) throws Exception {
-		return setLifePoints( getLifePoints() + points );
+		return setPointsLife( getPointsLife() + points );
 	}
-	
+
 	public int addMagicPoints(int points) throws Exception {
-		return setMagicPoints( getMagicPoints() + points);
+		return setPointsMagic( getPointsMagic() + points);
 	}
-	
+
 	public int addActionPoints(int points) throws Exception {
-		return setActionPoints( getActionPoints() + points);
-		}
-	
+		return setPointsAction( getPointsAction() + points);
+	}
+
 	public int addCharmPoints(int points) throws Exception {
-		return setCharmPoints( getCharmPoints() + points);	
+		return setPointsCharm( getPointsCharm() + points);	
 	}
-	
-	public int getActionPoints(){
+
+	public int getPointsAction(){
 		return getDao().getPa();
 	}
 
-	public int getLifePoints(){
+	public int getPointsLife(){
 		return getDao().getPl();
 	}
 
-	public int getCharmPoints(){
+	public int getPointsCharm(){
 		return getDao().getPc();
 	}
 
-	public int getMagicPoints(){
+	public int getPointsMagic(){
 		return getDao().getPm();
 	}
-	
-	public int setActionPoints(int points) throws Exception{
-		
+
+
+	public int setPointsAction(int points) throws Exception{
+		return setPointsAction(points, true);
+	}
+
+	private int setPointsAction(int points,boolean save) throws Exception{
+
 		if(points<0)
 			points=0;
-		if(points>getMaxActionPoints())
-			points = getMaxActionPoints();
-		
+		if(points>getPointsActionMax())
+			points = getPointsActionMax();
+
 		getDao().setPa(points);
-		
-		if(!saveDao())
-			throw new Exception("Could not save DAO object");
-		
+
+		if(save){
+			markForRegeneration();
+			if(!saveDao())
+				throw new Exception("Could not save DAO object");
+		}
 		return getDao().getPa();
 	}
 
-	public int setLifePoints(int points) throws Exception{
-		
+	public int setPointsLife(int points) throws Exception{
+		return setPointsLife(points,true);
+	}
+
+	private int setPointsLife(int points, boolean save) throws Exception{
+
 		if(points<0)
 			points=0;
-		if(points>getMaxLifePoints())
-			points = getMaxLifePoints();
-		
+		if(points>getPointsLifeMax())
+			points = getPointsLifeMax();
+
 		getDao().setPl(points);
-		
-		if(!saveDao())
-			throw new Exception("Could not save DAO object");
-		
+
+		if(save){
+			markForRegeneration();
+			if(!saveDao())
+				throw new Exception("Could not save DAO object");
+		}
 		return getDao().getPl();
 	}
 
-	public int setCharmPoints(int points) throws Exception{
-		
+	public int setPointsCharm(int points) throws Exception{
+		return setPointsCharm(points, true);
+	}
+
+	private int setPointsCharm(int points,boolean save) throws Exception{
+
 		if(points<0)
 			points=0;
-		if(points>getMaxCharmPoints())
-			points = getMaxCharmPoints();
-		
+		if(points>getPointsCharmMax())
+			points = getPointsCharmMax();
+
 		getDao().setPc(points);		
-		if(!saveDao())
+
+		if(save){
+			if(!saveDao())
+				markForRegeneration();
 			throw new Exception("Could not save DAO object");
-		
+		}
 		return getDao().getPc();
 	}
 
-	public int setMagicPoints(int points) throws Exception{
-		
+	public int setPointsMagic(int points) throws Exception{
+		return setMagicPoints(points,true);
+	}
+
+	private int setMagicPoints(int points,boolean save) throws Exception{
+
 		if(points<0)
 			points=0;
-		if(points>getMaxMagicPoints())
-			points = getMaxMagicPoints();
-		
+		if(points>getPointsMagicMax())
+			points = getPointsMagicMax();
+
 		getDao().setPm(points);
-		
-		if(!saveDao())
-			throw new Exception("Could not save DAO object");
-		
+
+		if(save){
+			markForRegeneration();
+			if(!saveDao())
+				throw new Exception("Could not save DAO object");
+		}
 		return getDao().getPm();
+	}
+
+	/**
+	 * This method must mark the timestamp of the first subtraction to character's stats.
+	 * this time will be used to evaluate regeneration rate on every request for character status
+	 */
+	private void markForRegeneration(){		
+
+		//check if a previous modification exist
+		if(getDao().getStatsMod()==0)
+		{
+			long now = 0;
+			//check if some stat is not up to the maximum
+			if( getDao().getPl()<getPointsLifeMax() ||	getDao().getPm()<getPointsMagicMax() ||
+					getDao().getPa()<getPointsActionMax() || getDao().getPc()<getPointsCharmMax())
+			{		
+
+				now = (new Date()).getTime() ;
+			}
+			getDao().setStatsMod( now );
+		}
+
+	}
+
+	public long getNexRegenereationTime(){
+		
+		//milliseconds to the next regeneration
+		if(getDao().getStatsMod()==0)
+			return 0;
+		long time = (getDao().getStatsMod() + InfiniteCst.CHARACTER_REGENERATION_TIME - (new Date()).getTime() );
+		if(time<0)
+			time = 0;
+		return time;
+	}
+	
+	
+	public static Character checkForRegeneration(Character c){
+
+		long time = c.getDao().getStatsMod();
+
+		if(time!=0){
+
+			long now = (new Date()).getTime();
+			//eval how many time the regeneration time has elapsed
+			int n = (int)Math.floor((now-time)/InfiniteCst.CHARACTER_REGENERATION_TIME) ;
+
+			//at lease one regeneration occurs
+			if(n>0){
+				//regenerate 1pt per elapsed interval
+				int ll = c.getDao().getPl() + n;
+				int mm = c.getDao().getPm() + n;
+				int aa = c.getDao().getPa() + n;
+				int cc = c.getDao().getPc() + n;
+
+				if(ll<c.getPointsLifeMax() || mm<c.getPointsMagicMax() || aa<c.getPointsActionMax() || cc < c.getPointsCharmMax())
+				{
+					//if still not at maximum, update time
+					time = time + (n * InfiniteCst.CHARACTER_REGENERATION_TIME);
+				}
+				else{
+					//else set timet to zero
+					time = 0;
+				}
+
+				try {
+					c.setPointsLife(ll,false);
+					c.setMagicPoints(mm,false);
+					c.setPointsAction(aa,false);
+					c.setPointsCharm(cc,false);
+					c.getDao().setStatsMod(time);
+					c.saveDao();
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+
+			}
+
+		}		
+		return c;
+	}
+
+
+
+	@Override
+	public int getAttackType(FightInterface defender) {
+		// TODO this is done just for testing, implements it really
+		return InfiniteCst.ATTACK_TYPE_WEAPON;
+	}
+	
+	public String[] getAttackName(){
+		//TODO this is done just for testing, implements it really
+		
+		String ret = "";
+		String[] szNames = getDao().getAttack().split(";");
+		for (int i = 0; i < szNames.length; i++) {
+			ret += ","+szNames[i].substring(0, szNames[i].indexOf(","));
+
+		}
+		return  new String[]{ret.substring(1),ret.substring(1)};
+	}
+
+	@Override
+	public float getRewardGold() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getRewardPX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean rollSavingThrow(Spell s, FightInterface caster) {
+		return FightEngine.rollSavingThrow(s, caster, this);
 	}
 
 }

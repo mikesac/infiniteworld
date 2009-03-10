@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
+<%@page import="org.infinite.objects.Character"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -9,7 +10,8 @@
 <div style="width: 150px">
 
 <%
-org.infinite.objects.Character c = (org.infinite.objects.Character)session.getAttribute("character");
+Character c = (Character)session.getAttribute("character");
+c = Character.checkForRegeneration(c);
 %>
 
 <table width="100%">
@@ -34,8 +36,12 @@ org.infinite.objects.Character c = (org.infinite.objects.Character)session.getAt
 			alt="Life Points" title="Life Points"></td>
 		<td>
 		<div class="thp_big">
-		<div class="chp_big" style="width:<% out.print( Math.round( (100.0f *c.getLifePoints()) / c.getMaxLifePoints() ) ); %>px;" />
-		<div class="hpt_big"><% out.print(c.getLifePoints()); %> / <% out.print(c.getMaxLifePoints()); %></div>
+		<div class="chp_big" style="width:<%out.print( Math.round( (100.0f *c.getPointsLife()) / c.getPointsLifeMax() ) );%>px;" />
+		<div class="hpt_big"><%
+			out.print(c.getPointsLife());
+		%> / <%
+			out.print(c.getPointsLifeMax());
+		%></div>
 		</div>
 		</td>
 	</tr>
@@ -44,8 +50,12 @@ org.infinite.objects.Character c = (org.infinite.objects.Character)session.getAt
 			alt="Magic Points" title="Magic Points"></td>
 		<td>
 		<div class="tmp_big">
-		<div class="cmp_big" style="width: <% out.print( Math.round( (100.0f *c.getMagicPoints()) / c.getMaxMagicPoints() ) ); %>px;" />
-		<div class="mpt_big"><% out.print(c.getMagicPoints()); %> / <% out.print(c.getMaxMagicPoints()); %></div>
+		<div class="cmp_big" style="width: <%out.print( Math.round( (100.0f *c.getPointsMagic()) / c.getPointsMagicMax() ) );%>px;" />
+		<div class="mpt_big"><%
+			out.print(c.getPointsMagic());
+		%> / <%
+			out.print(c.getPointsMagicMax());
+		%></div>
 		</div>
 		</td>
 	</tr>
@@ -54,8 +64,12 @@ org.infinite.objects.Character c = (org.infinite.objects.Character)session.getAt
 			alt="Action Points" title="Action Points"></td>
 		<td>
 		<div class="tap_big">
-		<div class="cap_big" style="width:<% out.print( Math.round( (100.0f *c.getActionPoints()) / c.getMaxActionPoints() ) ); %>px;" />
-		<div class="apt_big"><% out.print(c.getActionPoints()); %> / <% out.print(c.getMaxActionPoints()); %></div>
+		<div class="cap_big" style="width:<%out.print( Math.round( (100.0f *c.getPointsAction()) / c.getPointsActionMax() ) );%>px;" />
+		<div class="apt_big"><%
+			out.print(c.getPointsAction());
+		%> / <%
+			out.print(c.getPointsActionMax());
+		%></div>
 		</div>
 		</td>
 	</tr>
@@ -64,11 +78,23 @@ org.infinite.objects.Character c = (org.infinite.objects.Character)session.getAt
 			alt="Charm Points" title="Charm Points"></td>
 		<td>
 		<div class="tcp_big">
-			<div class="ccp_big" style="width:<% out.print( Math.round( (100.0f *c.getCharmPoints()) / c.getMaxCharmPoints() ) ); %>px;" />
-			<div class="cpt_big"><% out.print(c.getCharmPoints()); %> / <% out.print(c.getMaxCharmPoints()); %></div>
+			<div class="ccp_big" style="width:<%out.print( Math.round( (100.0f *c.getPointsCharm()) / c.getPointsCharmMax() ) );%>px;" />
+			<div class="cpt_big"><%
+				out.print(c.getPointsCharm());
+			%> / <%
+				out.print(c.getPointsCharmMax());
+			%></div>
 		</div>
 		</td>
 	</tr>
+
+<%
+ if( c.getNexRegenereationTime()!=0){
+	 %>
+	 <tr><td colspan="2" align="center" id="reg">Regenerate in <span id="regtime2"></span><span style="display:none" id="regtime1">
+	 <%out.print(c.getNexRegenereationTime()); %>
+	 </span></td></tr> 
+	 <% } %>
 
 	<tr>
 		<td align="center" colspan="2">
@@ -130,5 +156,33 @@ org.infinite.objects.Character c = (org.infinite.objects.Character)session.getAt
 
 </table>
 </div>
+<script>
+el = document.getElementById("regtime1");
+if(el){
+	mil = el.innerHTML;
+	setInterval ( "formatRegTime()", 1000 );
+}
+
+
+function formatRegTime(){
+	
+	el = document.getElementById("regtime1");
+	if(el){
+		var mm = Math.floor(mil / (1000*60));
+		var ss = Math.floor((mil - mm* (1000*60))/1000);
+
+		if(ss<10) ss = "0"+ss;
+
+		document.getElementById("regtime2").innerHTML = mm + ":" + ss;
+		mil -= 1000;
+
+		if(mil <= 0){
+			document.getElementById("reg").innerHTML = "<a href=\"javascript:document.location=document.location\">Reload</a>";
+		}
+	
+	}
+}
+
+</script>
 </body>
 </html>

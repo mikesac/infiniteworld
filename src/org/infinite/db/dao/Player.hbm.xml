@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 8-mar-2009 23.42.10 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 10-mar-2009 9.53.28 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Player" table="Player" catalog="mikesac">
         <meta attribute="not-null" inherit="false">false</meta>
@@ -80,6 +80,9 @@
         <property name="pc" type="java.lang.Integer">
             <column name="pc" not-null="true" />
         </property>
+        <property name="statsMod" type="long">
+            <column name="stats_mod" not-null="true" />
+        </property>
         <property name="level" type="java.lang.Integer">
             <column name="level" not-null="true">
                 <comment>Player level</comment>
@@ -89,6 +92,9 @@
             <column name="px" not-null="true">
                 <comment>experience points</comment>
             </column>
+        </property>
+        <property name="assign" type="short">
+            <column name="assign" not-null="true" />
         </property>
         <property name="status" type="java.lang.Integer">
             <column name="status" not-null="true">
