@@ -1,0 +1,12 @@
+DROP TABLE NpcOwnItem;
+DROP TABLE PlayerKnowSpell;
+DROP TABLE PlayerOwnItem;
+DROP TABLE SpellAffectPlayer;
+DROP TABLE tomcat_roles;
+DROP TABLE tomcat_users;
+DROP TABLE Player;
+DROP TABLE NPC;
+DROP TABLE Item;
+DROP TABLE Spell;
+DROP TABLE Area;
+DROP TABLE locks;
