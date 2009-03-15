@@ -1,21 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 10-mar-2009 9.53.28 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 15-mar-2009 21.16.44 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.PlayerOwnItem" table="PlayerOwnItem" catalog="mikesac">
-        <composite-id name="id" class="org.infinite.db.dao.PlayerOwnItemId">
-            <key-property name="playerid" type="java.lang.Integer">
-                <column name="Playerid" />
-            </key-property>
-            <key-property name="itemid" type="java.lang.Integer">
-                <column name="Itemid" />
-            </key-property>
-        </composite-id>
-        <many-to-one name="player" class="org.infinite.db.dao.Player" update="false" insert="false" fetch="select">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="player" class="org.infinite.db.dao.Player" fetch="select">
             <column name="Playerid" not-null="true" />
         </many-to-one>
-        <many-to-one name="item" class="org.infinite.db.dao.Item" update="false" insert="false" fetch="select">
+        <many-to-one name="item" class="org.infinite.db.dao.Item" fetch="select">
             <column name="Itemid" not-null="true" />
         </many-to-one>
         <property name="status" type="java.lang.Integer">

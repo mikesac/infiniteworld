@@ -25,12 +25,15 @@
 
 <%
 	if(session.getAttribute("error")!=null){
-		out.print("<div class=\"char\" align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
+		%><%@ include file="../decorators/b2pre.jsp"%><%
+		out.print("<div align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
 		session.removeAttribute("error");
+		%><%@ include file="../decorators/b2post.jsp"%><br/><%
 	}
 %>
 
-<div class="char" style="width:<% out.print(Map.MAP_WIDTH); %>px;padding:3px 3px 3px;">
+<div style="width:<% out.print( (Map.MAP_WIDTH + 20) ); %>px;">
+<%@ include file="../decorators/b2pre.jsp"%>
 <table cellpadding=0 cellspacing=0 border=0 width="<% out.print(Map.MAP_WIDTH); %>px" height="<% out.print(Map.MAP_HEIGHT); %>">
 <%
 for(int y=0;y<m.getNy();y++){
@@ -52,6 +55,8 @@ for(int y=0;y<m.getNy();y++){
 }
 %>
 </table>
+
+<%@ include file="../decorators/b2post.jsp"%>
 </div>
 </body>
 </html>

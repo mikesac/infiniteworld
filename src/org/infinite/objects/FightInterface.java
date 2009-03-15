@@ -17,7 +17,6 @@ public interface FightInterface{
 
 	public String[] getAttackName();
 
-
 	public int getInitiative();
 
 	public int getRollToAttack();
@@ -40,9 +39,7 @@ public interface FightInterface{
 
 	public Item[] getRewardItems();
 
-	public String getName();
-
-	
+	public String getName();	
 
 	public Item getHandRight();
 
@@ -56,9 +53,7 @@ public interface FightInterface{
 
 	public Spell castSpell();
 
-	public boolean rollSavingThrow(Spell s, FightInterface caster);
-
-	
+	public boolean rollSavingThrow(Spell s, FightInterface caster);	
 
 	public int getStrenght();
 	
@@ -66,8 +61,7 @@ public interface FightInterface{
 	
 	public int getDexterity();
 
-	public int getCharisma();
-	
+	public int getCharisma();	
 	
 	public int getPointsLife();
 	

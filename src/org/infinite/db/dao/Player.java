@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 10-mar-2009 9.53.27 by Hibernate Tools 3.2.4.CR1
+// Generated 15-mar-2009 21.16.44 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,8 +35,8 @@ public class Player implements java.io.Serializable {
 	private float gold;
 	private Integer nattack;
 	private String attack;
-	private Set<PlayerOwnItem> playerOwnItems = new HashSet<PlayerOwnItem>(0);
 	private Set<Spell> spells = new HashSet<Spell>(0);
+	private Set<PlayerOwnItem> playerOwnItems = new HashSet<PlayerOwnItem>(0);
 	private Set<Spell> spells_1 = new HashSet<Spell>(0);
 
 	public Player() {
@@ -80,7 +80,7 @@ public class Player implements java.io.Serializable {
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
 			long statsMod, Integer level, Integer px, short assign,
 			Integer status, float gold, Integer nattack, String attack,
-			Set<PlayerOwnItem> playerOwnItems, Set<Spell> spells,
+			Set<Spell> spells, Set<PlayerOwnItem> playerOwnItems,
 			Set<Spell> spells_1) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
@@ -106,8 +106,8 @@ public class Player implements java.io.Serializable {
 		this.gold = gold;
 		this.nattack = nattack;
 		this.attack = attack;
-		this.playerOwnItems = playerOwnItems;
 		this.spells = spells;
+		this.playerOwnItems = playerOwnItems;
 		this.spells_1 = spells_1;
 	}
 
@@ -311,20 +311,20 @@ public class Player implements java.io.Serializable {
 		this.attack = attack;
 	}
 
-	public Set<PlayerOwnItem> getPlayerOwnItems() {
-		return this.playerOwnItems;
-	}
-
-	public void setPlayerOwnItems(Set<PlayerOwnItem> playerOwnItems) {
-		this.playerOwnItems = playerOwnItems;
-	}
-
 	public Set<Spell> getSpells() {
 		return this.spells;
 	}
 
 	public void setSpells(Set<Spell> spells) {
 		this.spells = spells;
+	}
+
+	public Set<PlayerOwnItem> getPlayerOwnItems() {
+		return this.playerOwnItems;
+	}
+
+	public void setPlayerOwnItems(Set<PlayerOwnItem> playerOwnItems) {
+		this.playerOwnItems = playerOwnItems;
 	}
 
 	public Set<Spell> getSpells_1() {

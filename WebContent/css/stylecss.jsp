@@ -1,6 +1,7 @@
 
 BODY {
-	background-image: url("<%=request.getContextPath()%>/imgs/web/bg2.gif");
+	/*background-image: url("<%=request.getContextPath()%>/imgs/web/bg3.jpg");*/
+	background-color:black;
 	
 }
 BODY table td tr{
@@ -175,15 +176,25 @@ font-family: Verdana,Arial;
 
 
 
-#side-nw{width:19px;height:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-nw.png');background-repeat:no-repeat;}
-#side-n{height:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-n.png');background-repeat:repeat-x;}
-#side-ne{width:19px;height:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-ne.png');background-repeat:no-repeat;}
-#side-sw{width:19px;height:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-sw.png');background-repeat:no-repeat;}
-#side-s{height:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-s.png');background-repeat:repeat-x;}
-#side-se{width:19px;height:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-se.png');background-repeat:no-repeat;}
-#side-e{width:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-e.png');background-repeat:repeat-y;}
-#side-w{width:19px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-w.png');background-repeat:repeat-y;}
-#side {background-image:url('<%=request.getContextPath()%>/imgs/web/bg.jpg');background-repeat:repeat;}
+#side-nw{width:20px;height:15px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-nw.png');background-repeat:no-repeat;}
+#side-n{height:15px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-n.png');background-repeat:repeat-x;}
+#side-ne{width:20px;height:15px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-ne.png');background-repeat:no-repeat;}
+#side-sw{width:20px;height:15px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-sw.png');background-repeat:no-repeat;}
+#side-s{height:15px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-s.png');background-repeat:repeat-x;}
+#side-se{width:20px;height:15px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-se.png');background-repeat:no-repeat;}
+#side-e{width:20px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-e.png');background-repeat:repeat-y;}
+#side-w{width:20px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg-w.png');background-repeat:repeat-y;}
+#side {background-color:#DDCDA5;}
+
+#side2-nw{width:9px;height:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-nw.png');background-repeat:no-repeat;}
+#side2-n{height:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-n.png');background-repeat:repeat-x;}
+#side2-ne{width:9px;height:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-ne.png');background-repeat:no-repeat;}
+#side2-sw{width:9px;height:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-sw.png');background-repeat:no-repeat;}
+#side2-s{height:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-s.png');background-repeat:repeat-x;}
+#side2-se{width:9px;height:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-se.png');background-repeat:no-repeat;}
+#side2-e{width:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-e.png');background-repeat:repeat-y;}
+#side2-w{width:9px;background-image:url('<%=request.getContextPath()%>/imgs/tw/bg2-w.png');background-repeat:repeat-y;}
+#side2 {background-color:#e6d8b5;}
 
 .char{
 	background-image:url('<%=request.getContextPath()%>/imgs/web/bg.jpg');background-repeat:repeat;
@@ -211,3 +222,15 @@ font-family: Verdana,Arial;
 .ccp_big{height: 15px;background-color: #9800F0;color: white;font-size: 8pt;position: absolute;z-index: 2;}
 
 .avatar{margin:5px 5px 5px 5px;width: 100px;height: 100px;border:5px double #61402D;}
+
+.equipbody{width:500px;height:500px;background-image:url('<%=request.getContextPath()%>/imgs/web/equip_bg.png');background-repeat:no-repeat;}
+.equipped{width:80px;height:80px;background-image: url("<%=request.getContextPath()%>/imgs/web/bg2.gif");border:3px inset gray;}
+
+.smallfont{font-size: 7pt;}
+
+.icon_med{
+	background-image: url("<%=request.getContextPath()%>/imgs/web/icon_m.png");
+	padding-top: 4px;padding-left:4px;
+	width:44px;height:44px;
+	background-repeat:no-repeat;
+	}

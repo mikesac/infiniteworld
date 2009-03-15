@@ -1,1 +1,0 @@
-questo è mio

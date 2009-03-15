@@ -136,7 +136,7 @@
   <!-- Fight Testbed -->
   <servlet>
     <servlet-name>FightMap</servlet-name>
-    <servlet-class>org.infinite.web.FightMap</servlet-class>
+    <servlet-class>org.infinite.web.fight.FightMap</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FightMap</servlet-name>

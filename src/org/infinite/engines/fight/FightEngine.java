@@ -45,10 +45,12 @@ public class FightEngine {
 		eParties.appendChild(eSecondSide);
 		parent.appendChild(eParties);
 
+		
+		
 		int round = 0;
 		do {
 
-
+			
 			Element eRound = dFight.createElement("round");
 			eRound.setAttribute("num", ""+(round++) );
 

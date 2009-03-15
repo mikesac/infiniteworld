@@ -4,7 +4,6 @@
 
 <%@page import="org.infinite.objects.Character"%>
 <%@page import="java.util.List"%>
-
 <%@page import="org.infinite.db.dao.Player"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,7 +12,8 @@
 </head>
 <body>
 <center>
-<div class="char">
+<div style="width:50%">
+<%@ include file="../decorators/b2pre.jsp"%>
 <table width="99%">
 	<tr><td colspan=5 " align="center">Choose your character</td></tr>
 	<%
@@ -23,9 +23,11 @@
 		}
 	%>
 </table>
+<%@ include file="../decorators/b2post.jsp"%>
 </div>
 
-<div class="char" style="width:1200px; height:430px;overflow: auto;padding: 1% 1% 1% 1%;">
+<div style="width:1200px; height:430px;overflow: auto;padding: 1% 1% 1% 1%;">
+<%@ include file="../decorators/b2pre.jsp"%>
 <div>
 
 <table width="99%">
@@ -87,6 +89,7 @@
 
 
 </div>
+<%@ include file="../decorators/b2post.jsp"%>
 </div>
 
 </center>

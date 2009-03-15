@@ -1,5 +1,6 @@
 package org.infinite.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -8,6 +9,7 @@ import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
+import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.util.GenericUtil;
@@ -23,13 +25,13 @@ public class Character implements FightInterface {
 	private Item handRight = null;
 	private Item handLeft = null;	
 	private Item body = null;
-	//private Item store = null;
+
 	private Spell preparedSpell = null;
 
 	/*
 	 * Backpack content
 	 */
-	private Vector<Item> inventory = new Vector<Item>();
+	private ArrayList<Item> inventory = new ArrayList<Item>();
 
 	/*
 	 * all Known spells, sorted by type 
@@ -48,24 +50,105 @@ public class Character implements FightInterface {
 	public Character(String name, String accountName){
 
 		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
+		ArrayList<PlayerOwnItem> poi = (ArrayList<PlayerOwnItem>) Manager.listByQery("from org.infinite.db.dao.PlayerOwnItem poi join fetch poi.item i where poi.player='"+getDao().getId()+"'");
 
+		//equip all items without re-sync to DB
+		for (int i = 0; i < poi.size(); i++) {
+			
+			switch ( poi.get(i).getBodypart() ) {
+			case InfiniteCst.EQUIP_BODY:
+				equipBody( poi.get(i).getItem() , false);
+				break;
+			case InfiniteCst.EQUIP_HAND_LEFT:
+				equipHandLeft(poi.get(i).getItem(),false );
+				break;
+			case InfiniteCst.EQUIP_HAND_RIGHT:				
+				equipHandRight(poi.get(i).getItem(),false);
+				break;
+			default:
+				putInInventory(poi.get(i).getItem(),false);
+				break;
+			}
+			
+		}
+				
+	}
+	private void persistOwnItem(Item item,int bodypart, int status){
+		PlayerOwnItem poi = new PlayerOwnItem();
+		poi.setPlayer(getDao());
+		poi.setItem(item);
+		poi.setBodypart(InfiniteCst.EQUIP_STORE);
+		poi.setStatus(0);
+		Manager.update(poi);
+	}
 
-		//initCharacterPoints();
+	public void putInInventory(Item item) {
+		putInInventory(item,true);
+	}
+		
+	private void putInInventory(Item item,boolean persist) {
+		
+		inventory.add(item);
+		if(persist){
+			persistOwnItem(item,InfiniteCst.EQUIP_STORE, 0);
+		}
 	}
 
 
+	public void equipHandRight(Item item) {	
+		equipHandRight(item,true);
+	}
+	
+	private void equipHandRight(Item item, boolean persist) {	
 
-	private boolean initCharacterPoints() {
-		//TODO questo andrà sostituito con la procedura di rigenerazione punti
-
-		getDao().setPl(getPointsLifeMax());
-		getDao().setPm(getPointsMagicMax());
-		getDao().setPa(getPointsActionMax());
-		getDao().setPc(getPointsCharmMax());
-		return saveDao();	
+		//if another item is equipped put in inventory
+		Item previous = getHandRight(); 
+		if( previous!=null)
+			putInInventory(previous);
+		
+		setHandRight(item);
+		if(persist){
+			persistOwnItem(item, InfiniteCst.EQUIP_HAND_RIGHT, 0);
+		}
+		
 	}
 
 
+	public void equipHandLeft(Item item) {	
+		equipHandLeft(item,true);
+	}
+	
+	private void equipHandLeft(Item item, boolean persist) {	
+		
+		//if another item is equipped put in inventory
+		Item previous = getHandLeft(); 
+		if( previous!=null)
+			putInInventory(previous);
+		
+		setHandLeft(item);
+		if(persist){
+			persistOwnItem(item, InfiniteCst.EQUIP_HAND_LEFT, 0);
+		}		
+	}
+
+
+	public void equipBody(Item item) {	
+		equipBody(item,true);
+	}
+	
+	private void equipBody(Item item, boolean persist) {	
+		
+		//if another item is equipped put in inventory
+		Item previous = getBody(); 
+		if( previous!=null)
+			putInInventory(previous);
+		
+		setBody(item);
+		if(persist){
+			persistOwnItem(item, InfiniteCst.EQUIP_BODY, 0);
+		}		
+	}
+	
 
 	public int getBaseCA(){
 		return (int)Math.round(InfiniteCst.FIGHT_BASE_CA + ( getDexterity()  / 5) );
@@ -343,14 +426,24 @@ public class Character implements FightInterface {
 
 
 
-	public Vector<Item> getInventory() {
+	public ArrayList<Item> getInventory() {
 		return inventory;
 	}
-
-
+	
+	public Item getInventoryItem(int i) {
+		return inventory.get(i);
+	}
 
 	public Vector<Spell> getSpellBookFight() {
 		return spellBookFight;
+	}
+	
+	public Vector<Spell> getSpellBookHeal() {
+		return spellBookHeal;
+	}
+	
+	public Vector<Spell> getSpellBookProtect() {
+		return spellBookProtect;
 	}
 
 	public Player getDao(){
@@ -713,6 +806,17 @@ public class Character implements FightInterface {
 	@Override
 	public boolean rollSavingThrow(Spell s, FightInterface caster) {
 		return FightEngine.rollSavingThrow(s, caster, this);
+	}
+	
+	
+	private void setHandRight(Item handRight) {
+		this.handRight = handRight;
+	}
+	private void setHandLeft(Item handLeft) {
+		this.handLeft = handLeft;
+	}
+	private void setBody(Item body) {
+		this.body = body;
 	}
 
 }

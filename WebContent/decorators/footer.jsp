@@ -1,7 +1,7 @@
 
-<table width="100%" border="0">
+<table width="100%"  cellpadding="0" cellspacing="0" border="0" class="smallfont"  >
 	<tr>
-		<td align="left">
+		<td align="left" class="smallfont">
 		<%
 
 if(request.getRemoteUser()!=null){
@@ -13,7 +13,7 @@ else{
 
 %>
 </td>
-		<td align="right">
+		<td align="right" class="smallfont">
 			<% if(request.getRemoteUser()!=null){
 			 %><a href="<%=request.getContextPath()%>/logout">Logout</a><% 
 			}
