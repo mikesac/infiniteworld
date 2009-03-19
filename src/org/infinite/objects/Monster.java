@@ -54,9 +54,9 @@ public class Monster implements FightInterface{
 
 	public Monster(String name){
 
-		Session s = Manager.openSession();
-		npc = (Npc)Manager.listByQery(s,"select npc from Npc as npc where name='"+name+"'").get(0);
-		Manager.commitAndCloseSession(s);	
+		
+		npc = (Npc)Manager.listByQery("select npc from Npc as npc where name='"+name+"'").get(0);
+		
 		
 		iBehaveStatus= InfiniteCst.NPC_BEHAVE_FIGHT;
 
@@ -342,21 +342,21 @@ public class Monster implements FightInterface{
 		String query = "select s from org.infinite.db.dao.Spell s where s.name in ("+
 		sb.toString().substring(1)	+ ")";
 
-		Session session = Manager.openSession();
+		
 
 		//fighting spells
-		List<Spell> l = Manager.listByQery(session, query+" and s.spelltype="+InfiniteCst.MAGIC_ATTACK );
+		List<Spell> l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_ATTACK );
 		spellBookFight.addAll(l);
 
 		//healing spells
-		l = Manager.listByQery(session, query+" and s.spelltype="+InfiniteCst.MAGIC_HEAL );
+		l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_HEAL );
 		spellBookFight.addAll(l);
 
 		//protection spells
-		l = Manager.listByQery(session, query+" and s.spelltype="+InfiniteCst.MAGIC_DEFEND );
+		l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_DEFEND );
 		spellBookFight.addAll(l);
 
-		Manager.commitAndCloseSession(session);
+		
 
 
 
@@ -376,9 +376,9 @@ public class Monster implements FightInterface{
 		String query = "select i from org.infinite.db.dao.Item i where i.name in ("+
 		sb.toString().substring(1)	+ ")";
 
-		Session session = Manager.openSession();
-		List<Item> l = Manager.listByQery(session, query);
-		Manager.commitAndCloseSession(session);
+		
+		List<Item> l = Manager.listByQery( query);
+		
 
 		inventory.addAll(l);
 

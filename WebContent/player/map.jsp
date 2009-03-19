@@ -44,9 +44,17 @@ for(int y=0;y<m.getNy();y++){
 		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
 			AreaItem areaItem = (AreaItem) iterator.next();
 			
-			out.print("<a href=\""+request.getContextPath()+areaItem.getUrl()+"\">");
-			out.print("<img width=25 height=25 src=\""+request.getContextPath()+"/imgs/maps/icons/"+areaItem.getIcon()+".png\" alt=\""+areaItem.getName()+"\" title=\""+areaItem.getName()+"\" style=\"border:1px outset gray;position:relative;top:"+areaItem.getY()+"px;left:"+areaItem.getX()+"px;\">");
-			out.print("</a>");
+			//out.print("<a href=\""+request.getContextPath()+areaItem.getUrl()+"\">");
+			//out.print("<img width=25 height=25 src=\""+request.getContextPath()+"/imgs/maps/icons/"+areaItem.getIcon()+".png\" alt=\""+areaItem.getName()+"\" title=\""+areaItem.getName()+"\" style=\"border:1px outset gray;position:relative;top:"+areaItem.getY()+"px;left:"+areaItem.getX()+"px;\">");
+			//out.print("</a>");
+			
+			%>
+				<div class="iconmedium"	style="position:relative;top:<%=areaItem.getY() %>px;left:<%=areaItem.getX() %>px;background-image: url(<%=request.getContextPath()%>/imgs/maps/icons/<%=areaItem.getIcon()%>.png);">
+				<div class="tile"><a href="<%= request.getContextPath()%><%=areaItem.getUrl()%>" ></a></div>
+				</div>
+			<%
+			
+			
 		}
 		out.print("</td>");
 	}

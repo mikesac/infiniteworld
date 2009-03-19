@@ -1,17 +1,19 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 15-mar-2009 21.16.44 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.PlayerOwnItem" table="PlayerOwnItem" catalog="mikesac">
-        <id name="id" type="java.lang.Integer">
+        <meta attribute="not-null" inherit="false">false</meta>
+        <id name="id" type="int">
+            <meta attribute="not-null" inherit="false">true</meta>
             <column name="id" />
             <generator class="identity" />
         </id>
         <many-to-one name="player" class="org.infinite.db.dao.Player" fetch="select">
             <column name="Playerid" not-null="true" />
         </many-to-one>
-        <many-to-one name="item" class="org.infinite.db.dao.Item" fetch="select">
+        <many-to-one name="item" class="org.infinite.db.dao.Item" fetch="join">
             <column name="Itemid" not-null="true" />
         </many-to-one>
         <property name="status" type="java.lang.Integer">

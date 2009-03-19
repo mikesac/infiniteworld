@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fight>
+	<parties>
+		<firstside>
+			<monster cap="1" chp="1" cmp="6" first="true"
+				img="../player/testChar_mike.jpg" name="testChar" tap="11" thp="21"
+				tmp="6" />
+		</firstside>
+		<secondside>
+			<monster cap="11" chp="13" cmp="7" first="false" img="goblin"
+				name="Goblin" tap="11" thp="13" tmp="7" />
+		</secondside>
+	</parties>
+	<round num="0">
+		<attack>
+			<monster cap="11" chp="13" cmp="7" first="false" img="goblin"
+				name="Goblin" tap="11" thp="13" tmp="7" type="attacker" />
+			<monster cap="1" chp="1" cmp="6" first="true"
+				img="../player/testChar_mike.jpg" name="testChar" tap="11" thp="21"
+				tmp="6" type="defender" />
+			<melee ca="11" hit="0" img="hammer" roll="4" type="Martello" />
+		</attack>
+		<attack>
+			<monster cap="1" chp="1" cmp="6" first="true"
+				img="../player/testChar_mike.jpg" name="testChar" tap="11" thp="21"
+				tmp="6" type="attacker" />
+			<monster cap="10" chp="13" cmp="7" first="false" img="goblin"
+				name="Goblin" tap="11" thp="13" tmp="7" type="defender" />
+			<melee ca="11" hit="0" img="Unarmed" roll="5" type="Unarmed" />
+		</attack>
+	</round>
+	<round num="1">
+		<attack>
+			<monster cap="10" chp="13" cmp="7" first="false" img="goblin"
+				name="Goblin" tap="11" thp="13" tmp="7" type="attacker" />
+			<monster cap="0" chp="1" cmp="6" first="true"
+				img="../player/testChar_mike.jpg" name="testChar" tap="11" thp="21"
+				tmp="6" type="defender" />
+			<melee ca="11" hit="0" img="hammer" roll="6" type="Martello" />
+		</attack>
+		<attack>
+			<monster cap="0" chp="1" cmp="6" first="true"
+				img="../player/testChar_mike.jpg" name="testChar" tap="11" thp="21"
+				tmp="6" type="attacker" />
+			<monster cap="9" chp="13" cmp="7" first="false" img="goblin"
+				name="Goblin" tap="11" thp="13" tmp="7" type="defender" />
+			<melee ca="11" dmg="0" hit="1" img="Unarmed" rhp="13" roll="18"
+				type="Unarmed" />
+		</attack>
+	</round>
+	<round num="2">
+		<attack>
+			<monster cap="9" chp="13" cmp="7" first="false" img="goblin"
+				name="Goblin" tap="11" thp="13" tmp="7" type="attacker" />
+			<monster cap="0" chp="1" cmp="6" first="true"
+				img="../player/testChar_mike.jpg" name="testChar" tap="11" thp="21"
+				tmp="6" type="defender" />
+			<melee ca="11" dmg="1" hit="1" img="hammer" rhp="0" roll="18"
+				type="Martello" />
+			<death name="testChar">
+				<gold>0.0</gold>
+				<xp>0</xp>
+				<items>0</items>
+			</death>
+		</attack>
+	</round>
+	<summary>Second side wins!</summary>
+</fight>

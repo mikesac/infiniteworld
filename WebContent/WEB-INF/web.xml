@@ -133,6 +133,17 @@
   </servlet-mapping>
   
   
+  <!-- Equip -->
+  <servlet>
+    <servlet-name>ItemEquip</servlet-name>
+    <servlet-class>org.infinite.web.ItemEquip</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ItemEquip</servlet-name>
+    <url-pattern>/equip</url-pattern>
+  </servlet-mapping>
+  
+  
   <!-- Fight Testbed -->
   <servlet>
     <servlet-name>FightMap</servlet-name>

@@ -10,34 +10,12 @@ import org.hibernate.Transaction;
 
 public class Manager {
 
-	/*
-	private static SessionFactory sessionFactory=null;
-
-	static{
-		Configuration config = new Configuration().configure("hibernate.cfg.xml");
-		sessionFactory = config.buildSessionFactory();
-	}*/
 	
-	public static Session openSession(){
-
-		//Session session = sessionFactory.openSession();
-		//session.beginTransaction();
-		//return session;
-		
+	public static Session openSession(){		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		session.beginTransaction();
 		return session;
-
 	}
-	
-	public static void commitAndCloseSession(Session s){
-		//s.getTransaction().commit();
-		s.flush();
-		//s.disconnect();
-		//s.close();
-		//sessionFactory.close();
-        
-	}
+		
 	
 	@SuppressWarnings("unchecked")
 	public static List listByQery(Session openedSession,String query){		
@@ -54,10 +32,8 @@ public class Manager {
 	}
        
 	public static boolean delete(Object o){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
-		session.beginTransaction();
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		boolean b = delete(session, o);
-		session.getTransaction().commit();
 		return b;
 	}
 	
@@ -80,9 +56,7 @@ public class Manager {
 	
 	public static boolean create(Object o){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
-		session.beginTransaction();
 		boolean b = create(session, o);
-		session.getTransaction().commit();
 		return b;
 	}
 	
@@ -106,7 +80,7 @@ public class Manager {
 	
 	public static boolean update(Object o){
 		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		boolean b = update(session, o);
 		return b;
 	}
@@ -126,6 +100,16 @@ public class Manager {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	public static Object findById(String className, int id) {	
+		
+			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+			s.beginTransaction();
+			Object o = s.get(className, id);
+			s.getTransaction().commit();
+			return o;
 	}
     
 

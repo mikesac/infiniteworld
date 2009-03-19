@@ -15,7 +15,9 @@
 %>
 
 <%@page import="org.infinite.web.PagesCst"%>
-<%@page import="org.infinite.db.dao.Item;"%><html>
+<%@page import="org.infinite.db.dao.Item"%>
+<%@page import="org.infinite.util.InfiniteCst"%>
+<%@page import="org.infinite.db.dao.PlayerOwnItem"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Character Equipment</title>
@@ -24,7 +26,7 @@
 
 
 <div style="width:1020px;">
-<%@ include file="../decorators/b2pre.jsp"%>
+<%@ include file="../decorators/b1pre.jsp"%>
 
 <div style="padding: 1% 1% 1% 1%; margin-bottom:30px;">
 
@@ -34,17 +36,53 @@
 		<table width="500px" height="500px" border=0>
 			<tr style="height: 25%;">
 				<td align="center" valign="middle">
-				<div class="equipped" id="handleft"></div>
+				<div class="equipped" id="handleft">				
+				<% 
+					Item it = c.getHandLeft();
+					if(it!=null){
+						%>
+							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
+								<div class="tile"/>
+							</div>
+						<%
+					}
+					
+				%>
+				</div>
 				</td>
 				<td>&nbsp;</td>
 				<td align="center" valign="middle">
-				<div class="equipped" id="handright"></div>
+				<div class="equipped" id="handright">
+				<% 
+					it = c.getHandRight();
+					if(it!=null){
+						%>
+							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
+								<div class="tile"/>
+							</div>
+						<%
+					}
+					
+				%>
+				</div>
 				</td>
 			</tr>
 			<tr style="height: 25%;">
 				<td>&nbsp;</td>
 				<td align="center" valign="middle">
-				<div class="equipped" id="body"></div>
+				<div class="equipped" id="body">
+				<% 
+					it = c.getBody();
+					if(it!=null){
+						%>
+							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
+								<div class="tile"/>
+							</div>
+						<%
+					}
+					
+				%>
+				</div>
 				</td>
 				<td>&nbsp;</td>
 			</tr>
@@ -61,36 +99,40 @@
 		</table>
 		</td>
 		<td>
-		<div style="width:450px;height:500px;overflow:auto;padding: 1% 1% 1% 1%;">
+		<%@ include file="../decorators/b2pre.jsp"%>
+		<div style="width:420px;height:500px;overflow:auto;padding: 1% 1% 1% 1%;">
 		<div>
 		<center>
-			<table>
+			<table cellpadding="0" cellspacing="0" border="0" width="100%" >
 				<tr><th></th><th>Image</th><th>Name</th><th>Description</th></tr>
 				
 				<%
-				ArrayList<Item> items = c.getInventory();
-				for (int i = 0; i < items.size(); i++) {
+				ArrayList<PlayerOwnItem> pois = c.getInventory();
+				for (int i = 0; i < pois.size(); i++) {
 					%><tr>
-						<td></td>
-						<td><img 
-							src="<%= request.getContextPath() %>/imgs/item/<%= items.get(i).getImage() %>.png" 
-							alt="<%= items.get(i).getName() %>" 
-							title="<%= items.get(i).getName() %>"/>
+						<td style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;" valign="middle">
+						
+							<form action="<%=request.getContextPath()%>/equip" method="POST">
+							<input type="hidden" name="itemid" value="<%=pois.get(i).getId()%>"/>
+							<input type="hidden" name="mode" value="<%=InfiniteCst.POI_EQUIP%>"/>
+							<input type="submit" value="Equip" style="font-size: 7pt;width:50px;"/>
+							</form>
+						
+							<form action="<%=request.getContextPath()%>/equip" method="POST" onsubmit="return confirmDrop();">
+							<input type="hidden" name="itemid" value="<%=pois.get(i).getId()%>"/>
+							<input type="hidden" name="mode" value="<%=InfiniteCst.POI_DROP%>"/>
+							<input type="submit" value="Drop" style="font-size: 7pt;width:50px;"/>
+							</form>
+						
+						</td>
+						<td  style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;">
+							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= pois.get(i).getItem().getImage() %>.png);">
+								<div class="tile"/>
+							</div>
+							
 						</td>						
-						<td><%= items.get(i).getName() %></td>
-						<td><%= items.get(i).getDescr() %></td>
-					</tr><%
-				}
-				for (int i = 0; i < items.size(); i++) {
-					%><tr>
-						<td></td>
-						<td><img 
-							src="<%= request.getContextPath() %>/imgs/item/<%= items.get(i).getImage() %>.png" 
-							alt="<%= items.get(i).getName() %>" 
-							title="<%= items.get(i).getName() %>"/>
-						</td>						
-						<td><%= items.get(i).getName() %></td>
-						<td><%= items.get(i).getDescr() %></td>
+						<td style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;"><%= pois.get(i).getItem().getName() %></td>
+						<td style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;"><%= pois.get(i).getItem().getDescr() %></td>
 					</tr><%
 				}
 				%>
@@ -101,11 +143,17 @@
 
 		</div>
 		</div>
+		<%@ include file="../decorators/b2post.jsp"%>
 		</td>
 	</tr>
 </table>
-<%@ include file="../decorators/b2post.jsp"%>
+<%@ include file="../decorators/b1post.jsp"%>
 </div></div>
+<script type="text/javascript">
+function confirmDrop(){
+	return confirm("Do you really want to drop this item?");
+}
+</script>
 </body>
 
 </html>

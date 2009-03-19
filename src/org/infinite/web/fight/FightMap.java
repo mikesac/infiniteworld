@@ -55,7 +55,8 @@ public class FightMap  extends HttpServlet {
 
 		try {
 			
-			String xml =  FightEngine.runFight(side1,side2);			
+			String xml =  FightEngine.runFight(side1,side2);
+			System.out.println(xml);
 			xml = XmlUtil.xml2String(xml, "fight/fight");
 			
 			req.getSession().setAttribute("mapfight", xml);

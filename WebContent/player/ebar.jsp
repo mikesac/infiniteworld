@@ -15,53 +15,89 @@
 
 	<tr>
 		<td>
-		
+
 		<table border="0" cellpadding="2" cellspacing="2" width="100%">
 			<tr>
-				<td class="icon_med">
-					<a href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>">
-						<img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_map.png" alt="Map" title="Map" >
-					</a>
+				<td>
+
+
+
+				<div class="iconmedium"
+					style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_map.png);">
+				<div class="tile"><a
+					href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>" ></a></div>
+				</div>
+
+
+
 				</td>
-				<td class="icon_med">
-					<a href="<%=request.getContextPath()%><%=PagesCst.PAGE_EQUIP%>">
-						<img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_equip.png" alt="Equip" title="Equip" >
-					</a>
+				<td>
+				<div class="iconmedium"
+					style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_equip.png);">
+				<div class="tile"><a
+					href="<%=request.getContextPath()%><%=PagesCst.PAGE_EQUIP%>" ></a></div>
+				</div>
+
 				</td>
-				
+
 			</tr>
 			<tr>
-				<td class="icon_med"><img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_stat.png" alt="Stats" title="Stats" 
-					></td>
-				<td class="icon_med"><img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_quest.png" alt="Quests" title="Quests" 
-					></td>
+				<td>
+				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_stat.png);">
+				<div class="tile"><a
+					href="javascript:alert('TODO')" ></a></div>
+				</div>
+				</td>
+				<td>
+				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_quest.png);">
+				<div class="tile"><a
+					href="javascript:alert('TODO')" ></a></div>
+				</div>
+				</td>
 			</tr>
-			
+
 			<tr>
-				<td class="icon_med"><img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_spell.png" alt="Spells" title="Spells" ></td>
-				<td class="icon_med"><img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_attack.png" alt="Attack" title="Attack" ></td>
+				<td>
+				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_spell.png);">
+				<div class="tile"><a
+					href="javascript:alert('TODO')" ></a></div>
+				</div>
+				</td>
+				<td>
+				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_attack.png);">
+				<div class="tile"><a
+					href="javascript:alert('TODO')" ></a></div>
+				</div>
+				</td>
 			</tr>
-			
+
 			<tr>
-				<td class="icon_med"><img border=0 src="<%=request.getContextPath()%>/imgs/web/menu_msg.png" alt="Messages" title="Messages" ></td>
+				<td>
+				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_msg.png);">
+				<div class="tile"><a
+					href="javascript:alert('TODO')" ></a></div>
+				</div>
+				</td>
 				<td></td>
 			</tr>
-			
+
 		</table>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>
 		<hr />
 		</td>
 	</tr>
-	
+
 	<tr>
-		<td align="center"><a href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>"><%=c.getArea().getName()%></a></td>
+		<td align="center"><a
+			href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>"><%=c.getArea().getName()%></a></td>
 	</tr>
 	<tr>
-		<td align="center" style="border: 3px double #B69F7F; font-size:x-small;background-color: white;color:black;font-style: italic;"><%=c.getArea().getDescription()%></td>
+		<td align="center"
+			style="border: 3px double #B69F7F; font-size: x-small; background-color: white; color: black; font-style: italic;"><%=c.getArea().getDescription()%></td>
 	</tr>
 </table>
 

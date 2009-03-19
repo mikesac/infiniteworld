@@ -7,9 +7,17 @@
 <title>Infinite World Test Server</title>
 </head>
 <body>
-
-
 <center>
+
+<%
+	if(session.getAttribute("error")!=null){
+		%><%@ include file="../decorators/b2pre.jsp"%><%
+		out.print("<div align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
+		session.removeAttribute("error");
+		%><%@ include file="../decorators/b2post.jsp"%><br/><%
+	}
+%>
+
 <table cellpadding="0" cellspacing="0" border="0" style="width: 350px">
 	<tr>
 		<td id="side-nw"></td>

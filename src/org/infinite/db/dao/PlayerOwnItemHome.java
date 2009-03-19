@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 15-mar-2009 21.16.45 by Hibernate Tools 3.2.4.CR1
+// Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1
 
 import java.util.List;
 import javax.naming.InitialContext;
@@ -89,7 +89,7 @@ public class PlayerOwnItemHome {
 		}
 	}
 
-	public PlayerOwnItem findById(java.lang.Integer id) {
+	public PlayerOwnItem findById(int id) {
 		log.debug("getting PlayerOwnItem instance with id: " + id);
 		try {
 			PlayerOwnItem instance = (PlayerOwnItem) sessionFactory

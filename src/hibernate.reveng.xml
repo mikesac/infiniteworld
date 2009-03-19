@@ -24,7 +24,7 @@
 	<table-filter match-name="SpellAffectPlayer"
 		match-catalog="mikesac">
 	</table-filter>
-	<table-filter match-name="PlayerOwnItem" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="PlayerOwnItem" match-catalog="mikesac" ></table-filter>
 	<table-filter match-name="tomcat_users" match-catalog="mikesac"></table-filter>
 	<table-filter match-name="tomcat_roles" match-catalog="mikesac"></table-filter>
 	<table-filter match-name="AreaItem" match-catalog="mikesac"></table-filter>
@@ -32,6 +32,15 @@
 		<meta attribute="not-null">false</meta>
 		<column name="id" type="int">
 			<meta attribute="not-null">true</meta>
+		</column>
+	</table>
+	<table catalog="mikesac" name="PlayerOwnItem">
+		<meta attribute="not-null">false</meta>
+		<column name="id" type="int">
+			<meta attribute="not-null">true</meta>
+		</column>
+		<column name="Itemid">
+			<meta attribute="fetch">join</meta>
 		</column>
 	</table>
 </hibernate-reverse-engineering>

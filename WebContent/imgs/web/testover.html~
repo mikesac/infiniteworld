@@ -1,0 +1,20 @@
+<html>
+
+
+<head>
+<!-- <link rel="stylesheet" type="text/css" href="wowhead.css" /> -->
+<link rel="stylesheet" type="text/css" href="icom.css" />
+</head>
+<body>
+
+
+<div class="iconmedium" style="background-image:url(menu_attack.png);">
+<div class="tile">
+<a href="/?item=847"/>
+</div>
+
+</div>
+
+
+</body>
+</html>

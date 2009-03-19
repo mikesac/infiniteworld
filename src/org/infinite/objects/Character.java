@@ -10,6 +10,7 @@ import org.infinite.db.dao.Area;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerOwnItem;
+import org.infinite.db.dao.PlayerOwnItemHome;
 import org.infinite.db.dao.Spell;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.util.GenericUtil;
@@ -22,16 +23,16 @@ public class Character implements FightInterface {
 	Player player = null;
 	int iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
 
-	private Item handRight = null;
-	private Item handLeft = null;	
-	private Item body = null;
+	private PlayerOwnItem handRight = null;
+	private PlayerOwnItem handLeft = null;	
+	private PlayerOwnItem body = null;
 
 	private Spell preparedSpell = null;
 
 	/*
 	 * Backpack content
 	 */
-	private ArrayList<Item> inventory = new ArrayList<Item>();
+	private ArrayList<PlayerOwnItem> inventory = new ArrayList<PlayerOwnItem>();
 
 	/*
 	 * all Known spells, sorted by type 
@@ -54,101 +55,139 @@ public class Character implements FightInterface {
 
 		//equip all items without re-sync to DB
 		for (int i = 0; i < poi.size(); i++) {
-			
+
 			switch ( poi.get(i).getBodypart() ) {
 			case InfiniteCst.EQUIP_BODY:
-				equipBody( poi.get(i).getItem() , false);
+				equipBody( poi.get(i) , false);
 				break;
 			case InfiniteCst.EQUIP_HAND_LEFT:
-				equipHandLeft(poi.get(i).getItem(),false );
+				equipHandLeft(poi.get(i),false );
 				break;
 			case InfiniteCst.EQUIP_HAND_RIGHT:				
-				equipHandRight(poi.get(i).getItem(),false);
+				equipHandRight(poi.get(i),false);
 				break;
 			default:
-				putInInventory(poi.get(i).getItem(),false);
-				break;
+				moveToInventory(poi.get(i),false);
+			break;
 			}
-			
+
 		}
-				
+
 	}
-	private void persistOwnItem(Item item,int bodypart, int status){
-		PlayerOwnItem poi = new PlayerOwnItem();
-		poi.setPlayer(getDao());
-		poi.setItem(item);
-		poi.setBodypart(InfiniteCst.EQUIP_STORE);
+	private void persistOwnItem(PlayerOwnItem poi,int bodypart, int status){
+		poi.setBodypart(bodypart);
 		poi.setStatus(0);
 		Manager.update(poi);
 	}
 
-	public void putInInventory(Item item) {
-		putInInventory(item,true);
+	public void moveToInventory(PlayerOwnItem poi) {
+		moveToInventory(poi,true);
 	}
-		
-	private void putInInventory(Item item,boolean persist) {
-		
-		inventory.add(item);
+
+	private void moveToInventory(PlayerOwnItem poi,boolean persist) {
+
+		poi.setBodypart(InfiniteCst.EQUIP_STORE);
+
+		inventory.add(poi);
 		if(persist){
-			persistOwnItem(item,InfiniteCst.EQUIP_STORE, 0);
+			Manager.update(poi);
 		}
 	}
 
+	private void addToInventory(Item item,boolean persist) {
 
-	public void equipHandRight(Item item) {	
-		equipHandRight(item,true);
-	}
-	
-	private void equipHandRight(Item item, boolean persist) {	
+		PlayerOwnItem poi = new PlayerOwnItem(getDao(),item,0,InfiniteCst.EQUIP_STORE);
 
-		//if another item is equipped put in inventory
-		Item previous = getHandRight(); 
-		if( previous!=null)
-			putInInventory(previous);
-		
-		setHandRight(item);
+		inventory.add(poi);
 		if(persist){
-			persistOwnItem(item, InfiniteCst.EQUIP_HAND_RIGHT, 0);
+			Manager.create(poi);
+		}
+	}
+
+	private void removeFromInventory(int poiId) {
+		
+		for (int i = 0; i < getInventory().size(); i++) {
+			
+			System.out.println(getInventory().get(i).getId() + "--->"+poiId);
+			
+			if( getInventory().get(i).getId() == poiId){
+				getInventory().remove(i);
+				break;
+			}
+				
+			
 		}
 		
-	}
-
-
-	public void equipHandLeft(Item item) {	
-		equipHandLeft(item,true);
-	}
-	
-	private void equipHandLeft(Item item, boolean persist) {	
 		
+		
+	}
+
+
+
+
+	public void equipHandRight(PlayerOwnItem poi) {	
+		equipHandRight(poi,true);
+	}
+
+	private void equipHandRight(PlayerOwnItem poi, boolean persist) {	
+
 		//if another item is equipped put in inventory
-		Item previous = getHandLeft(); 
+		PlayerOwnItem previous = getHandRightPoi(); 
 		if( previous!=null)
-			putInInventory(previous);
-		
-		setHandLeft(item);
+			moveToInventory(previous);
+
+		setHandRight(poi);
+		removeFromInventory(poi.getId());
 		if(persist){
-			persistOwnItem(item, InfiniteCst.EQUIP_HAND_LEFT, 0);
-		}		
-	}
-
-
-	public void equipBody(Item item) {	
-		equipBody(item,true);
-	}
-	
-	private void equipBody(Item item, boolean persist) {	
+			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_RIGHT, 0);
+		}
 		
+
+	}
+
+
+	public void equipHandLeft(PlayerOwnItem poi) {	
+		equipHandLeft(poi,true);
+	}
+
+	private void equipHandLeft(PlayerOwnItem poi, boolean persist) {	
+
 		//if another item is equipped put in inventory
-		Item previous = getBody(); 
+		PlayerOwnItem previous = getHandLeftPoi(); 
 		if( previous!=null)
-			putInInventory(previous);
-		
-		setBody(item);
+			moveToInventory(previous);
+
+		setHandLeft(poi);
 		if(persist){
-			persistOwnItem(item, InfiniteCst.EQUIP_BODY, 0);
-		}		
+			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_LEFT, 0);
+		}
+		removeFromInventory(poi.getId());
 	}
-	
+
+
+	public void equipBody(PlayerOwnItem poi) {	
+		equipBody(poi,true);
+	}
+
+	private void equipBody(PlayerOwnItem poi, boolean persist) {	
+
+		//if another item is equipped put in inventory
+		PlayerOwnItem previous = getBodyPoi(); 
+		if( previous!=null)
+			moveToInventory(previous);
+
+		setBody(poi);
+		if(persist){
+			persistOwnItem(poi, InfiniteCst.EQUIP_BODY, 0);
+		}
+		removeFromInventory(poi.getId());
+	}
+
+	public void dropItem(PlayerOwnItem poi){
+		removeFromInventory(poi.getId());
+		Manager.delete(poi);
+	}
+
 
 	public int getBaseCA(){
 		return (int)Math.round(InfiniteCst.FIGHT_BASE_CA + ( getDexterity()  / 5) );
@@ -180,7 +219,7 @@ public class Character implements FightInterface {
 		return ca;
 	}
 
-	
+
 
 
 	public int getInitiative(){
@@ -345,16 +384,30 @@ public class Character implements FightInterface {
 
 
 	public Item getHandRight() {
-		return handRight;
+		return handRight!=null?handRight.getItem():null;
 	}
 
 
 	public Item getHandLeft() {
-		return handLeft;
+		return handLeft!=null?handLeft.getItem():null;
 	}
 
 
 	public Item getBody() {
+		return body!=null?body.getItem():null;
+	}
+
+	private PlayerOwnItem getHandRightPoi() {
+		return handRight;
+	}
+
+
+	private PlayerOwnItem getHandLeftPoi() {
+		return handLeft;
+	}
+
+
+	private PlayerOwnItem getBodyPoi() {
 		return body;
 	}
 
@@ -426,22 +479,18 @@ public class Character implements FightInterface {
 
 
 
-	public ArrayList<Item> getInventory() {
+	public ArrayList<PlayerOwnItem> getInventory() {
 		return inventory;
-	}
-	
-	public Item getInventoryItem(int i) {
-		return inventory.get(i);
 	}
 
 	public Vector<Spell> getSpellBookFight() {
 		return spellBookFight;
 	}
-	
+
 	public Vector<Spell> getSpellBookHeal() {
 		return spellBookHeal;
 	}
-	
+
 	public Vector<Spell> getSpellBookProtect() {
 		return spellBookProtect;
 	}
@@ -712,7 +761,7 @@ public class Character implements FightInterface {
 	}
 
 	public long getNexRegenereationTime(){
-		
+
 		//milliseconds to the next regeneration
 		if(getDao().getStatsMod()==0)
 			return 0;
@@ -721,8 +770,8 @@ public class Character implements FightInterface {
 			time = 0;
 		return time;
 	}
-	
-	
+
+
 	public static Character checkForRegeneration(Character c){
 
 		long time = c.getDao().getStatsMod();
@@ -758,7 +807,7 @@ public class Character implements FightInterface {
 					c.setPointsCharm(cc,false);
 					c.getDao().setStatsMod(time);
 					c.saveDao();
-					
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -778,10 +827,10 @@ public class Character implements FightInterface {
 		// TODO this is done just for testing, implements it really
 		return InfiniteCst.ATTACK_TYPE_WEAPON;
 	}
-	
+
 	public String[] getAttackName(){
 		//TODO this is done just for testing, implements it really
-		
+
 		String ret = "";
 		String[] szNames = getDao().getAttack().split(";");
 		for (int i = 0; i < szNames.length; i++) {
@@ -807,15 +856,15 @@ public class Character implements FightInterface {
 	public boolean rollSavingThrow(Spell s, FightInterface caster) {
 		return FightEngine.rollSavingThrow(s, caster, this);
 	}
-	
-	
-	private void setHandRight(Item handRight) {
+
+
+	private void setHandRight(PlayerOwnItem handRight) {
 		this.handRight = handRight;
 	}
-	private void setHandLeft(Item handLeft) {
+	private void setHandLeft(PlayerOwnItem handLeft) {
 		this.handLeft = handLeft;
 	}
-	private void setBody(Item body) {
+	private void setBody(PlayerOwnItem body) {
 		this.body = body;
 	}
 

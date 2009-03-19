@@ -16,6 +16,15 @@ public class InfiniteCst {
 	public static final int EQUIP_ISSHIELD			= 1;
 	public static final int EQUIP_ISITEM			= 2;
 	
+	public static final int POI_EQUIP = 0;
+	public static final int POI_DROP = 1;
+	
+	public static final int ITEM_TYPE_EMPTY = 0;
+	public static final int ITEM_TYPE_WEAPON = 1;
+	public static final int ITEM_TYPE_SHIELD = 2;
+	public static final int ITEM_TYPE_ARMOR = 3;
+	
+	
 	public static final int OWN_STATUS_OWNED	= 0;
 	public static final int OWN_STATUS_EQUIPPED	= 1;
 	
