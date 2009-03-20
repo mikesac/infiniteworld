@@ -8,6 +8,10 @@
 	<decorator name="Character" page="infinite.jsp" >
 		<pattern>/player/*</pattern>
 	</decorator>
+	
+	<decorator name="Character" page="admin.jsp" >
+		<pattern>/admin/*</pattern>
+	</decorator>
 		
 
 	

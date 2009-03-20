@@ -1,0 +1,78 @@
+body {
+	background-color: ; /* background color */
+	color: ; /* text color */
+	font-family: ; /* font name */
+	font-size: x-small; /* font size */
+	margin: 0px 0px 0px 0px; /* top right bottom left */
+}
+
+.jspmaker {
+	color: ; /* text color */
+	font-family: ; /* font name */
+	font-size: x-small; /* font size */	
+}
+
+input, textarea, select {	
+	font-family: ; /* font name */
+	font-size: x-small; /* font size */
+} 
+
+a:active {
+	color: ; /* active link color */
+}
+
+a:link {
+	color: ; /* link color */
+}
+
+a:visited {
+	color: ; /* visited link color */
+}
+
+/* main table */
+.ewTable {
+	width: ; /* table width */	
+	color: ; /* text color */
+	font-family: ; /* font name */
+	font-size: x-small; /* font size */
+	border-collapse: collapse;
+	border: none;
+}
+
+/* main table data cells */
+.ewTable td {
+	padding: 4px; /* cell padding */
+	border: 1px solid; /* cell spacing */
+	border-color: #CCCCCC;  /* table background color */
+}
+
+/* main table header cells */
+.ewTableHeader {
+	background-color: #594FBF; /* header color */
+	color: #FFFFFF; /* header font color */	
+	vertical-align: top;	
+}
+
+.ewTableHeader a {	
+	color: #FFFFFF; /* header font color */	
+}
+
+/* main table row color */
+.ewTableRow {
+	background-color: #FFFFFF;  /* alt row color 1 */
+}
+
+/* main table alternate row color */
+.ewTableAltRow {
+	background-color: #F5F5F5; /* alt row color 2 */	
+}
+
+/* main table sorting indicator */
+.ewTableOrderIndicator {
+	font-family: Webdings;	
+}
+
+/* main table footer section */
+.ewTableFooter {
+	background-color: #FFFFE0;	
+}
