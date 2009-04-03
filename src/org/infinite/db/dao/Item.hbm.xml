@@ -1,16 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
-    <class name="org.infinite.db.dao.Item" table="Item" catalog="mikesac">
+    <class name="org.infinite.db.dao.Item" table="Item" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="spell" class="org.infinite.db.dao.Spell" fetch="select">
-            <column name="spell" not-null="true" />
-        </many-to-one>
         <property name="name" type="string">
             <column name="name" not-null="true">
                 <comment>item name</comment>
@@ -71,6 +68,9 @@
             <column name="lev" not-null="true">
                 <comment>item level</comment>
             </column>
+        </property>
+        <property name="spell" type="java.lang.Integer">
+            <column name="spell" not-null="true" />
         </property>
         <property name="damage" type="string">
             <column name="damage" length="128" not-null="true" />

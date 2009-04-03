@@ -133,7 +133,7 @@
   </servlet-mapping>
   
   
-  <!-- Equip -->
+  <!-- Equip Item-->
   <servlet>
     <servlet-name>ItemEquip</servlet-name>
     <servlet-class>org.infinite.web.ItemEquip</servlet-class>
@@ -141,6 +141,16 @@
   <servlet-mapping>
     <servlet-name>ItemEquip</servlet-name>
     <url-pattern>/equip</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Prepare Spells -->
+  <servlet>
+    <servlet-name>SpellPrepare</servlet-name>
+    <servlet-class>org.infinite.web.SpellPrepare</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SpellPrepare</servlet-name>
+    <url-pattern>/prepare</url-pattern>
   </servlet-mapping>
   
   

@@ -1,19 +1,35 @@
 package org.infinite.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.hibernate.Session;
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Npc;
+import org.infinite.db.dao.PlayerKnowSpell;
+import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
 import org.infinite.engines.AI.AIEngine;
-import org.infinite.engines.fight.FightEngine;
+import org.infinite.engines.fight.PlayerInterface;
+import org.infinite.engines.magic.MagicEngine;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
-public class Monster implements FightInterface{
+/**
+ * @author msacchetti
+ * 
+ * This class implements the Monster character.
+ * Many settings comes from the AI engine which will determine monster's behavior
+ * 
+ * Both Monster and Character implements the PlayerInterface to be handled in the same way inside FightEngine
+ * This let re-use fight engine for Player-Monster, Player-Player and (useful for testing) Monster-Monster battles
+ * 
+ * All possible methods are delegated to the various static Engines to keep the class as small as possible 
+ * since many Monster instance can be running in server memory at the same time  
+ * 
+ */
+public class Monster implements PlayerInterface {
 
 	//TODO multiple attack
 
@@ -22,23 +38,23 @@ public class Monster implements FightInterface{
 	int iBehaveStatus = InfiniteCst.NPC_BEHAVE_TALK;
 	int iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
 
-	private Item handRight = null;
-	private Item handLeft = null;	
-	private Item body = null;
-	//private Item store = null;
-	private Spell preparedSpell = null;
+	private PlayerOwnItem handRight = null;
+	private PlayerOwnItem handLeft = null;	
+	private PlayerOwnItem body = null;
+
+	private ArrayList<PlayerKnowSpell> preparedSpell = null;
 
 	/*
 	 * Backpack content
 	 */
-	private Vector<Item> inventory = new Vector<Item>();
+	private ArrayList<PlayerOwnItem> inventory = new ArrayList<PlayerOwnItem>();
 
 	/*
 	 * all Known spells, sorted by type 
 	 */
-	private Vector<Spell> spellBookFight = new Vector<Spell>();
-	private Vector<Spell> spellBookHeal = new Vector<Spell>();
-	private Vector<Spell> spellBookProtect = new Vector<Spell>();
+	private ArrayList<PlayerKnowSpell> spellBookFight = new ArrayList<PlayerKnowSpell>();
+	private ArrayList<PlayerKnowSpell> spellBookHeal = new ArrayList<PlayerKnowSpell>();
+	private ArrayList<PlayerKnowSpell> spellBookProtect = new ArrayList<PlayerKnowSpell>();
 
 
 	private Vector<Spell> spellsAffecting = new Vector<Spell>();
@@ -98,7 +114,7 @@ public class Monster implements FightInterface{
 		return ca;
 	}
 
-	public int getAttackType(FightInterface defender){
+	public int getAttackType(PlayerInterface defender){
 
 		//TODO invoke chooseBestAttack
 		AIEngine.chooseBestAttack(this);
@@ -108,7 +124,7 @@ public class Monster implements FightInterface{
 		if(inventory.size()>0 ){
 			//TODO AI must choose best weapon
 			int ichoose = (int)Math.round( Math.random() * (inventory.size()-1) ); 
-			handRight = inventory.get(ichoose);
+			handRight = getInventory().get(ichoose);
 		}
 
 		switch (iBehaveStatus) {
@@ -116,10 +132,10 @@ public class Monster implements FightInterface{
 			if(spellBookFight.size()>0){
 				//TODO AI must choose best spell
 				int ichoose = (int)Math.round( Math.random() * (spellBookFight.size()-1) ); 
-				setPreparedSpell( spellBookFight.elementAt(ichoose) );
+				addToPreparedSpells( spellBookFight.get(ichoose) );
 
 				//if cannot cast choosed spell revert to melee
-				if(getPointsMagic()>=getPreparedSpell().getCostMp())
+				if(getPointsMagic()>=getPreparedSpells().get(0).getSpell().getCostMp())
 					iNumTypes++;
 			}
 			break;
@@ -127,7 +143,7 @@ public class Monster implements FightInterface{
 			if(spellBookHeal.size()>0){
 				//TODO AI must choose best spell
 				int ichoose = (int)Math.round( Math.random() * (spellBookHeal.size()-1) ); 
-				setPreparedSpell( spellBookHeal.elementAt(ichoose) );
+				addToPreparedSpells( spellBookHeal.get(ichoose) );
 				iNumTypes++;
 			}
 			break;
@@ -135,7 +151,7 @@ public class Monster implements FightInterface{
 			if(spellBookProtect.size()>0 && getPointsMagic()>0 ){
 				//TODO AI must choose best spell
 				int ichoose = (int)Math.round( Math.random() * (spellBookProtect.size()-1) ); 
-				setPreparedSpell( spellBookProtect.elementAt(ichoose) );
+				addToPreparedSpells( spellBookProtect.get(ichoose) );
 				iNumTypes++;
 			}
 			break;
@@ -174,7 +190,7 @@ public class Monster implements FightInterface{
 				szReturn = new String[]{getHandRight().getName(), getHandRight().getImage()};
 			break;
 		case InfiniteCst.ATTACK_TYPE_MAGIC:
-			szReturn = new String[]{getPreparedSpell().getName(), getPreparedSpell().getImage()};
+			szReturn = new String[]{getPreparedSpells().get(0).getSpell().getName(), getPreparedSpells().get(0).getSpell().getImage()};
 			break;
 		case InfiniteCst.ATTACK_TYPE_ITEM:
 			//szReturn = this.handRight.getName();
@@ -231,7 +247,7 @@ public class Monster implements FightInterface{
 	}
 
 	public int getSpellDuration(){
-		return getPreparedSpell().getDuration();
+		return getPreparedSpells().get(0).getSpell().getDuration();
 	}
 
 
@@ -264,9 +280,9 @@ public class Monster implements FightInterface{
 				break;
 		case InfiniteCst.ATTACK_TYPE_MAGIC:
 			try {
-				dmg = GenericUtil.rollDice( getPreparedSpell().getDamage() );
+				dmg = GenericUtil.rollDice( getPreparedSpells().get(0).getSpell().getDamage() );
 			} catch (Exception e) {
-				GenericUtil.err("DICE:"+getPreparedSpell().getDamage(), e);
+				GenericUtil.err("DICE:"+getPreparedSpells().get(0).getSpell().getDamage(), e);
 				dmg=0;
 			}
 			break;
@@ -307,25 +323,25 @@ public class Monster implements FightInterface{
 
 
 	public Item getHandRight() {
-		return handRight;
+		return (handRight!=null)?handRight.getItem():null;
 	}
 
 
 	public Item getHandLeft() {
-		return handLeft;
+		return (handLeft!=null)?handLeft.getItem():null;
 	}
 
 
 	public Item getBody() {
-		return body;
+		return (body!=null)?body.getItem():null;
 	}
 
-	public Spell getPreparedSpell(){
+	public ArrayList<PlayerKnowSpell> getPreparedSpells(){
 		return preparedSpell;
 	}
 
-	private void setPreparedSpell(Spell s){
-		preparedSpell = s;
+	public void addToPreparedSpells(PlayerKnowSpell s){
+		preparedSpell.add(s);
 	}
 
 	//TODO move to private once spawn engine is available
@@ -346,15 +362,21 @@ public class Monster implements FightInterface{
 
 		//fighting spells
 		List<Spell> l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_ATTACK );
-		spellBookFight.addAll(l);
+		for (int i = 0; i < l.size(); i++) {
+			spellBookFight.add( new PlayerKnowSpell(null,l.get(i),0) );
+		}		
 
 		//healing spells
 		l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_HEAL );
-		spellBookFight.addAll(l);
+		for (int i = 0; i < l.size(); i++) {
+			spellBookHeal.add( new PlayerKnowSpell(null,l.get(i),0) );
+		}
 
 		//protection spells
 		l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_DEFEND );
-		spellBookFight.addAll(l);
+		for (int i = 0; i < l.size(); i++) {
+			spellBookProtect.add( new PlayerKnowSpell(null,l.get(i),0) );
+		}
 
 		
 
@@ -376,11 +398,10 @@ public class Monster implements FightInterface{
 		String query = "select i from org.infinite.db.dao.Item i where i.name in ("+
 		sb.toString().substring(1)	+ ")";
 
-		
 		List<Item> l = Manager.listByQery( query);
-		
-
-		inventory.addAll(l);
+		for (int i = 0; i < l.size(); i++) {
+			inventory.add( new PlayerOwnItem(null,l.get(i),0,InfiniteCst.EQUIP_STORE) );
+		}
 
 	}
 
@@ -392,12 +413,12 @@ public class Monster implements FightInterface{
 
 
 	public Spell castSpell() {
-		currMagicPoint -= preparedSpell.getCostMp();
-		return preparedSpell;
+		currMagicPoint -= getPreparedSpells().get(0).getSpell().getCostMp();
+		return getPreparedSpells().get(0).getSpell();
 	}
 
-	public boolean rollSavingThrow(Spell s, FightInterface caster){
-		return FightEngine.rollSavingThrow(s, caster, this);
+	public boolean rollSavingThrow(Spell s, PlayerInterface caster){
+		return MagicEngine.rollSavingThrow(s, caster, this);
 	}
 
 
@@ -421,13 +442,13 @@ public class Monster implements FightInterface{
 
 
 
-	public Vector<Item> getInventory() {
+	public ArrayList<PlayerOwnItem> getInventory() {
 		return inventory;
 	}
 
 
 
-	public Vector<Spell> getSpellBookFight() {
+	public ArrayList<PlayerKnowSpell> getSpellBookFight() {
 		return spellBookFight;
 	}
 
@@ -550,6 +571,70 @@ public class Monster implements FightInterface{
 		int mod = getDao().getBasePc();		
 		mod += (getCharisma()/5);
 		return mod;
+	}
+
+
+
+	@Override
+	public int addActionPoints(int points) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int addCharmPoints(int points) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int addLifePoints(int points) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int addMagicPoints(int points) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public Spell castSpell(Spell s) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	@Override
+	public void learnSpell(Spell spell) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void prepareSpell(PlayerKnowSpell pks) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void unprepareSpell(int pksId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

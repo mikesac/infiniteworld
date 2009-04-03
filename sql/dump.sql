@@ -3,14 +3,14 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 10 Mar, 2009 at 05:50 PM
+-- Generato il: 03 Apr, 2009 at 09:38 AM
 -- Versione MySQL: 5.0.67
 -- Versione PHP: 5.2.6-2ubuntu4.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Database: `mikesac`
+-- Database: `mikesac_mikesac`
 --
 
 -- --------------------------------------------------------
@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS `Area` (
 
 INSERT INTO `Area` (`id`, `name`, `description`, `world`, `nx`, `ny`, `lockid`, `cost`) VALUES
 (1, 'HomeTown', 'Your adventure starts in your hometown, a village in the countryside.\r\nLife flows peacefully, day after day, but in your heart you know that soon you will have to adventure outside its borders.', 0, 3, 3, 3, 1),
-(2, 'EastWoods', '', 0, 3, 3, 3, 2),
-(3, 'NorthMountains', '', 0, 3, 3, 3, 2);
+(2, 'EastWoods', 'Eastern woods sorrounds the city.\r\nMany hunters walk in thes land in search of a prey ot simply to adventure in the deep black wood.', 0, 3, 3, 3, 2),
+(3, 'NorthMountains', 'The way through the hills is long and tricky.\r\nMany traveller got lost into the snowy mountains during the winter, their bodies often found into the Big Deep when spring arrives.', 0, 3, 3, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -217,30 +217,6 @@ INSERT INTO `NPC` (`id`, `name`, `image`, `description`, `base_str`, `base_int`,
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `NpcOwnItem`
---
-
-CREATE TABLE IF NOT EXISTS `NpcOwnItem` (
-  `Npcid` int(10) NOT NULL,
-  `Itemid` int(10) NOT NULL,
-  `status` int(10) NOT NULL default '0' COMMENT 'status for equipped item',
-  `bodypart` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`Npcid`,`Itemid`),
-  KEY `NpcOwn` (`Npcid`),
-  KEY `ItemOwned` (`Itemid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dump dei dati per la tabella `NpcOwnItem`
---
-
-INSERT INTO `NpcOwnItem` (`Npcid`, `Itemid`, `status`, `bodypart`) VALUES
-(1, 15, 1, 1),
-(2, 18, 1, 1);
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `Player`
 --
 
@@ -280,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `Player` (
 --
 
 INSERT INTO `Player` (`id`, `aid`, `name`, `image`, `base_str`, `base_int`, `base_dex`, `base_cha`, `base_pl`, `base_pm`, `base_pa`, `base_pc`, `pl`, `pm`, `pa`, `pc`, `stats_mod`, `level`, `px`, `assign`, `status`, `area`, `gold`, `nattack`, `attack`) VALUES
-(13, 'mike', 'testChar', 'testChar_mike.jpg', 5, 5, 5, 5, 20, 5, 10, 5, 1, 6, 1, 6, 1236702780676, 1, 0, 0, 0, 2, 0, 1, 'Unarmed,1d1'),
+(13, 'mike', 'testChar', 'testChar_mike.jpg', 5, 5, 5, 5, 20, 5, 10, 5, 0, 6, 0, 6, 1238744033582, 1, 0, 0, 0, 2, 0, 1, 'Unarmed,1d1'),
 (15, 'test1', 'testChar', 'testChar_test1.gif', 5, 5, 5, 5, 20, 5, 10, 5, 0, 0, 0, 0, 1236688783849, 1, 0, 0, 0, 1, 0, 1, 'Unarmed,1d1');
 
 -- --------------------------------------------------------
@@ -290,17 +266,22 @@ INSERT INTO `Player` (`id`, `aid`, `name`, `image`, `base_str`, `base_int`, `bas
 --
 
 CREATE TABLE IF NOT EXISTS `PlayerKnowSpell` (
+  `id` int(11) NOT NULL auto_increment,
   `Playerid` int(10) NOT NULL,
   `Spellid` int(10) NOT NULL,
-  PRIMARY KEY  (`Playerid`,`Spellid`),
+  `status` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
   KEY `Knowing` (`Playerid`),
   KEY `Known` (`Spellid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Dump dei dati per la tabella `PlayerKnowSpell`
 --
 
+INSERT INTO `PlayerKnowSpell` (`id`, `Playerid`, `Spellid`, `status`) VALUES
+(1, 13, 2, 0),
+(2, 13, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -309,19 +290,23 @@ CREATE TABLE IF NOT EXISTS `PlayerKnowSpell` (
 --
 
 CREATE TABLE IF NOT EXISTS `PlayerOwnItem` (
+  `id` int(11) NOT NULL auto_increment,
   `Playerid` int(10) NOT NULL,
   `Itemid` int(10) NOT NULL,
   `status` int(10) NOT NULL default '0' COMMENT 'status for equipped item',
   `bodypart` int(10) NOT NULL default '0',
-  PRIMARY KEY  (`Playerid`,`Itemid`),
+  PRIMARY KEY  (`id`),
   KEY `PlayerOwn` (`Playerid`),
   KEY `ItemOwned` (`Itemid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Dump dei dati per la tabella `PlayerOwnItem`
 --
 
+INSERT INTO `PlayerOwnItem` (`id`, `Playerid`, `Itemid`, `status`, `bodypart`) VALUES
+(7, 13, 15, 0, 0),
+(8, 13, 16, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -439,7 +424,7 @@ INSERT INTO `tomcat_users` (`user`, `password`, `email`) VALUES
 -- Limiti per la tabella `Area`
 --
 ALTER TABLE `Area`
-  ADD CONSTRAINT `Area_ibfk_1` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `Area_ibfk_1` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`);
 
 --
 -- Limiti per la tabella `AreaItem`
@@ -449,17 +434,23 @@ ALTER TABLE `AreaItem`
   ADD CONSTRAINT `AreaItem_ibfk_2` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`);
 
 --
--- Limiti per la tabella `Item`
+-- Limiti per la tabella `locks`
 --
-ALTER TABLE `Item`
-  ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`spell`) REFERENCES `Spell` (`id`) ON DELETE CASCADE;
+ALTER TABLE `locks`
+  ADD CONSTRAINT `locks_ibfk_1` FOREIGN KEY (`parentId`) REFERENCES `locks` (`id`);
+
+--
+-- Limiti per la tabella `NPC`
+--
+ALTER TABLE `NPC`
+  ADD CONSTRAINT `NPC_ibfk_1` FOREIGN KEY (`area`) REFERENCES `Area` (`id`);
 
 --
 -- Limiti per la tabella `Player`
 --
 ALTER TABLE `Player`
-  ADD CONSTRAINT `Player_ibfk_2` FOREIGN KEY (`aid`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE,
-  ADD CONSTRAINT `Player_ibfk_3` FOREIGN KEY (`area`) REFERENCES `Area` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `Player_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Player_ibfk_2` FOREIGN KEY (`area`) REFERENCES `Area` (`id`);
 
 --
 -- Limiti per la tabella `PlayerKnowSpell`
@@ -486,4 +477,4 @@ ALTER TABLE `SpellAffectPlayer`
 -- Limiti per la tabella `tomcat_roles`
 --
 ALTER TABLE `tomcat_roles`
-  ADD CONSTRAINT `tomcat_roles_ibfk_1` FOREIGN KEY (`user`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tomcat_roles_ibfk_1` FOREIGN KEY (`user`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE;

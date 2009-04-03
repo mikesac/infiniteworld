@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1
+// Generated 31-mar-2009 22.04.43 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +18,9 @@ public class Area implements java.io.Serializable {
 	private Integer nx;
 	private Integer ny;
 	private Integer cost;
-	private Set<Player> players = new HashSet<Player>(0);
 	private Set<AreaItem> areaItems = new HashSet<AreaItem>(0);
+	private Set<Player> players = new HashSet<Player>(0);
+	private Set<Npc> npcs = new HashSet<Npc>(0);
 
 	public Area() {
 	}
@@ -36,8 +37,8 @@ public class Area implements java.io.Serializable {
 	}
 
 	public Area(Locks locks, String name, String description, Integer world,
-			Integer nx, Integer ny, Integer cost, Set<Player> players,
-			Set<AreaItem> areaItems) {
+			Integer nx, Integer ny, Integer cost, Set<AreaItem> areaItems,
+			Set<Player> players, Set<Npc> npcs) {
 		this.locks = locks;
 		this.name = name;
 		this.description = description;
@@ -45,8 +46,9 @@ public class Area implements java.io.Serializable {
 		this.nx = nx;
 		this.ny = ny;
 		this.cost = cost;
-		this.players = players;
 		this.areaItems = areaItems;
+		this.players = players;
+		this.npcs = npcs;
 	}
 
 	public Integer getId() {
@@ -113,6 +115,14 @@ public class Area implements java.io.Serializable {
 		this.cost = cost;
 	}
 
+	public Set<AreaItem> getAreaItems() {
+		return this.areaItems;
+	}
+
+	public void setAreaItems(Set<AreaItem> areaItems) {
+		this.areaItems = areaItems;
+	}
+
 	public Set<Player> getPlayers() {
 		return this.players;
 	}
@@ -121,12 +131,12 @@ public class Area implements java.io.Serializable {
 		this.players = players;
 	}
 
-	public Set<AreaItem> getAreaItems() {
-		return this.areaItems;
+	public Set<Npc> getNpcs() {
+		return this.npcs;
 	}
 
-	public void setAreaItems(Set<AreaItem> areaItems) {
-		this.areaItems = areaItems;
+	public void setNpcs(Set<Npc> npcs) {
+		this.npcs = npcs;
 	}
 
 }

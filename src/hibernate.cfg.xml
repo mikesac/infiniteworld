@@ -14,8 +14,8 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.password">qemenldan</property>
         <property name="hibernate.connection.pool_size">1</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mikesac</property>
-        <property name="hibernate.connection.username">mikesac</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mikesac_mikesac</property>
+        <property name="hibernate.connection.username">mikesac_mikesac</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
         <property name="hibernate.format_sql">true</property>
@@ -30,6 +30,7 @@
         <mapping resource="org/infinite/db/dao/Item.hbm.xml" />
         <mapping resource="org/infinite/db/dao/Locks.hbm.xml" />
         <mapping resource="org/infinite/db/dao/PlayerOwnItem.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/PlayerKnowSpell.hbm.xml" />
         <mapping resource="org/infinite/db/dao/Area.hbm.xml" />
     </session-factory>
 </hibernate-configuration>

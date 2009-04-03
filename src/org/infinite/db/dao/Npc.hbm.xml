@@ -1,13 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
-    <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac">
+    <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="assigned" />
         </id>
+        <many-to-one name="area" class="org.infinite.db.dao.Area" fetch="select">
+            <column name="area" not-null="true">
+                <comment>NPC location</comment>
+            </column>
+        </many-to-one>
         <property name="name" type="string">
             <column name="name" not-null="true">
                 <comment>NPC name</comment>
@@ -74,11 +79,6 @@
         <property name="status" type="java.lang.Integer">
             <column name="status" not-null="true">
                 <comment>status</comment>
-            </column>
-        </property>
-        <property name="area" type="java.lang.Integer">
-            <column name="area" not-null="true">
-                <comment>NPC location</comment>
             </column>
         </property>
         <property name="gold" type="float">

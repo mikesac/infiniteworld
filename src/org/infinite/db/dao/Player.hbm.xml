@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
-    <class name="org.infinite.db.dao.Player" table="Player" catalog="mikesac">
+    <class name="org.infinite.db.dao.Player" table="Player" catalog="mikesac_mikesac">
         <meta attribute="not-null" inherit="false">false</meta>
         <id name="id" type="int">
             <meta attribute="not-null" inherit="false">true</meta>
@@ -112,6 +112,12 @@
         <property name="attack" type="string">
             <column name="attack" not-null="true" />
         </property>
+        <set name="playerOwnItems" inverse="true">
+            <key>
+                <column name="Playerid" not-null="true" />
+            </key>
+            <one-to-many class="org.infinite.db.dao.PlayerOwnItem" />
+        </set>
         <set name="spells" inverse="false" table="SpellAffectPlayer">
             <key>
                 <column name="Playerid" not-null="true" />
@@ -120,19 +126,11 @@
                 <column name="Spellid" not-null="true" />
             </many-to-many>
         </set>
-        <set name="playerOwnItems" inverse="true">
+        <set name="playerKnowSpells" inverse="true">
             <key>
                 <column name="Playerid" not-null="true" />
             </key>
-            <one-to-many class="org.infinite.db.dao.PlayerOwnItem" />
-        </set>
-        <set name="spells_1" inverse="false" table="PlayerKnowSpell">
-            <key>
-                <column name="Playerid" not-null="true" />
-            </key>
-            <many-to-many entity-name="org.infinite.db.dao.Spell">
-                <column name="Spellid" not-null="true" />
-            </many-to-many>
+            <one-to-many class="org.infinite.db.dao.PlayerKnowSpell" />
         </set>
     </class>
 </hibernate-mapping>

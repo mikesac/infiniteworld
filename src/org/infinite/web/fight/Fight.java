@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.fight.FightEngine;
-import org.infinite.objects.FightInterface;
+import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.util.XmlUtil;
 
 public class Fight  extends HttpServlet {
@@ -42,8 +42,8 @@ public class Fight  extends HttpServlet {
 			return;
 		}
 		
-		Vector<FightInterface> side1  = new Vector<FightInterface>();
-		Vector<FightInterface> side2  = new Vector<FightInterface>();
+		Vector<PlayerInterface> side1  = new Vector<PlayerInterface>();
+		Vector<PlayerInterface> side2  = new Vector<PlayerInterface>();
 
 		String[] allParty = party1.split(",");
 		for (int i = 0; i < allParty.length; i++) {

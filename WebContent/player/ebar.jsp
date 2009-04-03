@@ -60,13 +60,13 @@
 				<td>
 				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_spell.png);">
 				<div class="tile"><a
-					href="javascript:alert('TODO')" ></a></div>
+					href="<%=request.getContextPath()%><%=PagesCst.PAGE_SPELL%>"></a></div>
 				</div>
 				</td>
 				<td>
 				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_attack.png);">
 				<div class="tile"><a
-					href="javascript:alert('TODO')" ></a></div>
+					href="<%=request.getContextPath()%><%=PagesCst.PAGE_BATTLEPLAN%>"></a></div>
 				</div>
 				</td>
 			</tr>

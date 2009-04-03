@@ -9,25 +9,42 @@ import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
+import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
-import org.infinite.db.dao.PlayerOwnItemHome;
 import org.infinite.db.dao.Spell;
-import org.infinite.engines.fight.FightEngine;
+import org.infinite.engines.fight.PlayerInterface;
+import org.infinite.engines.items.ItemsEngine;
+import org.infinite.engines.items.ItemsInterface;
+import org.infinite.engines.magic.MagicEngine;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
-public class Character implements FightInterface {
+/**
+ * @author msacchetti
+ * 
+ * This class implements the player's character.
+ * Many settings comes from the player's actions on the UI and not from the AI engine (as per Monster class)
+ * 
+ * Both Monster and Character implements the PlayerInterface to be handled in the same way inside FightEngine
+ * This let re-use fight engine for Player-Monster, Player-Player and (useful for testing) Monster-Monster battles
+ * 
+ * All possible methods are delegated to the various static Engines to keep the class as small as possible 
+ * since many (one per player connected) Character instance will be stored in server memory at the same time  
+ * 
+ */
+public class Character implements PlayerInterface, ItemsInterface {
 
 	//TODO multiple attack
 
 	Player player = null;
 	int iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
 
+	/*
+	 * Equipped items
+	 */
 	private PlayerOwnItem handRight = null;
 	private PlayerOwnItem handLeft = null;	
 	private PlayerOwnItem body = null;
-
-	private Spell preparedSpell = null;
 
 	/*
 	 * Backpack content
@@ -37,158 +54,84 @@ public class Character implements FightInterface {
 	/*
 	 * all Known spells, sorted by type 
 	 */
-	private Vector<Spell> spellBookFight = new Vector<Spell>();
-	private Vector<Spell> spellBookHeal = new Vector<Spell>();
-	private Vector<Spell> spellBookProtect = new Vector<Spell>();
-
-
-	private Vector<Spell> spellsAffecting = new Vector<Spell>();
+	private ArrayList<PlayerKnowSpell> spellBookFight = new ArrayList<PlayerKnowSpell>();
+	private ArrayList<PlayerKnowSpell> spellBookHeal = new ArrayList<PlayerKnowSpell>();
+	private ArrayList<PlayerKnowSpell> spellBookProtect = new ArrayList<PlayerKnowSpell>();
 
 	/*
-	 * Current points (total is taken from NPC object)
+	 * Spells prepared for fight
 	 */
+	private ArrayList<PlayerKnowSpell> preparedSpells = null;
+
+	/*
+	 * Spells cast over player
+	 */
+	private Vector<Spell> spellsAffecting = new Vector<Spell>();
+
 
 	public Character(String name, String accountName){
 
+		//get character Dao
 		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
+		
+		//get inventory and assign
 		ArrayList<PlayerOwnItem> poi = (ArrayList<PlayerOwnItem>) Manager.listByQery("from org.infinite.db.dao.PlayerOwnItem poi join fetch poi.item i where poi.player='"+getDao().getId()+"'");
 
 		//equip all items without re-sync to DB
 		for (int i = 0; i < poi.size(); i++) {
-
-			switch ( poi.get(i).getBodypart() ) {
-			case InfiniteCst.EQUIP_BODY:
-				equipBody( poi.get(i) , false);
-				break;
-			case InfiniteCst.EQUIP_HAND_LEFT:
-				equipHandLeft(poi.get(i),false );
-				break;
-			case InfiniteCst.EQUIP_HAND_RIGHT:				
-				equipHandRight(poi.get(i),false);
-				break;
-			default:
-				moveToInventory(poi.get(i),false);
-			break;
-			}
-
+			equipItem(poi.get(i));
 		}
-
+		
+		//get spellbook and assign
+		ArrayList<PlayerKnowSpell> pks = (ArrayList<PlayerKnowSpell>) Manager.listByQery("from org.infinite.db.dao.PlayerKnowSpell pks join fetch pks.spell a where pks.player='"+getDao().getId()+"'");
+		for (int i = 0; i < pks.size(); i++) {
+			learnSpell( pks.get(i) , false );
+		}
+	
 	}
-	private void persistOwnItem(PlayerOwnItem poi,int bodypart, int status){
-		poi.setBodypart(bodypart);
-		poi.setStatus(0);
-		Manager.update(poi);
-	}
-
+	
+	@Override
 	public void moveToInventory(PlayerOwnItem poi) {
-		moveToInventory(poi,true);
+		ItemsEngine.moveToInventory(this,poi,true);
 	}
 
-	private void moveToInventory(PlayerOwnItem poi,boolean persist) {
-
-		poi.setBodypart(InfiniteCst.EQUIP_STORE);
-
-		inventory.add(poi);
-		if(persist){
-			Manager.update(poi);
-		}
+	@Override 
+	public void addToInventory(Item item){
+		ItemsEngine.addToInventory(this,item, true);
+	}
+	
+	public void addToInventory(PlayerOwnItem poi){
+		getInventory().add(poi);
 	}
 
-	private void addToInventory(Item item,boolean persist) {
-
-		PlayerOwnItem poi = new PlayerOwnItem(getDao(),item,0,InfiniteCst.EQUIP_STORE);
-
-		inventory.add(poi);
-		if(persist){
-			Manager.create(poi);
-		}
-	}
-
-	private void removeFromInventory(int poiId) {
-		
-		for (int i = 0; i < getInventory().size(); i++) {
-			
-			System.out.println(getInventory().get(i).getId() + "--->"+poiId);
-			
-			if( getInventory().get(i).getId() == poiId){
-				getInventory().remove(i);
-				break;
-			}
-				
-			
-		}
-		
-		
-		
-	}
-
-
-
-
-	public void equipHandRight(PlayerOwnItem poi) {	
-		equipHandRight(poi,true);
-	}
-
-	private void equipHandRight(PlayerOwnItem poi, boolean persist) {	
-
-		//if another item is equipped put in inventory
-		PlayerOwnItem previous = getHandRightPoi(); 
-		if( previous!=null)
-			moveToInventory(previous);
-
-		setHandRight(poi);
-		removeFromInventory(poi.getId());
-		if(persist){
-			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_RIGHT, 0);
-		}
-		
-
-	}
-
-
-	public void equipHandLeft(PlayerOwnItem poi) {	
-		equipHandLeft(poi,true);
-	}
-
-	private void equipHandLeft(PlayerOwnItem poi, boolean persist) {	
-
-		//if another item is equipped put in inventory
-		PlayerOwnItem previous = getHandLeftPoi(); 
-		if( previous!=null)
-			moveToInventory(previous);
-
-		setHandLeft(poi);
-		if(persist){
-			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_LEFT, 0);
-		}
-		removeFromInventory(poi.getId());
-	}
-
-
-	public void equipBody(PlayerOwnItem poi) {	
-		equipBody(poi,true);
-	}
-
-	private void equipBody(PlayerOwnItem poi, boolean persist) {	
-
-		//if another item is equipped put in inventory
-		PlayerOwnItem previous = getBodyPoi(); 
-		if( previous!=null)
-			moveToInventory(previous);
-
-		setBody(poi);
-		if(persist){
-			persistOwnItem(poi, InfiniteCst.EQUIP_BODY, 0);
-		}
-		removeFromInventory(poi.getId());
-	}
-
+	@Override 
 	public void dropItem(PlayerOwnItem poi){
-		removeFromInventory(poi.getId());
-		Manager.delete(poi);
+		ItemsEngine.dropItem(this, poi);
 	}
 
-
+	@Override 
+	public void equipItem(PlayerOwnItem poi){
+		ItemsEngine.equipItem(this, poi);
+	}
+	
+	@Override 
+	public void wearItem(PlayerOwnItem poi) throws Exception{
+		ItemsEngine.wearItem(this, poi);
+	}
+	
+	
+	public void  learnSpell(Spell spell) {
+		MagicEngine.learnSpell(this, spell);
+	}
+	
+	public void learnSpell(PlayerKnowSpell pks,boolean persist){
+		MagicEngine.learnSpell(this,pks, persist);
+	}
+	
+	public void addToPreparedSpells(PlayerKnowSpell pks){
+		getPreparedSpells().add(pks);
+	}
+	
 	public int getBaseCA(){
 		return (int)Math.round(InfiniteCst.FIGHT_BASE_CA + ( getDexterity()  / 5) );
 	}
@@ -201,9 +144,7 @@ public class Character implements FightInterface {
 
 		int ca = 0;
 		if(getBody()!=null){
-
 			ca = GenericUtil.getMaxRollDice( getBody().getDamage() );
-
 		}
 		return ca;
 	}
@@ -211,11 +152,9 @@ public class Character implements FightInterface {
 	public int getShieldCA() {
 
 		int ca = 0;
-		if(getHandLeft()!=null && getHandLeft().getType()==InfiniteCst.EQUIP_ISSHIELD)
-
+		if(getHandLeft()!=null && getHandLeft().getType()==InfiniteCst.EQUIP_ISSHIELD){
 			ca = GenericUtil.getMaxRollDice( getHandLeft().getDamage() );
-
-
+		}
 		return ca;
 	}
 
@@ -292,7 +231,7 @@ public class Character implements FightInterface {
 	}
 
 	public int getSpellDuration(){
-		return getPreparedSpell().getDuration();
+		return getPreparedSpells().get(0).getSpell().getDuration();
 	}
 
 
@@ -325,9 +264,9 @@ public class Character implements FightInterface {
 				break;
 		case InfiniteCst.ATTACK_TYPE_MAGIC:
 			try {
-				dmg = GenericUtil.rollDice( getPreparedSpell().getDamage() );
+				dmg = GenericUtil.rollDice( getPreparedSpells().get(0).getSpell().getDamage() );
 			} catch (Exception e) {
-				GenericUtil.err("DICE:"+getPreparedSpell().getDamage(), e);
+				GenericUtil.err("DICE:"+getPreparedSpells().get(0).getSpell().getDamage(), e);
 				dmg=0;
 			}
 			break;
@@ -397,65 +336,29 @@ public class Character implements FightInterface {
 		return body!=null?body.getItem():null;
 	}
 
-	private PlayerOwnItem getHandRightPoi() {
+	public PlayerOwnItem getHandRightPoi() {
 		return handRight;
 	}
 
 
-	private PlayerOwnItem getHandLeftPoi() {
+	public PlayerOwnItem getHandLeftPoi() {
 		return handLeft;
 	}
 
 
-	private PlayerOwnItem getBodyPoi() {
+	public PlayerOwnItem getBodyPoi() {
 		return body;
 	}
 
-	public Spell getPreparedSpell(){
-		return preparedSpell;
+	public ArrayList<PlayerKnowSpell> getPreparedSpells(){
+		return preparedSpells;
 	}
 
-	private void setPreparedSpell(Spell s){
-		preparedSpell = s;
-	}
-
-
-
-	public void learnSpells(String spellsName){
-		//TODO add to PlayerKnowSpell and push to spellbook
-	}
-
-
-	public void equipItems(String itemName){
-		//TODO add to PlayerOwnItem and push to inventory
-	}
-
+	
 
 	public String getPic() {
 		return getDao().getImage();
 	}
-
-
-
-	public Spell castSpell() {
-		try {
-			addMagicPoints( -1* preparedSpell.getCostMp() );
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return preparedSpell;
-	}
-
-	public boolean rollSavingThrow(Spell s, Monster caster){
-
-		int roll = GenericUtil.rollDice(1 , 20 , 0 ); 
-		int success = s.getSavingthrow() - getIntelligence() + caster.getIntelligence();
-
-		return (roll>=success || roll==20);
-	}
-
-
-
 
 
 
@@ -483,15 +386,15 @@ public class Character implements FightInterface {
 		return inventory;
 	}
 
-	public Vector<Spell> getSpellBookFight() {
+	public ArrayList<PlayerKnowSpell> getSpellBookFight() {
 		return spellBookFight;
 	}
 
-	public Vector<Spell> getSpellBookHeal() {
+	public ArrayList<PlayerKnowSpell> getSpellBookHeal() {
 		return spellBookHeal;
 	}
 
-	public Vector<Spell> getSpellBookProtect() {
+	public ArrayList<PlayerKnowSpell> getSpellBookProtect() {
 		return spellBookProtect;
 	}
 
@@ -620,19 +523,22 @@ public class Character implements FightInterface {
 
 	}
 
-
-	private int addLifePoints(int points) throws Exception {
+	@Override
+	public int addLifePoints(int points) throws Exception {
 		return setPointsLife( getPointsLife() + points );
 	}
 
+	@Override
 	public int addMagicPoints(int points) throws Exception {
 		return setPointsMagic( getPointsMagic() + points);
 	}
 
+	@Override
 	public int addActionPoints(int points) throws Exception {
 		return setPointsAction( getPointsAction() + points);
 	}
 
+	@Override
 	public int addCharmPoints(int points) throws Exception {
 		return setPointsCharm( getPointsCharm() + points);	
 	}
@@ -823,7 +729,7 @@ public class Character implements FightInterface {
 
 
 	@Override
-	public int getAttackType(FightInterface defender) {
+	public int getAttackType(PlayerInterface defender) {
 		// TODO this is done just for testing, implements it really
 		return InfiniteCst.ATTACK_TYPE_WEAPON;
 	}
@@ -853,19 +759,34 @@ public class Character implements FightInterface {
 	}
 
 	@Override
-	public boolean rollSavingThrow(Spell s, FightInterface caster) {
-		return FightEngine.rollSavingThrow(s, caster, this);
+	public boolean rollSavingThrow(Spell s, PlayerInterface caster) {
+		return MagicEngine.rollSavingThrow(s, caster, this);
 	}
 
 
-	private void setHandRight(PlayerOwnItem handRight) {
+	public void setHandRight(PlayerOwnItem handRight) {
 		this.handRight = handRight;
 	}
-	private void setHandLeft(PlayerOwnItem handLeft) {
+	public void setHandLeft(PlayerOwnItem handLeft) {
 		this.handLeft = handLeft;
 	}
-	private void setBody(PlayerOwnItem body) {
+	public void setBody(PlayerOwnItem body) {
 		this.body = body;
 	}
+
+	@Override
+	public Spell castSpell(Spell s) {
+		return MagicEngine.castSpell(this,s);
+	}
+
+	@Override
+	public void prepareSpell(PlayerKnowSpell pks) {
+		MagicEngine.prepareSpell(this,pks);		
+	}
+
+	@Override
+	public void unprepareSpell(int pksId) {
+		MagicEngine.unprepareSpell(this,pksId);	
+		}
 
 }

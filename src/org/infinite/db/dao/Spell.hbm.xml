@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
-    <class name="org.infinite.db.dao.Spell" table="Spell" catalog="mikesac">
+    <class name="org.infinite.db.dao.Spell" table="Spell" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -86,21 +86,13 @@
                 <comment>priority in combat</comment>
             </column>
         </property>
-        <set name="players" inverse="false" table="PlayerKnowSpell">
+        <set name="playerKnowSpells" inverse="true">
             <key>
                 <column name="Spellid" not-null="true" />
             </key>
-            <many-to-many entity-name="org.infinite.db.dao.Player">
-                <column name="Playerid" not-null="true" />
-            </many-to-many>
+            <one-to-many class="org.infinite.db.dao.PlayerKnowSpell" />
         </set>
-        <set name="items" inverse="true">
-            <key>
-                <column name="spell" not-null="true" />
-            </key>
-            <one-to-many class="org.infinite.db.dao.Item" />
-        </set>
-        <set name="players_1" inverse="false" table="SpellAffectPlayer">
+        <set name="players" inverse="false" table="SpellAffectPlayer">
             <key>
                 <column name="Spellid" not-null="true" />
             </key>

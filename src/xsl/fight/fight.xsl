@@ -4,13 +4,15 @@
 	<xsl:output method="html" indent="yes" />
 
 	<xsl:template match="/">
-		
+<html>
+<head><title></title></head>
+<body>
 				<center>
 					<div>
 						<xsl:apply-templates select="//fight" />
 					</div>
 				</center>
-			
+			</body></html>	
 	</xsl:template>
 
 	<xsl:template match="//fight">
@@ -39,22 +41,16 @@
 			</tr>
 		</table>
 		<div class="fight">
+			<div class="round">
 			<xsl:apply-templates select="//round" />
+			</div>
 		</div>
 	</xsl:template>
 
 	<xsl:template match="//round">
-		<div class="round">
-			<div class="lgnd">
-				Round
-				<xsl:value-of select="@num" />
-			</div>
-
 			<table>
 				<xsl:apply-templates select="./attack" />
 			</table>
-
-		</div>
 	</xsl:template>
 
 	<xsl:template match="monster">
@@ -127,12 +123,10 @@
 	</xsl:template>
 
 	<xsl:template match="attack">
-		<tr nowrap="nowrap">
-			<xsl:apply-templates select="./monster[@type='attacker']" />
+		<tr nowrap="nowrap">			
 			<xsl:apply-templates select="./melee" />
 			<xsl:apply-templates select="./magic" />
-			<xsl:apply-templates select="./idle" />
-			<xsl:apply-templates select="./monster[@type='defender']" />
+			<xsl:apply-templates select="./idle" />			
 			<xsl:apply-templates select="./death" />
 		</tr>
 	</xsl:template>
@@ -140,36 +134,21 @@
 
 	<xsl:template match="melee">
 		<td>
-			<img width="50">
+			<img width="25">
 				<xsl:attribute name="src">../imgs/item/<xsl:value-of
 					select="@img" />.png</xsl:attribute>
 				<xsl:attribute name="alt"><xsl:value-of select="@type" /></xsl:attribute>
 				<xsl:attribute name="title"><xsl:value-of select="@type" /></xsl:attribute>
 			</img>
-		</td>
-		<td class="d20r" valign="top">
-			<xsl:value-of select="@roll" />
-		</td>
-		<td>
-
+		rolled a <xsl:value-of select="@roll" /> over a CA of <xsl:value-of select="@roll" /> 
+		
 			<xsl:choose>
-				<xsl:when test="@hit=1">
-					<p class="hit">
-						Hit for
-						<xsl:value-of select="@dmg" />
-						HP
-					</p>
-				</xsl:when>
+				<xsl:when test="@hit=1"> causing <xsl:value-of select="@dmg" />HP of damage</xsl:when>
 				<xsl:otherwise>
-					<p class="miss">missed</p>
+					 missing the target
 				</xsl:otherwise>
 			</xsl:choose>
-
 		</td>
-		<td class="shield" valign="top">
-			<xsl:value-of select="@ca" />
-		</td>
-
 	</xsl:template>
 
 	<xsl:template match="magic">

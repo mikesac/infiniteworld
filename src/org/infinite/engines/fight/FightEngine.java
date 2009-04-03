@@ -7,7 +7,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.infinite.db.dao.Spell;
 import org.infinite.objects.Character;
-import org.infinite.objects.FightInterface;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 import org.infinite.util.XmlUtil;
@@ -18,9 +17,9 @@ import org.w3c.dom.Node;
 
 public class FightEngine {
 
-	public static String runFight(Vector<FightInterface> firstSide, Vector<FightInterface> secondSide) throws Exception{
+	public static String runFight(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide) throws Exception{
 
-		Vector<FightInterface> fightOrder = new Vector<FightInterface>();
+		Vector<PlayerInterface> fightOrder = new Vector<PlayerInterface>();
 		int[] targetOrder = null;
 
 		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();			
@@ -62,14 +61,14 @@ public class FightEngine {
 			for (int i = 0; i < fightOrder.size(); i++) {
 
 				//get attacker
-				FightInterface attacker = fightOrder.elementAt( i );
+				PlayerInterface attacker = fightOrder.elementAt( i );
 
 				//attacker has already been killed, skip!
 				if(! attacker.isAlive() )
 					continue;
 
 				//get defender
-				FightInterface defender = fightOrder.elementAt( targetOrder[i] );
+				PlayerInterface defender = fightOrder.elementAt( targetOrder[i] );
 
 				//defender has already been killed, skip!
 				if(! defender.isAlive() )
@@ -145,20 +144,20 @@ public class FightEngine {
 		return XmlUtil.xml2String(dFight);
 	}
 
-	private static Node idleFight(FightInterface attacker, Document dFight) {
+	private static Node idleFight(PlayerInterface attacker, Document dFight) {
 		attacker.restRound(1);
 		return dFight.createElement("idle");
 		
 	}
 
-	private static Node magicFight(FightInterface attacker, FightInterface defender,Document doc) {		
+	private static Node magicFight(PlayerInterface attacker, PlayerInterface defender,Document doc) {		
 		Element out = doc.createElement("magic");
 
 		String[] szAtkData = attacker.getAttackName();
 		out.setAttribute("name", szAtkData[0]);
 		out.setAttribute("img", szAtkData[1]);
 
-		Spell spell = attacker.castSpell();
+		Spell spell = attacker.castSpell( attacker.getPreparedSpells().get(0).getSpell() );
 		int type = spell.getSpelltype();
 		out.setAttribute("type", ""+type);
 
@@ -209,7 +208,7 @@ public class FightEngine {
 		return out;
 	}
 
-	private static Element meleeFight(FightInterface attacker, FightInterface defender, Document doc) {
+	private static Element meleeFight(PlayerInterface attacker, PlayerInterface defender, Document doc) {
 
 		Element out = doc.createElement("melee");
 		int atkRoll = attacker.getRollToAttack();
@@ -236,16 +235,16 @@ public class FightEngine {
 		return out;
 	}
 
-	private static void prepareForFight(Vector<FightInterface> firstSide, Vector<FightInterface> secondSide) {
+	private static void prepareForFight(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide) {
 		// TODO use this to be sure all data are available inside player/npc
 
 	}
 
-	private static int[] evaluateInit(Vector<FightInterface> firstSide, Vector<FightInterface> secondSide, Vector<FightInterface> fightOrder, int[] targetOrder) {
+	private static int[] evaluateInit(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide, Vector<PlayerInterface> fightOrder, int[] targetOrder) {
 
 		//populate target arrays & temporary whole array
 		fightOrder.removeAllElements();
-		Vector<FightInterface> tmpOrder = new Vector<FightInterface>();
+		Vector<PlayerInterface> tmpOrder = new Vector<PlayerInterface>();
 		tmpOrder.addAll(firstSide);
 		tmpOrder.addAll(secondSide);
 
@@ -277,11 +276,11 @@ public class FightEngine {
 			int iRandomChoose = (int) Math.floor(  Math.random()  * (secondSide.size()-1) );
 
 			//which position has the defender ?
-			FightInterface defender = secondSide.get(iRandomChoose);
+			PlayerInterface defender = secondSide.get(iRandomChoose);
 			int iDefenderIndex = fightOrder.indexOf(defender);
 
 			//which position has the attacker ?
-			FightInterface attacker = firstSide.get(i);
+			PlayerInterface attacker = firstSide.get(i);
 			int iAttackerIndex = fightOrder.indexOf(attacker);
 
 			targetOrder[iAttackerIndex] = iDefenderIndex;
@@ -295,11 +294,11 @@ public class FightEngine {
 			int iRandomChoose = (int) Math.floor(  Math.random()  * (firstSide.size()-1) );
 
 			//which position has the defender ?
-			FightInterface defender = firstSide.get(iRandomChoose);
+			PlayerInterface defender = firstSide.get(iRandomChoose);
 			int iDefenderIndex = fightOrder.indexOf(defender);
 
 			//which position has the attacker ?
-			FightInterface attacker = secondSide.get(i);
+			PlayerInterface attacker = secondSide.get(i);
 			int iAttackerIndex = fightOrder.indexOf(attacker);
 
 			targetOrder[iAttackerIndex] = iDefenderIndex;
@@ -309,11 +308,11 @@ public class FightEngine {
 	}
 
 
-	private static Element getFighterXml(FightInterface m,Document doc,boolean isFirstPary){
+	private static Element getFighterXml(PlayerInterface m,Document doc,boolean isFirstPary){
 		return getFightXml(m, doc,null,isFirstPary);
 	}
 
-	private static Element getFightXml(FightInterface m,Document doc,String szAttName,boolean isFirstPary){
+	private static Element getFightXml(PlayerInterface m,Document doc,String szAttName,boolean isFirstPary){
 		Element em = doc.createElement("monster");
 		if(szAttName!=null && szAttName.length()>0)
 			em.setAttribute("type", szAttName);
@@ -336,20 +335,5 @@ public class FightEngine {
 		return em;
 	}
 
-	
-	
-	/**
-	 * Roll a saving throw against a spell
-	 * This method is into FightEngine because is shared among NPC & PC
-	 * @param s
-	 * @param caster
-	 * @param victim
-	 * @return
-	 */
-	public static boolean rollSavingThrow(Spell s, FightInterface caster, FightInterface victim) {
-		int roll = GenericUtil.rollDice(1 , 20 , 0 ); 
-		int success = s.getSavingthrow() - victim.getIntelligence() + caster.getIntelligence();
-		return (roll>=success || roll==20);
-	}
 	
 }

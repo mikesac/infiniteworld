@@ -32,6 +32,12 @@ public class InfiniteCst {
 	public static final int MAGIC_HEAL 		= 1;
 	public static final int MAGIC_DEFEND 	= 2;
 	
+	public static final int SPELL_KNOWN 	= 0;
+	public static final int SPELL_READY 	= 1;
+	
+	public static final int PKS_EQUIP = 0;
+	public static final int PKS_DROP = 1;
+	
 	public static final int NPC_BEHAVE_IDLE 	= -1;
 	public static final int NPC_BEHAVE_TALK 	= 0;
 	public static final int NPC_BEHAVE_SELL 	= 1;
@@ -47,7 +53,8 @@ public class InfiniteCst {
 	/**
 	 * Amount of milliseconds for let regeneration occurs on Character stats
 	 */
-	public static final long CHARACTER_REGENERATION_TIME = 5 * 60 * 1000; 
+	//public static final long CHARACTER_REGENERATION_TIME = 5 * 60 * 1000;
+	public static final long CHARACTER_REGENERATION_TIME = 5* 1000;
 	
 	
 }

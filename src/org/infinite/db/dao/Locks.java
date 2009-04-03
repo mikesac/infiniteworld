@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1
+// Generated 31-mar-2009 22.04.43 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,10 +11,11 @@ import java.util.Set;
 public class Locks implements java.io.Serializable {
 
 	private Integer id;
+	private Locks locks;
 	private String name;
-	private Integer parentId;
 	private Set<AreaItem> areaItems = new HashSet<AreaItem>(0);
 	private Set<Area> areas = new HashSet<Area>(0);
+	private Set<Locks> lockses = new HashSet<Locks>(0);
 
 	public Locks() {
 	}
@@ -23,12 +24,13 @@ public class Locks implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Locks(String name, Integer parentId, Set<AreaItem> areaItems,
-			Set<Area> areas) {
+	public Locks(Locks locks, String name, Set<AreaItem> areaItems,
+			Set<Area> areas, Set<Locks> lockses) {
+		this.locks = locks;
 		this.name = name;
-		this.parentId = parentId;
 		this.areaItems = areaItems;
 		this.areas = areas;
+		this.lockses = lockses;
 	}
 
 	public Integer getId() {
@@ -39,20 +41,20 @@ public class Locks implements java.io.Serializable {
 		this.id = id;
 	}
 
+	public Locks getLocks() {
+		return this.locks;
+	}
+
+	public void setLocks(Locks locks) {
+		this.locks = locks;
+	}
+
 	public String getName() {
 		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getParentId() {
-		return this.parentId;
-	}
-
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
 	}
 
 	public Set<AreaItem> getAreaItems() {
@@ -69,6 +71,14 @@ public class Locks implements java.io.Serializable {
 
 	public void setAreas(Set<Area> areas) {
 		this.areas = areas;
+	}
+
+	public Set<Locks> getLockses() {
+		return this.lockses;
+	}
+
+	public void setLockses(Set<Locks> lockses) {
+		this.lockses = lockses;
 	}
 
 }

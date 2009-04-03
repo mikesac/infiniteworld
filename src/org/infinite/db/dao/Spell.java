@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1
+// Generated 31-mar-2009 22.04.43 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,9 +33,9 @@ public class Spell implements java.io.Serializable {
 	private String damage;
 	private Integer savingthrow;
 	private Integer initiative;
+	private Set<PlayerKnowSpell> playerKnowSpells = new HashSet<PlayerKnowSpell>(
+			0);
 	private Set<Player> players = new HashSet<Player>(0);
-	private Set<Item> items = new HashSet<Item>(0);
-	private Set<Player> players_1 = new HashSet<Player>(0);
 
 	public Spell() {
 	}
@@ -75,8 +75,8 @@ public class Spell implements java.io.Serializable {
 			Integer reqCha, Integer reqLev, Integer modStr, Integer modInt,
 			Integer modWis, Integer modDex, Integer modCha, float price,
 			Integer lev, Integer duration, Integer spelltype, String damage,
-			Integer savingthrow, Integer initiative, Set<Player> players,
-			Set<Item> items, Set<Player> players_1) {
+			Integer savingthrow, Integer initiative,
+			Set<PlayerKnowSpell> playerKnowSpells, Set<Player> players) {
 		this.name = name;
 		this.desc = desc;
 		this.image = image;
@@ -99,9 +99,8 @@ public class Spell implements java.io.Serializable {
 		this.damage = damage;
 		this.savingthrow = savingthrow;
 		this.initiative = initiative;
+		this.playerKnowSpells = playerKnowSpells;
 		this.players = players;
-		this.items = items;
-		this.players_1 = players_1;
 	}
 
 	public Integer getId() {
@@ -288,28 +287,20 @@ public class Spell implements java.io.Serializable {
 		this.initiative = initiative;
 	}
 
+	public Set<PlayerKnowSpell> getPlayerKnowSpells() {
+		return this.playerKnowSpells;
+	}
+
+	public void setPlayerKnowSpells(Set<PlayerKnowSpell> playerKnowSpells) {
+		this.playerKnowSpells = playerKnowSpells;
+	}
+
 	public Set<Player> getPlayers() {
 		return this.players;
 	}
 
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
-	}
-
-	public Set<Item> getItems() {
-		return this.items;
-	}
-
-	public void setItems(Set<Item> items) {
-		this.items = items;
-	}
-
-	public Set<Player> getPlayers_1() {
-		return this.players_1;
-	}
-
-	public void setPlayers_1(Set<Player> players_1) {
-		this.players_1 = players_1;
 	}
 
 }

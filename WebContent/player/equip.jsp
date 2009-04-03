@@ -11,7 +11,7 @@
 	if (StartPlaying.redirectToCharSelect(session, request, response))
 		return;
 
-	Character c = (Character)session.getAttribute("character");
+	Character c = (Character)session.getAttribute(PagesCst.CONTEXT_CHARACTER);
 %>
 
 <%@page import="org.infinite.web.PagesCst"%>
@@ -115,13 +115,13 @@
 							<form action="<%=request.getContextPath()%>/equip" method="POST">
 							<input type="hidden" name="itemid" value="<%=pois.get(i).getId()%>"/>
 							<input type="hidden" name="mode" value="<%=InfiniteCst.POI_EQUIP%>"/>
-							<input type="submit" value="Equip" style="font-size: 7pt;width:50px;"/>
+							<input type="submit" value="Equip" class="buttonstyle" />
 							</form>
 						
 							<form action="<%=request.getContextPath()%>/equip" method="POST" onsubmit="return confirmDrop();">
 							<input type="hidden" name="itemid" value="<%=pois.get(i).getId()%>"/>
 							<input type="hidden" name="mode" value="<%=InfiniteCst.POI_DROP%>"/>
-							<input type="submit" value="Drop" style="font-size: 7pt;width:50px;"/>
+							<input type="submit" value="Drop" class="buttonstyle"/>
 							</form>
 						
 						</td>

@@ -2,8 +2,8 @@
 <Context>
 	<WatchedResource>WEB-INF/web.xml</WatchedResource>
 	<Realm className="org.apache.catalina.realm.JDBCRealm"
-		driverName="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/mikesac"
-		connectionName="mikesac" connectionPassword="qemenldan" userTable="tomcat_users"
+		driverName="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/mikesac_mikesac"
+		connectionName="mikesac_mikesac" connectionPassword="qemenldan" userTable="tomcat_users"
 		userRoleTable="tomcat_roles" userNameCol="user" userCredCol="password"
 		roleNameCol="role" />
 </Context>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 31-mar-2009 0.21.58 by Hibernate Tools 3.2.4.CR1 -->
+<hibernate-mapping>
+    <class name="org.infinite.db.dao.SpellAffectPlayer" table="SpellAffectPlayer" catalog="mikesac_mikesac">
+        <composite-id name="id" class="org.infinite.db.dao.SpellAffectPlayerId">
+            <key-property name="playerid" type="java.lang.Integer">
+                <column name="Playerid" />
+            </key-property>
+            <key-property name="spellid" type="java.lang.Integer">
+                <column name="Spellid" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

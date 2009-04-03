@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1
+// Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1
 
 import java.util.List;
 import javax.naming.InitialContext;

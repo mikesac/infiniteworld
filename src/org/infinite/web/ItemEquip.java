@@ -24,8 +24,11 @@ public class ItemEquip extends HttpServlet {
 		String p_mode = req.getParameter("mode");
 		
 		Character c = PagesCst.getCharacter(req, resp);
-		if(c==null)
+		if(c==null){
+			//redirect already set in getCharacter
 			return;
+		}
+		
 		
 		if( p_id==null || p_mode == null){
 			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "Could not access this page directly, missing parameters!");
@@ -41,21 +44,13 @@ public class ItemEquip extends HttpServlet {
 				mode=-1;
 			
 			switch (mode) {
-			case InfiniteCst.POI_EQUIP:
-				
-				if(poi.getItem().getType() == InfiniteCst.ITEM_TYPE_WEAPON)
-					c.equipHandRight(poi);
-				else if ( poi.getItem().getType() == InfiniteCst.ITEM_TYPE_SHIELD) {
-					c.equipHandLeft(poi);
-				}
-				else if(poi.getItem().getType() == InfiniteCst.ITEM_TYPE_ARMOR){
-					c.equipBody(poi);
-				}else{
-					req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "Cannot equip "+poi.getItem().getName() );
-				}
-				
+			case InfiniteCst.POI_EQUIP:				
+				try {
+						c.wearItem(poi);
+					} catch (Exception e) {
+						req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, e.getMessage());
+					}
 				break;
-
 			case InfiniteCst.POI_DROP:
 				c.dropItem(poi);
 				break;

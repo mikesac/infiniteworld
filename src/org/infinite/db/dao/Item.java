@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1
+// Generated 31-mar-2009 22.04.43 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,6 @@ import java.util.Set;
 public class Item implements java.io.Serializable {
 
 	private Integer id;
-	private Spell spell;
 	private String name;
 	private String descr;
 	private String image;
@@ -29,6 +28,7 @@ public class Item implements java.io.Serializable {
 	private Integer modCha;
 	private float price;
 	private Integer lev;
+	private Integer spell;
 	private String damage;
 	private Integer initiative;
 	private Integer durability;
@@ -38,13 +38,12 @@ public class Item implements java.io.Serializable {
 	public Item() {
 	}
 
-	public Item(Spell spell, String name, String descr, String image,
-			Integer costAp, Integer reqStr, Integer reqInt, Integer reqWis,
-			Integer reqDex, Integer reqCha, Integer reqLev, Integer modStr,
-			Integer modInt, Integer modWis, Integer modDex, Integer modCha,
-			float price, Integer lev, String damage, Integer initiative,
+	public Item(String name, String descr, String image, Integer costAp,
+			Integer reqStr, Integer reqInt, Integer reqWis, Integer reqDex,
+			Integer reqCha, Integer reqLev, Integer modStr, Integer modInt,
+			Integer modWis, Integer modDex, Integer modCha, float price,
+			Integer lev, Integer spell, String damage, Integer initiative,
 			Integer durability, Integer type) {
-		this.spell = spell;
 		this.name = name;
 		this.descr = descr;
 		this.image = image;
@@ -62,19 +61,19 @@ public class Item implements java.io.Serializable {
 		this.modCha = modCha;
 		this.price = price;
 		this.lev = lev;
+		this.spell = spell;
 		this.damage = damage;
 		this.initiative = initiative;
 		this.durability = durability;
 		this.type = type;
 	}
 
-	public Item(Spell spell, String name, String descr, String image,
-			Integer costAp, Integer reqStr, Integer reqInt, Integer reqWis,
-			Integer reqDex, Integer reqCha, Integer reqLev, Integer modStr,
-			Integer modInt, Integer modWis, Integer modDex, Integer modCha,
-			float price, Integer lev, String damage, Integer initiative,
+	public Item(String name, String descr, String image, Integer costAp,
+			Integer reqStr, Integer reqInt, Integer reqWis, Integer reqDex,
+			Integer reqCha, Integer reqLev, Integer modStr, Integer modInt,
+			Integer modWis, Integer modDex, Integer modCha, float price,
+			Integer lev, Integer spell, String damage, Integer initiative,
 			Integer durability, Integer type, Set<PlayerOwnItem> playerOwnItems) {
-		this.spell = spell;
 		this.name = name;
 		this.descr = descr;
 		this.image = image;
@@ -92,6 +91,7 @@ public class Item implements java.io.Serializable {
 		this.modCha = modCha;
 		this.price = price;
 		this.lev = lev;
+		this.spell = spell;
 		this.damage = damage;
 		this.initiative = initiative;
 		this.durability = durability;
@@ -105,14 +105,6 @@ public class Item implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Spell getSpell() {
-		return this.spell;
-	}
-
-	public void setSpell(Spell spell) {
-		this.spell = spell;
 	}
 
 	public String getName() {
@@ -249,6 +241,14 @@ public class Item implements java.io.Serializable {
 
 	public void setLev(Integer lev) {
 		this.lev = lev;
+	}
+
+	public Integer getSpell() {
+		return this.spell;
+	}
+
+	public void setSpell(Integer spell) {
+		this.spell = spell;
 	}
 
 	public String getDamage() {

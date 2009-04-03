@@ -123,12 +123,12 @@ public class AIEngine {
 
 		//get all available weapons		
 		for (int i = 0; i < m.getInventory().size(); i++) {						
-			if(m.getInventory().elementAt(i).getType()==InfiniteCst.EQUIP_ISWEAPON){
-				availableAttacks.add( m.getInventory().elementAt(i));
-				totalCost += m.getInventory().elementAt(i).getCostAp();
-				totalInit += m.getInventory().elementAt(i).getInitiative();
-				totalMax += GenericUtil.getMaxRollDice( m.getInventory().elementAt(i).getDamage() );
-				totalMin += GenericUtil.getMinRollDice( m.getInventory().elementAt(i).getDamage() );
+			if(m.getInventory().get(i).getItem().getType()==InfiniteCst.EQUIP_ISWEAPON){
+				availableAttacks.add( m.getInventory().get(i).getItem());
+				totalCost += m.getInventory().get(i).getItem().getCostAp();
+				totalInit += m.getInventory().get(i).getItem().getInitiative();
+				totalMax += GenericUtil.getMaxRollDice( m.getInventory().get(i).getItem().getDamage() );
+				totalMin += GenericUtil.getMinRollDice( m.getInventory().get(i).getItem().getDamage() );
 			}
 		}
 
@@ -144,12 +144,12 @@ public class AIEngine {
 
 		//get all available spells which can be cast
 		for (int i = 0; i < m.getSpellBookFight().size(); i++) {						
-			if(m.getSpellBookFight().elementAt(i).getCostMp() <= m.getPointsMagic() ){
-				availableAttacks.add( m.getSpellBookFight().elementAt(i));
-				totalCost += m.getSpellBookFight().elementAt(i).getCostMp();
-				totalInit += m.getSpellBookFight().elementAt(i).getInitiative();
-				totalMax += GenericUtil.getMaxRollDice( m.getSpellBookFight().elementAt(i).getDamage() );
-				totalMin += GenericUtil.getMinRollDice( m.getSpellBookFight().elementAt(i).getDamage() );
+			if(m.getSpellBookFight().get(i).getSpell().getCostMp() <= m.getPointsMagic() ){
+				availableAttacks.add( m.getSpellBookFight().get(i).getSpell());
+				totalCost += m.getSpellBookFight().get(i).getSpell().getCostMp();
+				totalInit += m.getSpellBookFight().get(i).getSpell().getInitiative();
+				totalMax += GenericUtil.getMaxRollDice( m.getSpellBookFight().get(i).getSpell().getDamage() );
+				totalMin += GenericUtil.getMinRollDice( m.getSpellBookFight().get(i).getSpell().getDamage() );
 			}
 		}
 

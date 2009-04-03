@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 19-mar-2009 18.12.08 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
-    <class name="org.infinite.db.dao.Locks" table="locks" catalog="mikesac">
+    <class name="org.infinite.db.dao.Locks" table="locks" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
+        <many-to-one name="locks" class="org.infinite.db.dao.Locks" fetch="select">
+            <column name="parentId" />
+        </many-to-one>
         <property name="name" type="string">
             <column name="name" not-null="true" />
-        </property>
-        <property name="parentId" type="java.lang.Integer">
-            <column name="parentId" />
         </property>
         <set name="areaItems" inverse="true">
             <key>
@@ -29,6 +29,12 @@
                 </column>
             </key>
             <one-to-many class="org.infinite.db.dao.Area" />
+        </set>
+        <set name="lockses" inverse="true">
+            <key>
+                <column name="parentId" />
+            </key>
+            <one-to-many class="org.infinite.db.dao.Locks" />
         </set>
     </class>
 </hibernate-mapping>

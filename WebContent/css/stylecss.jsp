@@ -234,3 +234,34 @@ font-family: Verdana,Arial;
 	width:44px;height:44px;
 	background-repeat:no-repeat;
 	}
+	
+#spellbook{
+	width:700px;
+	height:542px;
+}
+
+#triskel{
+	width:228px; height:225px; 
+	background-image: url(<%=request.getContextPath()%>/imgs/web/spell/triskel.png);
+	background-repeat:no-repeat;
+}
+
+.bookpg1{
+	border:0px;width:282px;height:443px; background-image: url("<%=request.getContextPath()%>/imgs/web/spell/bookbg.png");background-repeat:repeat-y;
+	}
+	
+.bookpg2{
+	border:0px;width:282px;height:443px;
+	background-image: url("<%=request.getContextPath()%>/imgs/web/spell/bookbg2.png");
+	background-repeat:repeat-y;
+	}
+	
+#book_n{width:700px;height:28px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_n.png");background-repeat:no-repeat;}
+#book_w{width:55px;height:443px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_w.png");background-repeat:no-repeat;}
+#book_p1{width:282px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/bookbg.png");background-repeat:repeat-y;}
+#book_c{width:27px;height:443px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_c.png");background-repeat:no-repeat;}
+#book_p2{width:282px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/bookbg2.png");background-repeat:repeat-y;}
+#book_e{width:55px;height:443px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_e.png");background-repeat:no-repeat;}
+#book_s{width:700px;height:71px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_s.png");background-repeat:no-repeat;}
+
+.buttonstyle{font-size: 7pt;width:50px;}	

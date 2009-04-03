@@ -6,35 +6,37 @@
 		<sql-type jdbc-type="INTEGER"
 			hibernate-type="java.lang.Integer" />
 	</type-mapping>
-
-
-
-	<table-filter match-catalog="mikesac" match-name="Area" />
-	<table-filter match-catalog="mikesac" match-name="Item" />
-	<table-filter match-catalog="mikesac" match-name="NPC" />
-	<table-filter match-catalog="mikesac" match-name="Spell" />
-	<table-filter match-catalog="mikesac" match-name="locks" />
-	<table-filter match-name="Player" match-catalog="mikesac">
-		<meta attribute="dynamic-insert">true</meta>
+	<table-filter match-name="Area" match-catalog="mikesac_mikesac"></table-filter>
+	<table-filter match-name="AreaItem"
+		match-catalog="mikesac_mikesac">
 	</table-filter>
+	<table-filter match-name="Item" match-catalog="mikesac_mikesac"></table-filter>
+	<table-filter match-name="NPC" match-catalog="mikesac_mikesac"></table-filter>
+	<table-filter match-name="Player" match-catalog="mikesac_mikesac"></table-filter>
 	<table-filter match-name="PlayerKnowSpell"
-		match-catalog="mikesac">
+		match-catalog="mikesac_mikesac">
 	</table-filter>
-	<table-filter match-name="Spell" match-catalog="mikesac"></table-filter>
+	<table-filter match-name="PlayerOwnItem"
+		match-catalog="mikesac_mikesac">
+	</table-filter>
+	<table-filter match-name="Spell" match-catalog="mikesac_mikesac"></table-filter>
 	<table-filter match-name="SpellAffectPlayer"
-		match-catalog="mikesac">
+		match-catalog="mikesac_mikesac">
 	</table-filter>
-	<table-filter match-name="PlayerOwnItem" match-catalog="mikesac" ></table-filter>
-	<table-filter match-name="tomcat_users" match-catalog="mikesac"></table-filter>
-	<table-filter match-name="tomcat_roles" match-catalog="mikesac"></table-filter>
-	<table-filter match-name="AreaItem" match-catalog="mikesac"></table-filter>
-	<table catalog="mikesac" name="Player">
+	<table-filter match-name="locks" match-catalog="mikesac_mikesac"></table-filter>
+	<table-filter match-name="tomcat_roles"
+		match-catalog="mikesac_mikesac">
+	</table-filter>
+	<table-filter match-name="tomcat_users"
+		match-catalog="mikesac_mikesac">
+	</table-filter>
+	<table catalog="mikesac_mikesac" name="Player">
 		<meta attribute="not-null">false</meta>
 		<column name="id" type="int">
 			<meta attribute="not-null">true</meta>
 		</column>
 	</table>
-	<table catalog="mikesac" name="PlayerOwnItem">
+	<table catalog="mikesac_mikesac" name="PlayerOwnItem">
 		<meta attribute="not-null">false</meta>
 		<column name="id" type="int">
 			<meta attribute="not-null">true</meta>
