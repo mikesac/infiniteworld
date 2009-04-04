@@ -335,5 +335,10 @@ public class FightEngine {
 		return em;
 	}
 
+	public static int getAvailableAttackSlot(PlayerInterface p) {
+		int slots = p.getLevel() / InfiniteCst.CFG_LV_TO_BATTLE_PLAN_SLOTS +1;
+		return slots;
+	}
+
 	
 }

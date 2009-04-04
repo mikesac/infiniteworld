@@ -11,7 +11,8 @@
 	if (StartPlaying.redirectToCharSelect(session, request, response))
 		return;
 
-	Character c = (Character)session.getAttribute(PagesCst.CONTEXT_CHARACTER);
+	Character c = (Character) session
+			.getAttribute(PagesCst.CONTEXT_CHARACTER);
 %>
 
 <%@page import="org.infinite.web.PagesCst"%>
@@ -24,94 +25,141 @@
 </head>
 <body>
 
+<%
+	if (session.getAttribute("error") != null) {
+%><%@ include file="../decorators/b2pre.jsp"%>
+<div align="center">
+<div class="error"><%=session.getAttribute("error")%></div>
+</div>
+<%@ include file="../decorators/b2post.jsp"%><br />
+<%
+	session.removeAttribute("error");
+	}
+%>
 
-<div style="width:1020px;">
-<%@ include file="../decorators/b1pre.jsp"%>
+
+<div style="width: 1020px;"><%@ include
+	file="../decorators/b1pre.jsp"%>
 
 <table>
 	<tr>
-		<td width="80px"><center><img src="../imgs/web/btl/sword.png" /></center></td>
-		<td style="width:200px;">
-			<%@ include file="../decorators/b2pre.jsp"%>
-			<center>
-			Equipped weapon
-			<div class="equipped" id="handright">
-				<% 
+		<td width="80px">
+		<center><img src="../imgs/web/btl/sword.png" /></center>
+		</td>
+		<td style="width: 200px;" valign="top"><%@ include
+			file="../decorators/b2pre.jsp"%>
+		<center>
+
+		<table>
+			<tr>
+				<td>Equipped weapon</td>
+			</tr>
+			<tr>
+				<td>
+				<div class="equipped">
+				<%
 					Item it = c.getHandRight();
-					if(it!=null){
-						%>
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
-								<div class="tile"/>
-							</div>
-						<%
+					if (it != null) {
+				%>
+				<div class="iconlarge"
+					style="background-image: url(<%=request.getContextPath()%>/imgs/item/<%=it.getImage()%>.png);">
+				<div class="tile" /></div>
+				<%
 					}
-					
 				%>
 				</div>
-				<button>Add >></button>
-				<br/><br/>
-			<div>Prepared spells</div>
-			<select></select>
-			<div class="equipped" id="handright">
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<button>Add &gt;&gt;</button>
+				</td>
+			</tr>
+
+			<tr>
+				<td>Prepared spells</td>
+			</tr>
+			<tr>
+				<td><select>
+					<%
+						for (int i = 0; i < c.getPreparedSpells().size(); i++) {
+					%><option
+						value="<%=c.getPreparedSpells().get(i).getSpell().getId()%>"
+						img="<%=c.getPreparedSpells().get(i).getSpell().getImage()%>">
+					<%=c.getPreparedSpells().get(i).getSpell().getName()%></option>
+					<%
+						}
+					%>
+				</select></td>
+			</tr>
+			<tr>
+				<td>
+				<div class="equipped">
 				<% 
-					it = c.getHandRight();
-					if(it!=null){
+							
+							if(c.getPreparedSpells().size()!=0){
+								%>
+									<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/spell/<%=c.getPreparedSpells().get(0).getSpell().getImage()%>.png);">
+										<div class="tile"/>
+									</div>
+								<%
+							}
+							
 						%>
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
-								<div class="tile"/>
-							</div>
-						<%
-					}
-					
-				%>
+				
 				</div>
-				<button>Add >></button>
-				<br/><br/>
-			<div>Special Items</div>
-			<select></select>
-			<div class="equipped" id="handright">
-				<% 
-					it = c.getHandRight();
-					if(it!=null){
-						%>
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
-								<div class="tile"/>
-							</div>
-						<%
-					}
-					
-				%>
-				</div>
-				<button>Add >></button>
-				<br/>
-			</center>
-			<%@ include file="../decorators/b2post.jsp"%>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<button>Add &gt;&gt;</button>
+				</td>
+			</tr>
+			<tr>
+				<td>Special Items</td>
+			</tr>
+			<tr>
+				<td><select></select></td>
+			</tr>
+			<tr>
+				<td>
+				<div class="equipped"></div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<button>Add &gt;&gt;</button>
+				</td>
+			</tr>
+		</table>
+
+		</center>
+		<%@ include file="../decorators/b2post.jsp"%>
 		</td>
-		<td style="width:700px;" valign="top">
-			
-			
-			<%@ include file="../decorators/b2pre.jsp"%>
-			<center>
-			Choose your attack strategy.<br/>One action will be performed on each round in the choosen order in a loop.<br/>
-			Action slots will increase leveling up.
-			</center>
-			<%@ include file="../decorators/b2post.jsp"%>			
-			<br/>
-			<%@ include file="../decorators/b2pre.jsp"%>
-			<div style="width:550px;height:400px; overflow: auto">
-			<div></div>
-			<%@ include file="../decorators/b2post.jsp"%>
-			</div>
-			
-			
+		<td style="width: 700px;" valign="top"><%@ include
+			file="../decorators/b2pre.jsp"%>
+		<center>Choose your attack strategy. ( <%=c.getAvailableAttackSlot()%> slots left)<br />
+		One action will be performed on each round in the chosen order in a
+		loop.<br />
+		Action slots will increase leveling up.</center>
+		<%@ include file="../decorators/b2post.jsp"%>
+		<br />
+		<%@ include file="../decorators/b2pre.jsp"%>
+		<div style="width: 550px; height: 400px; overflow: auto">
+		<div></div>
+		<%@ include file="../decorators/b2post.jsp"%>
+		</div>
+
+
 		</td>
-		<td width="80px"><center><img src="../imgs/web/btl/wand.png" /></center></td>
+		<td width="80px">
+		<center><img src="../imgs/web/btl/wand.png" /></center>
+		</td>
 	</tr>
 </table>
 
-
-<%@ include file="../decorators/b1post.jsp"%>
-</div></div>
+<%@ include file="../decorators/b1post.jsp"%></div>
+</div>
 
 
 </body>

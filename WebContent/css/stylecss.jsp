@@ -224,7 +224,7 @@ font-family: Verdana,Arial;
 .avatar{margin:5px 5px 5px 5px;width: 100px;height: 100px;border:5px double #61402D;}
 
 .equipbody{width:500px;height:500px;background-image:url('<%=request.getContextPath()%>/imgs/web/equip_bg.png');background-repeat:no-repeat;}
-.equipped{width:80px;height:80px;background-image: url("<%=request.getContextPath()%>/imgs/web/bg2.gif");border:3px inset gray;}
+.equipped{width:70px;height:70px;background-image: url("<%=request.getContextPath()%>/imgs/web/bg2.gif");border:3px inset gray;}
 
 .smallfont{font-size: 7pt;}
 

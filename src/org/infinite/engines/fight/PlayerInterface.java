@@ -98,4 +98,6 @@ public interface PlayerInterface{
 
 	public void addToPreparedSpells(PlayerKnowSpell pks);
 
+	public int getLevel();
+
 }

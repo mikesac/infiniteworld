@@ -12,6 +12,7 @@ import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
+import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.engines.items.ItemsEngine;
 import org.infinite.engines.items.ItemsInterface;
@@ -61,7 +62,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 	/*
 	 * Spells prepared for fight
 	 */
-	private ArrayList<PlayerKnowSpell> preparedSpells = null;
+	private ArrayList<PlayerKnowSpell> preparedSpells = new ArrayList<PlayerKnowSpell>();
 
 	/*
 	 * Spells cast over player
@@ -69,6 +70,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 	private Vector<Spell> spellsAffecting = new Vector<Spell>();
 
 
+	@SuppressWarnings("unchecked")
 	public Character(String name, String accountName){
 
 		//get character Dao
@@ -82,7 +84,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 			equipItem(poi.get(i));
 		}
 		
-		//get spellbook and assign
+		//get spell book and assign
 		ArrayList<PlayerKnowSpell> pks = (ArrayList<PlayerKnowSpell>) Manager.listByQery("from org.infinite.db.dao.PlayerKnowSpell pks join fetch pks.spell a where pks.player='"+getDao().getId()+"'");
 		for (int i = 0; i < pks.size(); i++) {
 			learnSpell( pks.get(i) , false );
@@ -354,7 +356,13 @@ public class Character implements PlayerInterface, ItemsInterface {
 		return preparedSpells;
 	}
 
+	public int getAvailableSpellSlot(){
+		return MagicEngine.getAvailableSpellSlots(this);
+	}
 	
+	public int getAvailableAttackSlot(){
+		return FightEngine.getAvailableAttackSlot(this);
+	}
 
 	public String getPic() {
 		return getDao().getImage();
@@ -486,12 +494,10 @@ public class Character implements PlayerInterface, ItemsInterface {
 	}
 
 
+	@Override
 	public int getLevel(){
 		return getDao().getLevel();
 	}
-
-
-
 
 	@SuppressWarnings("unchecked")
 	public static List<Player> getCharacterListing(String account){
@@ -671,7 +677,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		//milliseconds to the next regeneration
 		if(getDao().getStatsMod()==0)
 			return 0;
-		long time = (getDao().getStatsMod() + InfiniteCst.CHARACTER_REGENERATION_TIME - (new Date()).getTime() );
+		long time = (getDao().getStatsMod() + InfiniteCst.CFG_CHAR_REGEN_TIME - (new Date()).getTime() );
 		if(time<0)
 			time = 0;
 		return time;
@@ -686,7 +692,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 			long now = (new Date()).getTime();
 			//eval how many time the regeneration time has elapsed
-			int n = (int)Math.floor((now-time)/InfiniteCst.CHARACTER_REGENERATION_TIME) ;
+			int n = (int)Math.floor((now-time)/InfiniteCst.CFG_CHAR_REGEN_TIME) ;
 
 			//at lease one regeneration occurs
 			if(n>0){
@@ -699,7 +705,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 				if(ll<c.getPointsLifeMax() || mm<c.getPointsMagicMax() || aa<c.getPointsActionMax() || cc < c.getPointsCharmMax())
 				{
 					//if still not at maximum, update time
-					time = time + (n * InfiniteCst.CHARACTER_REGENERATION_TIME);
+					time = time + (n * InfiniteCst.CFG_CHAR_REGEN_TIME);
 				}
 				else{
 					//else set timet to zero

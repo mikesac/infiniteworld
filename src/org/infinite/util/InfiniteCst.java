@@ -53,8 +53,14 @@ public class InfiniteCst {
 	/**
 	 * Amount of milliseconds for let regeneration occurs on Character stats
 	 */
-	//public static final long CHARACTER_REGENERATION_TIME = 5 * 60 * 1000;
-	public static final long CHARACTER_REGENERATION_TIME = 5* 1000;
+	//public static final long CFG_CHAR_REGEN_TIME = 5 * 60 * 1000;
+	public static final long CFG_CHAR_REGEN_TIME = 5* 1000;
+
+	/**
+	 * Magic Points to get a spell slot
+	 */
+	public static final int CFG_MP_TO_SPELLS_SLOTS = 5;
+	public static final int CFG_LV_TO_BATTLE_PLAN_SLOTS = 5;
 	
 	
 }

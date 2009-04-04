@@ -5,7 +5,7 @@
 <%@page import="org.infinite.objects.Map"%>
 <%@page import="org.infinite.web.account.StartPlaying"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="org.infinite.db.dao.Item"%>
+<%@page import="org.infinite.db.dao.Spell"%>
 <%@page import="org.infinite.objects.Character"%>
 <%
 	if (StartPlaying.redirectToCharSelect(session, request, response))
@@ -20,9 +20,7 @@
 %>
 
 <%@page import="org.infinite.web.PagesCst"%>
-<%@page import="org.infinite.db.dao.Item"%>
 <%@page import="org.infinite.util.InfiniteCst"%>
-<%@page import="org.infinite.db.dao.PlayerOwnItem"%>
 <%@page import="org.infinite.db.dao.PlayerKnowSpell"%>
 <%@page import="org.infinite.util.GenericUtil"%><html>
 <head>
@@ -31,6 +29,16 @@
 </head>
 <body>
 
+<%
+	if(session.getAttribute("error")!=null){
+		%><%@ include file="../decorators/b2pre.jsp"%>
+<div align="center">
+<div class="error"><%=session.getAttribute("error")%></div>
+</div>
+<%@ include file="../decorators/b2post.jsp"%><br />
+<%
+	session.removeAttribute("error");
+	}%>
 
 <div style="width: 1020px;"><%@ include
 	file="../decorators/b1pre.jsp"%>
@@ -71,30 +79,36 @@
 						
 						%>
 					<tr>
-						<td><img width="50" height="50"
-							src="../imgs/spell/<%=pks.get(0).getSpell().getImage()%>.png" />
-						</td>
-						<td nowrap="nowrap"><%=pks.get(0).getSpell().getName()%></td>
 						<td>
-						<table>
+						<table class="char">
 							<tr>
-								<td valign="bottom">
-								<form action="<%=request.getContextPath()%>/prepare" method="GET">
-									<input type="hidden" name="spellid"	value="<%=pks.get(i).getId()%>" />
-									<input type="submit" value="Detail" class="buttonstyle" /></form>
+								<td>
+									<div class="iconlarge" style="background-image: url(../imgs/spell/<%=pks.get(0).getSpell().getImage()%>.png);">
+										<div class="tile"/>
+									</div>
 								</td>
-							</tr>
-							<tr>
-								<td valign="bottom">
-								<form action="<%=request.getContextPath()%>/prepare"
-									method="POST"><input type="hidden" name="spellid"
-									value="<%=pks.get(i).getId()%>" /> <input type="hidden"
-									name="mode" value="<%=InfiniteCst.PKS_EQUIP%>" /> <input
-									type="submit" value="Prepare" class="buttonstyle" /></form>
+								<td nowrap="nowrap"><%=pks.get(0).getSpell().getName()%></td>
+								<td>
+								<table>
+									<tr>
+										<td valign="bottom">
+										<button class="buttonstyle"
+											onclick="openBook(<%=pks.get(i).getId()%>)">Details</button>
+										</td>
+									</tr>
+									<tr>
+										<td valign="bottom">
+										<form action="<%=request.getContextPath()%>/prepare"
+											method="POST"><input type="hidden" name="spellid"
+											value="<%=pks.get(i).getId()%>" /> <input type="hidden"
+											name="mode" value="<%=InfiniteCst.PKS_EQUIP%>" /> <input
+											type="submit" value="Prepare" class="buttonstyle" /></form>
+										</td>
+									</tr>
+								</table>
 								</td>
 							</tr>
 						</table>
-						</td>
 					</tr>
 					<%
 					}
@@ -104,7 +118,9 @@
 				</div>
 				</td>
 				<td id="book_c"></td>
-				<td id="book_p2"></td>
+				<td id="book_p2">
+				<div id="detail_page"></div>
+				</td>
 				<td id="book_e"></td>
 			</tr>
 			<tr>
@@ -129,36 +145,50 @@
 	<tr>
 		<td valign="middle" align="center"><%@ include
 			file="../decorators/b2pre.jsp"%>Prepared
-		Spells
-		<table border=1>
+		Spells ( <%= c.getAvailableSpellSlot() %> Slot left)
+		<div style="width: 200px; height: 250px; overflow: auto;">
+		<table class="char">
+			<%
+			for(int i=0;i<c.getPreparedSpells().size();i++){
+				if(c.getPreparedSpells().get(i).getStatus()==InfiniteCst.SPELL_READY){
+				%>
 			<tr>
-				<td width="70" height="70">&nbsp;</td>
-				<td width="70" height="70">&nbsp;</td>
-				<td width="70" height="70">&nbsp;</td>
+				<td><img width="50" height="50"
+					src="../imgs/spell/<%=c.getPreparedSpells().get(i).getSpell().getImage()%>.png" /></td>
+				<td><%=c.getPreparedSpells().get(i).getSpell().getName()%></td>
+				<td>
+				<form action="<%=request.getContextPath()%>/prepare" method="POST">
+				<input type="hidden" name="spellid"
+					value="<%=c.getPreparedSpells().get(i).getId()%>" /> <input
+					type="hidden" name="mode" value="<%=InfiniteCst.PKS_DROP%>" /> <input
+					type="submit" value="Remove" class="buttonstyle" /></form>
+				</td>
 			</tr>
-			<tr>
-				<td width="70" height="70">&nbsp;</td>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
-			<tr>
-				<td width="70" height="70">&nbsp;</td>
-				<td>&nbsp;</td>
-				<td>&nbsp;</td>
-			</tr>
+			<%
+				}
+			}
+			%>
+
 		</table>
+		</div>
 		<%@ include file="../decorators/b2post.jsp"%>
 		</td>
 	</tr>
 </table>
 <%@ include file="../decorators/b1post.jsp"%></div>
 </div>
+<script type="text/javascript" src="../js/prototype.js"></script>
 <script type="text/javascript">
 	function goPage(id){
 		var url = "<%=request.getContextPath()%><%=PagesCst.PAGE_SPELL%>?<%=PagesCst.CONTEXT_SPELLTYPE%>="+id;
 		document.location=url;
 	}
-</script>
-</body>
 
+	function openBook(id){
+		new Ajax.Updater('detail_page', '<%=request.getContextPath()%>/prepare', {
+			  parameters: { spellid: id },
+			  method: 'get'
+			});
+	}
+</script>
 </html>

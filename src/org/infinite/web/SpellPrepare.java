@@ -13,6 +13,7 @@ import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
 import org.infinite.objects.Character;
 import org.infinite.util.InfiniteCst;
+import org.infinite.util.XmlUtil;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -23,45 +24,49 @@ public class SpellPrepare extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)	throws ServletException, IOException {
 
-		String p_id = req.getParameter("spellid");
-		String p_mode = req.getParameter("mode");
+		try{
+			
+			String p_id = req.getParameter("spellid");
+			String p_mode = req.getParameter("mode");
 
-		Character c = PagesCst.getCharacter(req, resp);
-		if(c==null)
-			return;
+			Character c = PagesCst.getCharacter(req, resp);
+			if(c==null)
+				return;
 
-		if( p_id==null || p_mode == null){
-			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "Could not access this page directly, missing parameters!");
-		}
-		else{
-
-			int pksId = Integer.parseInt(p_id);
-			int mode = Integer.parseInt(p_mode);
-
-			PlayerKnowSpell pks = (PlayerKnowSpell) Manager.findById(PlayerKnowSpell.class.getName(), pksId);
-
-			if(pks==null)
-				mode=-1;
-
-			switch (mode) {
-			case InfiniteCst.PKS_EQUIP:				
-				try {
-					c.prepareSpell(pks);
-				} catch (Exception e) {
-					req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, e.getMessage());
-				}
-				break;
-			case InfiniteCst.PKS_DROP:
-				c.unprepareSpell(pksId);
-				break;
-
-			default:
-				req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "Spell ("+pksId+") not found");
-			break;
+			if( p_id==null || p_mode == null){
+				throw new Exception("Could not access this page directly, missing parameters!");
 			}
+			else{
 
+				int pksId = Integer.parseInt(p_id);
+				int mode = Integer.parseInt(p_mode);
 
+				PlayerKnowSpell pks = (PlayerKnowSpell) Manager.findById(PlayerKnowSpell.class.getName(), pksId);
+
+				if(pks==null)
+					mode=-1;
+
+				switch (mode) {
+				case InfiniteCst.PKS_EQUIP:		
+					if(c.getAvailableSpellSlot()==0)
+						throw new Exception("No more slots available!");
+					c.prepareSpell(pks);					
+					break;
+				case InfiniteCst.PKS_DROP:
+					c.unprepareSpell(pksId);
+					break;
+
+				default:
+					throw new Exception( "Spell ("+pksId+") not found") ;
+				}
+
+			}
+			
 		}
+		catch (Exception e) {
+			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, e.getMessage());
+		}
+		
 		resp.sendRedirect( req.getContextPath() + PagesCst.PAGE_SPELL );
 	}
 
@@ -91,11 +96,11 @@ public class SpellPrepare extends HttpServlet {
 			xs.alias("spell", Spell.class);
 			xs.omitField(Spell.class, "playerKnowSpells");
 			xs.omitField(Spell.class, "players");
-			resp.setContentType("text/xml");
+//			resp.setContentType("text/xml");
 			PrintWriter pw = resp.getWriter();
 			Spell s = pks.getSpell(); 
 			String xml = xs.toXML( s );
-//			xml = XmlUtil.xml2String(xml, "spell/book");
+			xml = XmlUtil.xml2String(xml, "spell/book");
 			pw.print( xml );
 
 		}

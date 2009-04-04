@@ -11,12 +11,12 @@ import org.infinite.util.InfiniteCst;
 
 public class MagicEngine {
 
-	
+
 	public static void persistKnowSpell(PlayerKnowSpell pks, int status){
 		pks.setStatus(status);
 		Manager.update(pks);
 	}
-	
+
 	public static Spell castSpell(PlayerInterface player, Spell s) {
 		try {
 			player.addMagicPoints( -1* s.getCostMp() );
@@ -25,7 +25,7 @@ public class MagicEngine {
 		}
 		return s;
 	}
-	
+
 	/**
 	 * Roll a saving throw against a spell
 	 * @param s
@@ -38,18 +38,18 @@ public class MagicEngine {
 		int success = s.getSavingthrow() - victim.getIntelligence() + caster.getIntelligence();
 		return (roll>=success || roll==20);
 	}
-	
-	
+
+
 	public static void learnSpell(PlayerInterface player,Spell spell){}
-	
+
 	public static void  learnSpell(Character player,Spell spell) {
 		PlayerKnowSpell pks = new PlayerKnowSpell(player.getDao(),spell,InfiniteCst.SPELL_KNOWN);
 		learnSpell(player,pks, true);
 	}
-	
-	
+
+
 	public static void learnSpell(Character player,PlayerKnowSpell pks,boolean persist){
-		
+
 		switch ( pks.getSpell().getSpelltype() ) {
 		case InfiniteCst.MAGIC_ATTACK:
 			player.getSpellBookFight().add(pks);
@@ -61,15 +61,18 @@ public class MagicEngine {
 			player.getSpellBookProtect().add(pks);
 			break;
 		}
-		
+
+		if( pks.getStatus() == InfiniteCst.SPELL_READY){
+			player.addToPreparedSpells(pks);
+		}
 		if(persist){
 			Manager.create(pks);
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 	public static void prepareSpell(PlayerInterface player,PlayerKnowSpell pks){
 		prepareSpell(player,pks,true);
 	}
@@ -84,24 +87,28 @@ public class MagicEngine {
 		}
 	}
 
-	
+
 
 	public static void unprepareSpell(PlayerInterface player,int pksId) {
 		PlayerKnowSpell pks = null;
 		for (int i = 0; i < player.getPreparedSpells().size(); i++) {
-			
+
 			if( player.getPreparedSpells().get(i).getId() == pksId){
 				pks = player.getPreparedSpells().remove(i);
 				break;
 			}			
 		}
-		
+
 		if(pks!=null){
 			pks.setStatus(InfiniteCst.SPELL_KNOWN);
-			player.addToPreparedSpells(pks);
 			Manager.update(pks);
 
 		}
 	}
-	
+
+	public static int getAvailableSpellSlots(PlayerInterface p) {
+		int slot = p.getPointsMagic()/InfiniteCst.CFG_MP_TO_SPELLS_SLOTS - p.getPreparedSpells().size();
+		return slot<0?0:slot;
+	}
+
 }

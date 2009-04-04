@@ -25,12 +25,15 @@
 
 <%
 	if(session.getAttribute("error")!=null){
-		%><%@ include file="../decorators/b2pre.jsp"%><%
-		out.print("<div align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
-		session.removeAttribute("error");
-		%><%@ include file="../decorators/b2post.jsp"%><br/><%
-	}
-%>
+		%><%@ include file="../decorators/b2pre.jsp"%>
+<div align="center">
+<div class="error"><%=session.getAttribute("error")%></div>
+</div>
+<%@ include file="../decorators/b2post.jsp"%><br />
+<%
+	session.removeAttribute("error");
+	}%>
+
 
 <div style="width:<% out.print( (Map.MAP_WIDTH + 20) ); %>px;">
 <%@ include file="../decorators/b2pre.jsp"%>
