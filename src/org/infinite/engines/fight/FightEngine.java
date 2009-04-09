@@ -5,8 +5,8 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.infinite.db.dao.Player;
 import org.infinite.db.dao.Spell;
-import org.infinite.objects.Character;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 import org.infinite.util.XmlUtil;
@@ -319,7 +319,7 @@ public class FightEngine {
 		em.setAttribute("name", m.getName() );
 		em.setAttribute("first", ""+isFirstPary );
 		
-		if(m instanceof Character){
+		if(m.getDao() instanceof Player){
 			em.setAttribute("img", "../player/"+m.getPic() );
 		}
 		else{
@@ -336,7 +336,7 @@ public class FightEngine {
 	}
 
 	public static int getAvailableAttackSlot(PlayerInterface p) {
-		int slots = p.getLevel() / InfiniteCst.CFG_LV_TO_BATTLE_PLAN_SLOTS +1;
+		int slots = 10;//p.getLevel() / InfiniteCst.CFG_LV_TO_BATTLE_PLAN_SLOTS +1;
 		return slots;
 	}
 

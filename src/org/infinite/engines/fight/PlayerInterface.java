@@ -8,6 +8,7 @@ import org.infinite.db.dao.Spell;
 
 public interface PlayerInterface{
 
+	// ----------------- Fight Interface -----------------
 	public int getBaseCA();
 
 	public int getTotalCA();
@@ -30,8 +31,6 @@ public interface PlayerInterface{
 
 	public void restRound(int i);
 
-	public int getSpellDuration();
-
 	public int getAttackDamage();
 
 	public boolean isAlive();
@@ -42,6 +41,37 @@ public interface PlayerInterface{
 
 	public Item[] getRewardItems();
 
+	
+	// ----------------- Spell Interface -----------------
+	
+	public int getSpellDuration();
+	
+	public boolean rollSavingThrow(Spell s, PlayerInterface caster);	
+
+	public ArrayList<PlayerKnowSpell> getSpellBookFight();
+
+	public ArrayList<PlayerKnowSpell> getSpellBookHeal();
+
+	public ArrayList<PlayerKnowSpell> getSpellBookProtect();
+
+	public void learnSpell(Spell spell);
+	
+	public void prepareSpell(PlayerKnowSpell pks);
+	
+	public void unprepareSpell(int pksId);
+	
+	public Spell castSpell( Spell s);
+
+	public ArrayList<PlayerKnowSpell> getPreparedSpells();
+
+	public void addToPreparedSpells(PlayerKnowSpell pks);
+	
+	// ----------------- Character Interface -----------------
+	
+	public Object getDao();
+
+	public int getLevel();
+	
 	public String getName();	
 
 	public Item getHandRight();
@@ -51,8 +81,6 @@ public interface PlayerInterface{
 	public Item getBody();
 
 	public String getPic();
-
-	public boolean rollSavingThrow(Spell s, PlayerInterface caster);	
 
 	public int getStrenght();
 	
@@ -85,19 +113,5 @@ public interface PlayerInterface{
 	public int addActionPoints(int points) throws Exception;
 
 	public int addCharmPoints(int points) throws Exception;
-	
-	public void learnSpell(Spell spell);
-	
-	public void prepareSpell(PlayerKnowSpell pks);
-	
-	public void unprepareSpell(int pksId);
-	
-	public Spell castSpell( Spell s);
-
-	public ArrayList<PlayerKnowSpell> getPreparedSpells();
-
-	public void addToPreparedSpells(PlayerKnowSpell pks);
-
-	public int getLevel();
 
 }

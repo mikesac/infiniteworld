@@ -673,7 +673,7 @@ return true;
 <table class="ewTable">
 	<tr>
 		<td class="ewTableHeader">id&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_id== null || ((String)x_id).equals("")) {x_id = "0"; } // set default value %><input type="text" name="x_id" size="30" value="<%= HTMLEncode((String)x_id) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_id" size="30" value="<%= HTMLEncode((String)x_id) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">name&nbsp;</td>
@@ -733,11 +733,11 @@ return true;
 	</tr>
 	<tr>
 		<td class="ewTableHeader">area&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_area== null || ((String)x_area).equals("")) {x_area = "0"; } // set default value %><input type="text" name="x_area" size="30" value="<%= HTMLEncode((String)x_area) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_area" size="30" value="<%= HTMLEncode((String)x_area) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">gold&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_gold== null || ((String)x_gold).equals("")) {x_gold = "0"; } // set default value %><input type="text" name="x_gold" size="30" value="<%= HTMLEncode((String)x_gold) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_gold" size="30" value="<%= HTMLEncode((String)x_gold) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">xml dialog&nbsp;</td>
@@ -761,7 +761,7 @@ return true;
 	</tr>
 	<tr>
 		<td class="ewTableHeader">attack&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_attack== null || ((String)x_attack).equals("")) {x_attack = "{""base"":1}"; } // set default value %><input type="text" name="x_attack" size="30" maxlength="255" value="<%= HTMLEncode((String)x_attack) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><% if (x_attack== null || ((String)x_attack).equals("")) {x_attack = "Unarmed,1d1"; } // set default value %><input type="text" name="x_attack" size="30" maxlength="255" value="<%= HTMLEncode((String)x_attack) %>">&nbsp;</td>
 	</tr>
 </table>
 <p>

@@ -1,39 +1,38 @@
 body {
 	background-color: ; /* background color */
-	color: ; /* text color */
-	font-family: ; /* font name */
+	color: #684331; /* text color */
 	font-size: x-small; /* font size */
 	margin: 0px 0px 0px 0px; /* top right bottom left */
 }
 
 .jspmaker {
-	color: ; /* text color */
-	font-family: ; /* font name */
+	color: #684331; /* text color */
+	font-family: verdana; /* font name */
 	font-size: x-small; /* font size */	
 }
 
 input, textarea, select {	
-	font-family: ; /* font name */
+
 	font-size: x-small; /* font size */
 } 
 
 a:active {
-	color: ; /* active link color */
+	color: #684331; /* active link color */
 }
 
 a:link {
-	color: ; /* link color */
+	color: #684331; /* link color */
 }
 
 a:visited {
-	color: ; /* visited link color */
+	color: #684331; /* visited link color */
 }
 
 /* main table */
 .ewTable {
 	width: ; /* table width */	
 	color: ; /* text color */
-	font-family: ; /* font name */
+
 	font-size: x-small; /* font size */
 	border-collapse: collapse;
 	border: none;
@@ -48,18 +47,20 @@ a:visited {
 
 /* main table header cells */
 .ewTableHeader {
+	background-image:url("/InfiniteWeb/imgs/web/bg2.gif");
 	background-color: #594FBF; /* header color */
-	color: #FFFFFF; /* header font color */	
+	color: #684331; /* header font color */	
 	vertical-align: top;	
 }
 
 .ewTableHeader a {	
-	color: #FFFFFF; /* header font color */	
+	background-image:url("/InfiniteWeb/imgs/web/bg2.gif");
+	color: #684331; /* header font color */	
 }
 
 /* main table row color */
 .ewTableRow {
-	background-color: #FFFFFF;  /* alt row color 1 */
+	background-color: transparent;  /* alt row color 1 */
 }
 
 /* main table alternate row color */

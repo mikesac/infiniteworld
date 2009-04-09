@@ -29,13 +29,11 @@ String x_image = "";
 String x_costAP = "";
 String x_req_str = "";
 String x_req_int = "";
-String x_req_wis = "";
 String x_req_dex = "";
 String x_req_cha = "";
 String x_req_lev = "";
 String x_mod_str = "";
 String x_mod_int = "";
-String x_mod_wis = "";
 String x_mod_dex = "";
 String x_mod_cha = "";
 String x_price = "";
@@ -96,9 +94,6 @@ try{
 		// req_int
 		x_req_int = String.valueOf(rs.getLong("req_int"));
 
-		// req_wis
-		x_req_wis = String.valueOf(rs.getLong("req_wis"));
-
 		// req_dex
 		x_req_dex = String.valueOf(rs.getLong("req_dex"));
 
@@ -113,9 +108,6 @@ try{
 
 		// mod_int
 		x_mod_int = String.valueOf(rs.getLong("mod_int"));
-
-		// mod_wis
-		x_mod_wis = String.valueOf(rs.getLong("mod_wis"));
 
 		// mod_dex
 		x_mod_dex = String.valueOf(rs.getLong("mod_dex"));
@@ -183,10 +175,6 @@ try{
 		<td class="ewTableAltRow"><% out.print(x_req_int); %>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">req wis&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_req_wis); %>&nbsp;</td>
-	</tr>
-	<tr>
 		<td class="ewTableHeader">req dex&nbsp;</td>
 		<td class="ewTableAltRow"><% out.print(x_req_dex); %>&nbsp;</td>
 	</tr>
@@ -205,10 +193,6 @@ try{
 	<tr>
 		<td class="ewTableHeader">mod int&nbsp;</td>
 		<td class="ewTableAltRow"><% out.print(x_mod_int); %>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="ewTableHeader">mod wis&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_mod_wis); %>&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">mod dex&nbsp;</td>

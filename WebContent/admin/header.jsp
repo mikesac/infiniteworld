@@ -1,13 +1,13 @@
 <html>
 <head>
-	<title>Admin Area</title>
+	<title>Infinite World Admin PAge</title>
 <link href="project1.css" rel="stylesheet" type="text/css" />
 <meta name="generator" content="JSPMaker v1.0.0.0" />
 </head>
 <body>
 <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="10">
 	<tr align="center">
-		<td colspan="2"><span class="jspmaker"><b>Admin Area</b></span></td>
+		<td colspan="2"><span class="jspmaker"><b>Infinite World Admin PAge</b></span></td>
 	</tr>
 <tr>
 	<!-- left column -->

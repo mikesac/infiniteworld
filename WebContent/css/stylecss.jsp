@@ -264,4 +264,9 @@ font-family: Verdana,Arial;
 #book_e{width:55px;height:443px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_e.png");background-repeat:no-repeat;}
 #book_s{width:700px;height:71px;background-image: url("<%=request.getContextPath()%>/imgs/web/spell/book_s.png");background-repeat:no-repeat;}
 
-.buttonstyle{font-size: 7pt;width:50px;}	
+.buttonstyle{font-size: 7pt;width:50px;}
+
+.up{width:30px;background-image: url("<%=request.getContextPath()%>/imgs/web/up.png");background-repeat:no-repeat;background-position: center;}
+.down{width:30px;background-image: url("<%=request.getContextPath()%>/imgs/web/down.png");background-repeat:no-repeat;background-position: center;}
+.rem{width:30px;background-image: url("<%=request.getContextPath()%>/imgs/web/remove.png");background-repeat:no-repeat;background-position: center;}
+.nobut{width:30px;}

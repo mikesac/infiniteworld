@@ -103,7 +103,7 @@ public class NewCharacter extends HttpServlet {
 					1,1,(short)0, //level, px, assign
 					0,//status
 					0.0f, //gold
-					1,"Unarmed,1d1" //nattack, attack
+					1,"Unarmed,1d1","" //nattack, attack,battle
 					);
 			Manager.create(p);
 

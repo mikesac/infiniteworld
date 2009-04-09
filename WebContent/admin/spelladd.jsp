@@ -34,13 +34,11 @@ Object x_image = null;
 Object x_costMp = null;
 Object x_req_str = null;
 Object x_req_int = null;
-Object x_req_wis = null;
 Object x_req_dex = null;
 Object x_req_cha = null;
 Object x_req_lev = null;
 Object x_mod_str = null;
 Object x_mod_int = null;
-Object x_mod_wis = null;
 Object x_mod_dex = null;
 Object x_mod_cha = null;
 Object x_price = null;
@@ -92,13 +90,11 @@ try{
 	x_costMp = String.valueOf(rs.getLong("costMp"));
 	x_req_str = String.valueOf(rs.getLong("req_str"));
 	x_req_int = String.valueOf(rs.getLong("req_int"));
-	x_req_wis = String.valueOf(rs.getLong("req_wis"));
 	x_req_dex = String.valueOf(rs.getLong("req_dex"));
 	x_req_cha = String.valueOf(rs.getLong("req_cha"));
 	x_req_lev = String.valueOf(rs.getLong("req_lev"));
 	x_mod_str = String.valueOf(rs.getLong("mod_str"));
 	x_mod_int = String.valueOf(rs.getLong("mod_int"));
-	x_mod_wis = String.valueOf(rs.getLong("mod_wis"));
 	x_mod_dex = String.valueOf(rs.getLong("mod_dex"));
 	x_mod_cha = String.valueOf(rs.getLong("mod_cha"));
 	x_price = String.valueOf(rs.getDouble("price"));
@@ -147,11 +143,6 @@ try{
 		}else{
 			x_req_int = "";
 		}
-		if (request.getParameter("x_req_wis") != null){
-			x_req_wis = (String) request.getParameter("x_req_wis");
-		}else{
-			x_req_wis = "";
-		}
 		if (request.getParameter("x_req_dex") != null){
 			x_req_dex = (String) request.getParameter("x_req_dex");
 		}else{
@@ -176,11 +167,6 @@ try{
 			x_mod_int = (String) request.getParameter("x_mod_int");
 		}else{
 			x_mod_int = "";
-		}
-		if (request.getParameter("x_mod_wis") != null){
-			x_mod_wis = (String) request.getParameter("x_mod_wis");
-		}else{
-			x_mod_wis = "";
 		}
 		if (request.getParameter("x_mod_dex") != null){
 			x_mod_dex = (String) request.getParameter("x_mod_dex");
@@ -293,15 +279,6 @@ try{
 			rs.updateInt("req_int",Integer.parseInt(tmpfld));
 		}
 
-		// Field req_wis
-		tmpfld = ((String) x_req_wis).trim();
-		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
-		if (tmpfld == null) {
-			rs.updateNull("req_wis");
-		} else {
-			rs.updateInt("req_wis",Integer.parseInt(tmpfld));
-		}
-
 		// Field req_dex
 		tmpfld = ((String) x_req_dex).trim();
 		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
@@ -345,15 +322,6 @@ try{
 			rs.updateNull("mod_int");
 		} else {
 			rs.updateInt("mod_int",Integer.parseInt(tmpfld));
-		}
-
-		// Field mod_wis
-		tmpfld = ((String) x_mod_wis).trim();
-		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
-		if (tmpfld == null) {
-			rs.updateNull("mod_wis");
-		} else {
-			rs.updateInt("mod_wis",Integer.parseInt(tmpfld));
 		}
 
 		// Field mod_dex
@@ -496,14 +464,6 @@ if (EW_this.x_req_int && !EW_checkinteger(EW_this.x_req_int.value)) {
         if (!EW_onError(EW_this, EW_this.x_req_int, "TEXT", "Incorrect integer - req int"))
             return false; 
         }
-if (EW_this.x_req_wis && !EW_hasValue(EW_this.x_req_wis, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_req_wis, "TEXT", "Incorrect integer - req wis"))
-                return false; 
-        }
-if (EW_this.x_req_wis && !EW_checkinteger(EW_this.x_req_wis.value)) {
-        if (!EW_onError(EW_this, EW_this.x_req_wis, "TEXT", "Incorrect integer - req wis"))
-            return false; 
-        }
 if (EW_this.x_req_dex && !EW_hasValue(EW_this.x_req_dex, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_req_dex, "TEXT", "Incorrect integer - req dex"))
                 return false; 
@@ -542,14 +502,6 @@ if (EW_this.x_mod_int && !EW_hasValue(EW_this.x_mod_int, "TEXT" )) {
         }
 if (EW_this.x_mod_int && !EW_checkinteger(EW_this.x_mod_int.value)) {
         if (!EW_onError(EW_this, EW_this.x_mod_int, "TEXT", "Incorrect integer - mod int"))
-            return false; 
-        }
-if (EW_this.x_mod_wis && !EW_hasValue(EW_this.x_mod_wis, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_mod_wis, "TEXT", "Incorrect integer - mod wis"))
-                return false; 
-        }
-if (EW_this.x_mod_wis && !EW_checkinteger(EW_this.x_mod_wis.value)) {
-        if (!EW_onError(EW_this, EW_this.x_mod_wis, "TEXT", "Incorrect integer - mod wis"))
             return false; 
         }
 if (EW_this.x_mod_dex && !EW_hasValue(EW_this.x_mod_dex, "TEXT" )) {
@@ -654,10 +606,6 @@ return true;
 		<td class="ewTableAltRow"><% if (x_req_int== null || ((String)x_req_int).equals("")) {x_req_int = "0"; } // set default value %><input type="text" name="x_req_int" size="30" value="<%= HTMLEncode((String)x_req_int) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">req wis&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_req_wis== null || ((String)x_req_wis).equals("")) {x_req_wis = "0"; } // set default value %><input type="text" name="x_req_wis" size="30" value="<%= HTMLEncode((String)x_req_wis) %>">&nbsp;</td>
-	</tr>
-	<tr>
 		<td class="ewTableHeader">req dex&nbsp;</td>
 		<td class="ewTableAltRow"><% if (x_req_dex== null || ((String)x_req_dex).equals("")) {x_req_dex = "0"; } // set default value %><input type="text" name="x_req_dex" size="30" value="<%= HTMLEncode((String)x_req_dex) %>">&nbsp;</td>
 	</tr>
@@ -676,10 +624,6 @@ return true;
 	<tr>
 		<td class="ewTableHeader">mod int&nbsp;</td>
 		<td class="ewTableAltRow"><% if (x_mod_int== null || ((String)x_mod_int).equals("")) {x_mod_int = "0"; } // set default value %><input type="text" name="x_mod_int" size="30" value="<%= HTMLEncode((String)x_mod_int) %>">&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="ewTableHeader">mod wis&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_mod_wis== null || ((String)x_mod_wis).equals("")) {x_mod_wis = "0"; } // set default value %><input type="text" name="x_mod_wis" size="30" value="<%= HTMLEncode((String)x_mod_wis) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">mod dex&nbsp;</td>

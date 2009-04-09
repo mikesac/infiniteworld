@@ -276,15 +276,15 @@ return true;
 	</tr>
 	<tr>
 		<td class="ewTableHeader">world&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_world== null || ((String)x_world).equals("")) {x_world = "0"; } // set default value %><input type="text" name="x_world" size="30" value="<%= HTMLEncode((String)x_world) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_world" size="30" value="<%= HTMLEncode((String)x_world) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">nx&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_nx== null || ((String)x_nx).equals("")) {x_nx = "0"; } // set default value %><input type="text" name="x_nx" size="30" value="<%= HTMLEncode((String)x_nx) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_nx" size="30" value="<%= HTMLEncode((String)x_nx) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">ny&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_ny== null || ((String)x_ny).equals("")) {x_ny = "0"; } // set default value %><input type="text" name="x_ny" size="30" value="<%= HTMLEncode((String)x_ny) %>">&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_ny" size="30" value="<%= HTMLEncode((String)x_ny) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">lockid&nbsp;</td>

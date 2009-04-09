@@ -26,14 +26,22 @@ public class StartPlaying extends HttpServlet {
 		if(req.getRemoteUser()==null || chName==null || acName.length()==0 || chName.length()==0)
 			resp.sendRedirect( req.getContextPath() + PagesCst.PAGE_ROOT);
 		
-		Character c = new Character(chName,acName);		
+		Character c;
+		try {
+			c = new Character(chName,acName);
+		} catch (Exception e) {
+			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "Error loading character:"+e.getMessage());
+			e.printStackTrace();
+			resp.sendRedirect( req.getContextPath() + PagesCst.PAGE_CHARACTER);
+			return;
+		}		
 		Map m = new Map(c.getArea());
 		
 		//TODO before saving into context check if some regeneration or effect occurred 
 		
 		
-		req.getSession().setAttribute("character", c);
-		req.getSession().setAttribute("map", m);
+		req.getSession().setAttribute(PagesCst.CONTEXT_CHARACTER, c);
+		req.getSession().setAttribute(PagesCst.CONTEXT_MAP, m);
 		
 		resp.sendRedirect( req.getContextPath() + PagesCst.PAGE_MAP);
 		

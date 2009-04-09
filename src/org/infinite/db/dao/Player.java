@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 31-mar-2009 22.04.43 by Hibernate Tools 3.2.4.CR1
+// Generated 6-apr-2009 8.44.52 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,6 +35,7 @@ public class Player implements java.io.Serializable {
 	private float gold;
 	private Integer nattack;
 	private String attack;
+	private String battle;
 	private Set<PlayerOwnItem> playerOwnItems = new HashSet<PlayerOwnItem>(0);
 	private Set<Spell> spells = new HashSet<Spell>(0);
 	private Set<PlayerKnowSpell> playerKnowSpells = new HashSet<PlayerKnowSpell>(
@@ -48,7 +49,8 @@ public class Player implements java.io.Serializable {
 			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
 			long statsMod, Integer level, Integer px, short assign,
-			Integer status, float gold, Integer nattack, String attack) {
+			Integer status, float gold, Integer nattack, String attack,
+			String battle) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
 		this.name = name;
@@ -73,6 +75,7 @@ public class Player implements java.io.Serializable {
 		this.gold = gold;
 		this.nattack = nattack;
 		this.attack = attack;
+		this.battle = battle;
 	}
 
 	public Player(TomcatUsers tomcatUsers, Area area, String name,
@@ -81,8 +84,8 @@ public class Player implements java.io.Serializable {
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
 			long statsMod, Integer level, Integer px, short assign,
 			Integer status, float gold, Integer nattack, String attack,
-			Set<PlayerOwnItem> playerOwnItems, Set<Spell> spells,
-			Set<PlayerKnowSpell> playerKnowSpells) {
+			String battle, Set<PlayerOwnItem> playerOwnItems,
+			Set<Spell> spells, Set<PlayerKnowSpell> playerKnowSpells) {
 		this.tomcatUsers = tomcatUsers;
 		this.area = area;
 		this.name = name;
@@ -107,6 +110,7 @@ public class Player implements java.io.Serializable {
 		this.gold = gold;
 		this.nattack = nattack;
 		this.attack = attack;
+		this.battle = battle;
 		this.playerOwnItems = playerOwnItems;
 		this.spells = spells;
 		this.playerKnowSpells = playerKnowSpells;
@@ -310,6 +314,14 @@ public class Player implements java.io.Serializable {
 
 	public void setAttack(String attack) {
 		this.attack = attack;
+	}
+
+	public String getBattle() {
+		return this.battle;
+	}
+
+	public void setBattle(String battle) {
+		this.battle = battle;
 	}
 
 	public Set<PlayerOwnItem> getPlayerOwnItems() {

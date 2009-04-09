@@ -59,7 +59,7 @@ public class InfiniteCst {
 	/**
 	 * Magic Points to get a spell slot
 	 */
-	public static final int CFG_MP_TO_SPELLS_SLOTS = 5;
+	public static final int CFG_MP_TO_SPELLS_SLOTS = 2;
 	public static final int CFG_LV_TO_BATTLE_PLAN_SLOTS = 5;
 	
 	

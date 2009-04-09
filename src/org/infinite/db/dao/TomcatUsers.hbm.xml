@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 31-mar-2009 22.04.44 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 6-apr-2009 8.44.52 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.TomcatUsers" table="tomcat_users" catalog="mikesac_mikesac">
         <id name="user" type="string">

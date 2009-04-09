@@ -60,48 +60,56 @@ public class ItemsEngine {
 		Manager.delete(poi);
 	}
 
-	public static void equipItem(Character player,PlayerOwnItem poi){
+	public static int equipItem(Character player,PlayerOwnItem poi){
 		
+		int previousId = -1;
 		switch ( poi.getBodypart() ) {
 		case InfiniteCst.EQUIP_BODY:
-			equipBody( player, poi , false);
+			previousId = equipBody( player, poi , false);
 			break;
 		case InfiniteCst.EQUIP_HAND_LEFT:
-			equipHandLeft( player,poi,false );
+			previousId = equipHandLeft( player,poi,false );
 			break;
 		case InfiniteCst.EQUIP_HAND_RIGHT:				
-			equipHandRight( player,poi,false);
+			previousId = equipHandRight( player,poi,false);
 			break;
 		default:
 			moveToInventory( player,poi,false);
 		break;
 		}
+		return previousId;
 	}
 	
-	public static void wearItem(Character player,PlayerOwnItem poi) throws Exception {
+	public static int wearItem(Character player,PlayerOwnItem poi) throws Exception {
+		
+		int previousId = -1; 
 		if(poi.getItem().getType() == InfiniteCst.ITEM_TYPE_WEAPON)
-			equipHandRight(player,poi);
+			previousId = equipHandRight(player,poi);
 		else if ( poi.getItem().getType() == InfiniteCst.ITEM_TYPE_SHIELD) {
-			equipHandLeft(player,poi);
+			previousId = equipHandLeft(player,poi);
 		}
 		else if(poi.getItem().getType() == InfiniteCst.ITEM_TYPE_ARMOR){
-			equipBody(player,poi);
+			previousId = equipBody(player,poi);
 		}else{
 			throw new Exception( "Cannot equip "+poi.getItem().getName() );
 		}
+		return previousId;
 	}
 	
 
-	public static void equipHandRight(Character player,PlayerOwnItem poi) {	
-		equipHandRight(player,poi,true);
+	public static int equipHandRight(Character player,PlayerOwnItem poi) {	
+		return equipHandRight(player,poi,true);
 	}
 
-	public static void equipHandRight(Character player,PlayerOwnItem poi, boolean persist) {	
+	public static int equipHandRight(Character player,PlayerOwnItem poi, boolean persist) {	
 
+		int previousId = -1;
 		//if another item is equipped put in inventory
 		PlayerOwnItem previous = player.getHandRightPoi(); 
-		if( previous!=null)
+		if( previous!=null){
 			moveToInventory(player,previous);
+			previousId = previous.getId();
+		}
 
 		player.setHandRight(poi);
 		removeFromInventory(player,poi.getId());
@@ -109,45 +117,54 @@ public class ItemsEngine {
 			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_RIGHT, 0);
 		}
 		
-
+		return previousId;
 	}
 
 
-	public static void equipHandLeft(Character player,PlayerOwnItem poi) {	
-		equipHandLeft(player,poi,true);
+	public static int equipHandLeft(Character player,PlayerOwnItem poi) {	
+		return equipHandLeft(player,poi,true);
 	}
 
-	public static void equipHandLeft(Character player,PlayerOwnItem poi, boolean persist) {	
+	public static int equipHandLeft(Character player,PlayerOwnItem poi, boolean persist) {	
 
+		int previousId = -1;
 		//if another item is equipped put in inventory
 		PlayerOwnItem previous = player.getHandLeftPoi(); 
-		if( previous!=null)
+		if( previous!=null){
 			moveToInventory(player,previous);
+			previousId = previous.getId();
+		}
 
 		player.setHandLeft(poi);
 		if(persist){
 			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_LEFT, 0);
 		}
 		removeFromInventory(player,poi.getId());
+		
+		return previousId;
 	}
 
 
-	public static void equipBody(Character player,PlayerOwnItem poi) {	
-		equipBody(player,poi,true);
+	public static int equipBody(Character player,PlayerOwnItem poi) {	
+		return equipBody(player,poi,true);
 	}
 
-	public static void equipBody(Character player,PlayerOwnItem poi, boolean persist) {	
+	public static int equipBody(Character player,PlayerOwnItem poi, boolean persist) {	
 
+		int previousId = -1;
 		//if another item is equipped put in inventory
 		PlayerOwnItem previous = player.getBodyPoi(); 
-		if( previous!=null)
+		if( previous!=null){
 			moveToInventory(player,previous);
+			previousId = previous.getId();
+		}
 
 		player.setBody(poi);
 		if(persist){
 			persistOwnItem(poi, InfiniteCst.EQUIP_BODY, 0);
 		}
 		removeFromInventory(player,poi.getId());
+		return previousId;
 	}
 	
 	

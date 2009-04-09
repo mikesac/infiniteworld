@@ -80,13 +80,11 @@ try{
 		<td>cost AP&nbsp;</td>
 		<td>req str&nbsp;</td>
 		<td>req int&nbsp;</td>
-		<td>req wis&nbsp;</td>
 		<td>req dex&nbsp;</td>
 		<td>req cha&nbsp;</td>
 		<td>req lev&nbsp;</td>
 		<td>mod str&nbsp;</td>
 		<td>mod int&nbsp;</td>
-		<td>mod wis&nbsp;</td>
 		<td>mod dex&nbsp;</td>
 		<td>mod cha&nbsp;</td>
 		<td>price&nbsp;</td>
@@ -116,13 +114,11 @@ while (rs.next()){
 	String x_costAP = "";
 	String x_req_str = "";
 	String x_req_int = "";
-	String x_req_wis = "";
 	String x_req_dex = "";
 	String x_req_cha = "";
 	String x_req_lev = "";
 	String x_mod_str = "";
 	String x_mod_int = "";
-	String x_mod_wis = "";
 	String x_mod_dex = "";
 	String x_mod_cha = "";
 	String x_price = "";
@@ -169,9 +165,6 @@ while (rs.next()){
 	// req_int
 	x_req_int = String.valueOf(rs.getLong("req_int"));
 
-	// req_wis
-	x_req_wis = String.valueOf(rs.getLong("req_wis"));
-
 	// req_dex
 	x_req_dex = String.valueOf(rs.getLong("req_dex"));
 
@@ -186,9 +179,6 @@ while (rs.next()){
 
 	// mod_int
 	x_mod_int = String.valueOf(rs.getLong("mod_int"));
-
-	// mod_wis
-	x_mod_wis = String.valueOf(rs.getLong("mod_wis"));
 
 	// mod_dex
 	x_mod_dex = String.valueOf(rs.getLong("mod_dex"));
@@ -232,13 +222,11 @@ while (rs.next()){
 		<td class="<%= rowclass %>"><% out.print(x_costAP); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_req_str); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_req_int); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_req_wis); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_req_dex); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_req_cha); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_req_lev); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_mod_str); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_mod_int); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_mod_wis); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_mod_dex); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_mod_cha); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_price); %>&nbsp;</td>

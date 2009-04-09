@@ -319,7 +319,10 @@ public class Monster implements PlayerInterface {
 		return getDao().getName();
 	}
 
-	
+	@Override
+	public int getLevel() {
+		return getDao().getLevel();
+	}
 
 
 	public Item getHandRight() {
@@ -447,11 +450,21 @@ public class Monster implements PlayerInterface {
 	}
 
 
-
+	@Override
 	public ArrayList<PlayerKnowSpell> getSpellBookFight() {
 		return spellBookFight;
 	}
 
+	@Override
+	public ArrayList<PlayerKnowSpell> getSpellBookHeal() {
+		return spellBookHeal;
+	}
+	
+	@Override
+	public ArrayList<PlayerKnowSpell> getSpellBookProtect() {
+		return spellBookProtect;
+	}
+	
 	public Npc getDao(){
 		return npc;
 	}

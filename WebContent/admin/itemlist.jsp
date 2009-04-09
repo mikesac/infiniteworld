@@ -202,6 +202,7 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 %>
 <%@ include file="header.jsp" %>
 <p><span class="jspmaker">TABLE: Item</span></p>
+<p><span class="jspmaker"><a href="list/listItems.jsp">Open Game View</a></span></p>
 <form action="itemlist.jsp">
 <table border="0" cellspacing="0" cellpadding="4">
 	<tr>
@@ -244,9 +245,6 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 <a href="itemlist.jsp?order=<%= java.net.URLEncoder.encode("req_int","UTF-8") %>">req int&nbsp;<% if (OrderBy != null && OrderBy.equals("req_int")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("Item_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("Item_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
-<a href="itemlist.jsp?order=<%= java.net.URLEncoder.encode("req_wis","UTF-8") %>">req wis&nbsp;<% if (OrderBy != null && OrderBy.equals("req_wis")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("Item_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("Item_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
 <a href="itemlist.jsp?order=<%= java.net.URLEncoder.encode("req_dex","UTF-8") %>">req dex&nbsp;<% if (OrderBy != null && OrderBy.equals("req_dex")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("Item_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("Item_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
@@ -260,9 +258,6 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 		</td>
 		<td>
 <a href="itemlist.jsp?order=<%= java.net.URLEncoder.encode("mod_int","UTF-8") %>">mod int&nbsp;<% if (OrderBy != null && OrderBy.equals("mod_int")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("Item_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("Item_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="itemlist.jsp?order=<%= java.net.URLEncoder.encode("mod_wis","UTF-8") %>">mod wis&nbsp;<% if (OrderBy != null && OrderBy.equals("mod_wis")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("Item_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("Item_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
 <a href="itemlist.jsp?order=<%= java.net.URLEncoder.encode("mod_dex","UTF-8") %>">mod dex&nbsp;<% if (OrderBy != null && OrderBy.equals("mod_dex")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("Item_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("Item_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
@@ -334,13 +329,11 @@ while (rs.next() && recCount < stopRec) {
 	String x_costAP = "";
 	String x_req_str = "";
 	String x_req_int = "";
-	String x_req_wis = "";
 	String x_req_dex = "";
 	String x_req_cha = "";
 	String x_req_lev = "";
 	String x_mod_str = "";
 	String x_mod_int = "";
-	String x_mod_wis = "";
 	String x_mod_dex = "";
 	String x_mod_cha = "";
 	String x_price = "";
@@ -388,9 +381,6 @@ while (rs.next() && recCount < stopRec) {
 	// req_int
 	x_req_int = String.valueOf(rs.getLong("req_int"));
 
-	// req_wis
-	x_req_wis = String.valueOf(rs.getLong("req_wis"));
-
 	// req_dex
 	x_req_dex = String.valueOf(rs.getLong("req_dex"));
 
@@ -405,9 +395,6 @@ while (rs.next() && recCount < stopRec) {
 
 	// mod_int
 	x_mod_int = String.valueOf(rs.getLong("mod_int"));
-
-	// mod_wis
-	x_mod_wis = String.valueOf(rs.getLong("mod_wis"));
 
 	// mod_dex
 	x_mod_dex = String.valueOf(rs.getLong("mod_dex"));
@@ -467,13 +454,11 @@ if (key != null && key.length() > 0) {
 		<td><% out.print(x_costAP); %>&nbsp;</td>
 		<td><% out.print(x_req_str); %>&nbsp;</td>
 		<td><% out.print(x_req_int); %>&nbsp;</td>
-		<td><% out.print(x_req_wis); %>&nbsp;</td>
 		<td><% out.print(x_req_dex); %>&nbsp;</td>
 		<td><% out.print(x_req_cha); %>&nbsp;</td>
 		<td><% out.print(x_req_lev); %>&nbsp;</td>
 		<td><% out.print(x_mod_str); %>&nbsp;</td>
 		<td><% out.print(x_mod_int); %>&nbsp;</td>
-		<td><% out.print(x_mod_wis); %>&nbsp;</td>
 		<td><% out.print(x_mod_dex); %>&nbsp;</td>
 		<td><% out.print(x_mod_cha); %>&nbsp;</td>
 		<td><% out.print(x_price); %>&nbsp;</td>

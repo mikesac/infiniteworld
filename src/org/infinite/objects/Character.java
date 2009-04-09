@@ -3,7 +3,6 @@ package org.infinite.objects;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
@@ -67,11 +66,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 	/*
 	 * Spells cast over player
 	 */
-	private Vector<Spell> spellsAffecting = new Vector<Spell>();
+	private ArrayList<Spell> spellsAffecting = new ArrayList<Spell>();
 
+	
+	private ArrayList<Object> battlePlan = new ArrayList<Object>();
+	
 
 	@SuppressWarnings("unchecked")
-	public Character(String name, String accountName){
+	public Character(String name, String accountName) throws Exception{
 
 		//get character Dao
 		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
@@ -90,8 +92,16 @@ public class Character implements PlayerInterface, ItemsInterface {
 			learnSpell( pks.get(i) , false );
 		}
 	
+		battlePlan = new ArrayList<Object>();
+		deserializeBattlePlan(getDao().getBattle());
+		if(getBattlePlan().size()==0 && getHandRightPoi()!=null){
+			changeFromBattlePlan("", "A"+getHandRightPoi().getId());
+		}
+		
 	}
 	
+	
+
 	@Override
 	public void moveToInventory(PlayerOwnItem poi) {
 		ItemsEngine.moveToInventory(this,poi,true);
@@ -113,12 +123,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 	@Override 
 	public void equipItem(PlayerOwnItem poi){
-		ItemsEngine.equipItem(this, poi);
+		int previousId = ItemsEngine.equipItem(this, poi);
+		changeFromBattlePlan("A"+previousId,"A"+poi.getId());
 	}
 	
 	@Override 
 	public void wearItem(PlayerOwnItem poi) throws Exception{
-		ItemsEngine.wearItem(this, poi);
+		int previousId = ItemsEngine.wearItem(this, poi);
+		changeFromBattlePlan("A"+previousId,"A"+poi.getId());
 	}
 	
 	
@@ -361,7 +373,8 @@ public class Character implements PlayerInterface, ItemsInterface {
 	}
 	
 	public int getAvailableAttackSlot(){
-		return FightEngine.getAvailableAttackSlot(this);
+		int total = FightEngine.getAvailableAttackSlot(this) - getBattlePlan().size();
+		return total;
 	}
 
 	public String getPic() {
@@ -449,7 +462,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModDex();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModDex();
+			mod += spellsAffecting.get(i).getModDex();
 		}
 		return mod;
 	}
@@ -462,7 +475,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModStr();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModStr();
+			mod += spellsAffecting.get(i).getModStr();
 		}
 		return mod;
 	}
@@ -475,7 +488,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModCha();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModCha();
+			mod += spellsAffecting.get(i).getModCha();
 		}
 		return mod;
 	}
@@ -488,7 +501,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModInt();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModInt();
+			mod += spellsAffecting.get(i).getModInt();
 		}
 		return mod;
 	}
@@ -741,6 +754,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 	}
 
 	public String[] getAttackName(){
+		
 		//TODO this is done just for testing, implements it really
 
 		String ret = "";
@@ -754,14 +768,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 	@Override
 	public float getRewardGold() {
-		// TODO Auto-generated method stub
+		// TODO Decide the amount of GOLD for defeating characters (should depend on levels difference)
 		return 0;
 	}
 
 	@Override
 	public int getRewardPX() {
-		// TODO Auto-generated method stub
-		return 0;
+		// TODO Decide the amount of PX for defeating characters
+		return getLevel() * 100;
 	}
 
 	@Override
@@ -793,6 +807,145 @@ public class Character implements PlayerInterface, ItemsInterface {
 	@Override
 	public void unprepareSpell(int pksId) {
 		MagicEngine.unprepareSpell(this,pksId);	
+		changeFromBattlePlan("s"+pksId, "");
 		}
 
+	/*
+	 * This method takes the string with the list of attacks order from the db 
+	 * and covert it to an array list of items/spell
+	 * 
+	 * Naming convention: 
+	 *   A = attacks
+	 *   S = Spells
+	 *   I = Items
+	 *   the number is object's id from inventory/book, NOT object's own item
+	 */
+	public ArrayList<Object> deserializeBattlePlan(String battle){
+		// String example: A3,S15,I8,S5
+		
+		ArrayList<Object> out = new ArrayList<Object>();
+		
+		if(battle == null || battle.length()==0 ){
+			return out;
+		}
+		
+		String[] list = battle.split(",");
+		for (int i = 0; i < list.length; i++) {
+			
+			if(list[i].length()<2)
+				continue;
+			
+			String type = list[i].substring(0,1);
+			int num = GenericUtil.toInt(list[i].substring(1),-1);
+			if(num==-1){
+				GenericUtil.err("Invalid BattlePlan token ["+list[i]+"] in "+battle, null);
+				continue;
+			}
+			
+			if( type.equalsIgnoreCase("A") ){ //Attack may come only from Hands items
+				
+				if(getHandRightPoi()!=null && getHandRightPoi().getId() == num)
+					out.add(getHandRightPoi());
+				else if(getHandLeftPoi()!=null && getHandLeftPoi().getId() == num)
+					out.add(getHandLeftPoi());
+			}
+			else if( type.equalsIgnoreCase("S") ){ //Spells come from prepared spells 
+				
+				for (int j = 0; j < getPreparedSpells().size(); j++) {
+					if(getPreparedSpells().get(j).getId()==num)
+						out.add(getPreparedSpells().get(j) );
+				}		
+			}
+			else{
+				//TODO deserialize item from battle plan
+			}	
+		}
+		
+		return out;
+	}
+	
+	/*
+	 * This method takes the list of attacks order and convert it to a string to be saved on db
+	 */
+	public String serializeBattlePlan(ArrayList<Object> list) {
+		
+		String out ="";
+		
+		for (int i = 0; i < list.size(); i++) {
+			
+			if( list.get(i) instanceof PlayerOwnItem){
+				PlayerOwnItem poi = (PlayerOwnItem)list.get(i);
+				if(getHandRightPoi()!=null && poi.getId() == getHandRightPoi().getId()){
+					out += ",A"+poi.getId();
+				}
+				else if(getHandLeftPoi()!=null && poi.getId() == getHandLeftPoi().getId() && 
+						getHandLeft().getType()==InfiniteCst.ITEM_TYPE_WEAPON ){
+					out += ",A"+poi.getId();
+				}
+			}
+			else if(list.get(i) instanceof PlayerKnowSpell){
+				
+				PlayerKnowSpell pks = (PlayerKnowSpell)list.get(i);
+				for (int j = 0; j < getPreparedSpells().size(); j++) {
+					if( getPreparedSpells().get(j).getId()==pks.getId())
+						out += ",S"+pks.getId();
+				}
+			}
+			else{
+				//TODO serialize item to battle plan
+			}			
+		}
+		
+		//removing starting comma
+		if(out.length()>0)
+			out = out.substring(1);
+		return out;		
+	}
+	
+	protected void changeFromBattlePlan(String toBeRemoved,String toBeAdded){
+		
+		String actual = serializeBattlePlan( getBattlePlan() );
+		
+		String newString ="";
+		
+		if(toBeRemoved==null)
+			toBeRemoved="";
+		
+		if(toBeAdded==null)
+			toBeAdded="";
+		
+		toBeRemoved = toBeRemoved.toLowerCase();
+		String[] list =  actual.toLowerCase().split(",");
+		for (int i = 0; i < list.length; i++) {
+			if( ! list[i].equals(toBeRemoved) )
+				newString += ","+list[i];
+			else{
+				newString += ","+toBeAdded;
+				toBeAdded = "";
+			}
+		}
+		
+		//if new (nothing to be removed) it had no match in the previous loop, appending
+		if(toBeAdded.length()>0)
+			newString += ","+toBeAdded;
+		
+		newString = newString.replaceAll(",,", ",");
+		
+		if(newString.length()>0)
+			newString = newString.substring(1);
+		
+		
+		setBattlePlan( deserializeBattlePlan(newString)  );
+		getDao().setBattle(newString);
+		saveDao();
+	}
+
+	public void setBattlePlan(ArrayList<Object> battlePlan) {
+		this.battlePlan = battlePlan;
+	}
+
+	public ArrayList<Object> getBattlePlan() {
+		return battlePlan;
+	}
+	
 }

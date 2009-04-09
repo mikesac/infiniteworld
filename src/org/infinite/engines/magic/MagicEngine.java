@@ -1,10 +1,11 @@
 package org.infinite.engines.magic;
 
 import org.infinite.db.Manager;
+import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
 import org.infinite.engines.fight.PlayerInterface;
-import org.infinite.objects.Character;
+
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
@@ -40,15 +41,14 @@ public class MagicEngine {
 	}
 
 
-	public static void learnSpell(PlayerInterface player,Spell spell){}
 
-	public static void  learnSpell(Character player,Spell spell) {
-		PlayerKnowSpell pks = new PlayerKnowSpell(player.getDao(),spell,InfiniteCst.SPELL_KNOWN);
+	public static void  learnSpell(PlayerInterface player,Spell spell) {
+		PlayerKnowSpell pks = new PlayerKnowSpell((Player)player.getDao(),spell,InfiniteCst.SPELL_KNOWN);
 		learnSpell(player,pks, true);
 	}
 
 
-	public static void learnSpell(Character player,PlayerKnowSpell pks,boolean persist){
+	public static void learnSpell(PlayerInterface player,PlayerKnowSpell pks,boolean persist){
 
 		switch ( pks.getSpell().getSpelltype() ) {
 		case InfiniteCst.MAGIC_ATTACK:
