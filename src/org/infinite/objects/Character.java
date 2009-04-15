@@ -77,6 +77,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 		//get character Dao
 		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
+		String battle = getDao().getBattle();
 		
 		//get inventory and assign
 		ArrayList<PlayerOwnItem> poi = (ArrayList<PlayerOwnItem>) Manager.listByQery("from org.infinite.db.dao.PlayerOwnItem poi join fetch poi.item i where poi.player='"+getDao().getId()+"'");
@@ -93,7 +94,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		}
 	
 		battlePlan = new ArrayList<Object>();
-		deserializeBattlePlan(getDao().getBattle());
+		setBattlePlan( deserializeBattlePlan(battle) );
 		if(getBattlePlan().size()==0 && getHandRightPoi()!=null){
 			changeFromBattlePlan("", "A"+getHandRightPoi().getId());
 		}
@@ -935,13 +936,21 @@ public class Character implements PlayerInterface, ItemsInterface {
 			newString = newString.substring(1);
 		
 		
-		setBattlePlan( deserializeBattlePlan(newString)  );
+		setBattlePlan( deserializeBattlePlan(newString),false  );
 		getDao().setBattle(newString);
 		saveDao();
 	}
 
-	public void setBattlePlan(ArrayList<Object> battlePlan) {
+	private void setBattlePlan(ArrayList<Object> battlePlan, boolean persist) {
 		this.battlePlan = battlePlan;
+		if(persist){
+			getDao().setBattle( serializeBattlePlan( getBattlePlan() ));
+			saveDao();
+		}
+	}
+	
+	public void setBattlePlan(ArrayList<Object> battlePlan) {
+		setBattlePlan(battlePlan, true);
 	}
 
 	public ArrayList<Object> getBattlePlan() {

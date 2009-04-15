@@ -1,7 +1,11 @@
 package org.infinite.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class GenericUtil {
 
+	private static final Log log = LogFactory.getLog(GenericUtil.class);
 
 	public static int rollDice(String szDiceType) throws Exception{
 
@@ -20,7 +24,7 @@ public class GenericUtil {
 
 		szDiceType = szDiceType.toLowerCase().trim();
 		
-		if(szDiceType.indexOf("d")==0)
+		if(szDiceType.indexOf("d")==-1)
 			return Integer.valueOf(szDiceType);
 		
 		int ret = 0;
@@ -29,7 +33,7 @@ public class GenericUtil {
 			int[] values = splitValues(szDiceType);
 			ret = (values[0] * values[1]) + values[2];
 		} catch (Exception e) {
-			err("DICE:"+szDiceType,e);
+			err("getMaxRollDice DICE:"+szDiceType,e);
 		}
 		
 		return ret;
@@ -40,7 +44,7 @@ public class GenericUtil {
 
 		szDiceType = szDiceType.toLowerCase().trim();
 		
-		if(szDiceType.indexOf("d")==0)
+		if(szDiceType.indexOf("d")==-1)
 			return Integer.valueOf(szDiceType);
 		
 		int ret = 0;
@@ -49,7 +53,7 @@ public class GenericUtil {
 			int[] values = splitValues(szDiceType);
 			ret = values[0]  + values[2];
 		} catch (Exception e) {
-			err("DICE:"+szDiceType,e);
+			err("getMinRollDice DICE:"+szDiceType,e);
 		}
 		
 		return ret;
@@ -148,23 +152,15 @@ public class GenericUtil {
 		return out;
 	}
 
-	public static void log(String txt){
-		System.out.println(txt);
-	}
+	
 	public static void err(String txt, Exception e){
 		if(e==null)
-			System.err.println("ERROR: "+txt);
+			log.error(txt);
 		else{
-			System.err.println("ERROR: "+txt+" - " + e.toString());
-			
+			log.error(txt, e);
 		}
 	}
-	public static void warn(String txt){
-		System.err.println("WARINING: "+txt);
-	}
-	public static void debug(String txt){
-		System.out.println("DEBUG: "+txt);
-	}
+	
 
 	public static String array2String(String[] s,String sep, String quote){
 		

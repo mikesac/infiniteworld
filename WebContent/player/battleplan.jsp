@@ -52,10 +52,10 @@
 
 		<table>
 			<tr>
-				<td>Equipped weapon</td>
+				<td align="center">Equipped weapon</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 				<div class="equipped">
 				<%
 					PlayerOwnItem poi = c.getHandRightPoi();
@@ -71,7 +71,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 				<%if (poi != null) { %>
 				<button onclick="addAttack('<%= poi.getId() %>','<%= poi.getItem().getName() %>','<%= poi.getItem().getImage() %>')">Add &gt;&gt;</button>
 				<%} %>
@@ -79,14 +79,14 @@
 			</tr>
 
 			<tr>
-				<td>Prepared spells</td>
+				<td align="center">Prepared spells</td>
 			</tr>
 			<tr>
-				<td><select id="spellsel" onchange="changeSpellImg(this)">
+				<td align="center"><select id="spellsel" onchange="changeSpellImg(this)">
 					<%
 						for (int i = 0; i < c.getPreparedSpells().size(); i++) {
 					%><option
-						value="<%=c.getPreparedSpells().get(i).getSpell().getId()%>"
+						value="<%=c.getPreparedSpells().get(i).getId()%>"
 						img="<%=c.getPreparedSpells().get(i).getSpell().getImage()%>">
 					<%=c.getPreparedSpells().get(i).getSpell().getName()%></option>
 					<%
@@ -95,7 +95,7 @@
 				</select></td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 				<div class="equipped">
 				<% 
 							
@@ -113,24 +113,37 @@
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 				<button onclick="addSpell()">Add &gt;&gt;</button>
 				</td>
 			</tr>
 			<tr>
-				<td>Special Items</td>
+				<td align="center">Special Items</td>
 			</tr>
 			<tr>
-				<td><select></select></td>
+				<td align="center"><select></select></td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 				<div class="equipped"></div>
 				</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="center">
 				<button>Add &gt;&gt;</button>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<input id="slots" type="text" size="2" readonly="readonly" value="<%=c.getAvailableAttackSlot()%>"/> slots left
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<form method="post" action="<%=request.getContextPath()%>/battlePlan">
+					<input type="hidden" id="serialized" name="serialized" value="<%=c.getDao().getBattle() %>" />
+					<input type="submit" value="Save Plan">
+					</form>
 				</td>
 			</tr>
 		</table>
@@ -140,7 +153,7 @@
 		</td>
 		<td style="width: 700px;" valign="top"><%@ include
 			file="../decorators/b2pre.jsp"%>
-		<center>Choose your attack strategy. ( <%=c.getAvailableAttackSlot()%> slots left)<br />
+		<center>Choose your attack strategy.<br/>
 		One action will be performed on each round in the chosen order in a
 		loop.<br />
 		Action slots will increase leveling up.</center>
@@ -156,26 +169,26 @@
 					PlayerOwnItem o = (PlayerOwnItem)c.getBattlePlan().get(i);
 					%>
 					<td align="center"  width="50px"><%=i%></td>
-					<td><%=o.getItem().getName() %></td>			
+					<td width="200px"><%=o.getItem().getName() %></td>			
 					<td width="70px">
 						<div class="iconlarge" style="background-image: url(../imgs/item/<%=o.getItem().getImage()%>.png);">
 							<div class="tile"/>
 						</div>
 					</td>
-					<td>(A<%=o.getId()%>)</td>
+					<td><input type="hidden" value="A<%=o.getId()%>"/></td>
 					<%					
 				}
 				else if(c.getBattlePlan().get(i) instanceof PlayerKnowSpell){
 					PlayerKnowSpell o = (PlayerKnowSpell)c.getBattlePlan().get(i);
 					%>
 					<td><%=i%></td>
-					<td><%=o.getSpell().getName() %></td>			
+					<td width="200px"><%=o.getSpell().getName() %></td>			
 					<td>
 						<div class="iconlarge" style="background-image: url(../imgs/spell/<%=o.getSpell().getImage()%>.png);">
 							<div class="tile"/>
 						</div>
 					</td>
-					<td>S<%=o.getId()%></td>
+					<td><input type="hidden" value="S<%=o.getId()%>"/></td>
 					
 					<%	
 				}
@@ -183,10 +196,11 @@
 					//TODO item
 				}
 				%>
-				<td class="<%=(i>0)?"up":"nobut;" %>">&nbsp;</td>
-				<td class="<%=(i!=(c.getBattlePlan().size()-1))?"down":"nobut;" %>">&nbsp;</td>
-				<td class="rem" >&nbsp;</td>
+				<td onclick="moveUp(this)" class="up">&nbsp;</td>
+				<td onclick="moveDwn(this)" class="down">&nbsp;</td>
+				<td onclick="remPlan(this)" class="<%=(c.getBattlePlan().get(i) instanceof PlayerOwnItem )?"nobut":"rem" %>" >&nbsp;</td>
 			</tr>
+			
 			</table>
 			
 			<%}%>
@@ -194,7 +208,7 @@
 		<%@ include file="../decorators/b2post.jsp"%>
 		</div>
 
-		<input type="text" id="serialized" value="<%=c.getDao().getBattle() %>"/>
+		
 		</td>
 		<td width="80px">
 		<center><img src="../imgs/web/btl/wand.png" /></center>
@@ -212,7 +226,32 @@ function changeSpellImg(el){
 	document.getElementById("spell_ico").style.backgroundImage = "url(../imgs/spell/"+img+".png)";	
 }
 
+function remPlan(el){
+	if(confirm("Remove this attack from the plan?")){
+		document.getElementById("battleplan").removeChild(el.parentNode.parentNode.parentNode);
+		document.getElementById("slots").value = parseInt( document.getElementById("slots").value) + 1;
+		getAllCodes();
+	}
+}
+
+function moveUp(el){
+	document.getElementById("battleplan").insertBefore(el.parentNode.parentNode.parentNode, el.parentNode.parentNode.parentNode.previousSibling);
+	getAllCodes();
+}
+
+function moveDwn(el){
+	document.getElementById("battleplan").insertBefore(el.parentNode.parentNode.parentNode.nextSibling,el.parentNode.parentNode.parentNode);
+	getAllCodes();
+}
+
+
 function addPlan(id,name,imag,type,path){
+
+	if( ! checkSlots() ){
+		alert("No more slots available");
+		return;
+	}
+	
 	var tab = document.createElement("table");
 	tab.className="char";
 	tab.style.width="600px";
@@ -223,18 +262,27 @@ function addPlan(id,name,imag,type,path){
 	td1.style.align="center";
 	td1.innerHTML = "N";
 	var td2 = document.createElement("td");
+	td2.style.width = "200px";
 	td2.innerHTML = name;
 	var td3 = document.createElement("td");
 	td3.style.width="70";
 	td3.innerHTML = "<div style=\"background-image: url(../imgs/"+path+"/"+imag+".png);\" class=\"iconlarge\"><div class=\"tile\"></div>";
 	var td = document.createElement("td");
-	td.innerHTML = "("+type+id+")";
+	var inp = document.createElement("input");
+	inp.type = "hidden";
+	inp.value = type+id;
+	td.appendChild(inp);
 	var td4 = document.createElement("td");
 	td4.className = "up";
+	td4.setAttribute("onclick","moveUp(this)");
 	var td5 = document.createElement("td");
-	td5.className = "down";
+	if( document.getElementById("slots").value != 0 ){
+		td5.className = "down";
+		td5.setAttribute("onclick","moveDwn(this)");
+	}
 	var td6 = document.createElement("td");
 	td6.className = "rem";
+	td6.setAttribute("onclick","remPlan(this)");
 	
 	tr.appendChild(td1);
 	tr.appendChild(td2);
@@ -246,6 +294,7 @@ function addPlan(id,name,imag,type,path){
 	tb.appendChild(tr);
 	tab.appendChild(tb);
 	document.getElementById("battleplan").appendChild(tab);
+	getAllCodes();
 }
 
 function addAttack(id,name,imag){
@@ -260,6 +309,32 @@ function addSpell(){
 	var imag = el.options[el.selectedIndex].getAttribute("img");
 	addPlan(id,name,imag,"S","spell");
 }
+
+function getAllCodes(){
+	var d = document.getElementById("battleplan");
+	var inps = d.getElementsByTagName("input");
+	var txt = "";
+	for(var i=0;i<inps.length;i++){
+		txt += ","+inps[i].value;
+	}
+	if(txt.length>0)
+		txt= txt.substring(1);
+	document.getElementById("serialized").value = txt;
+}
+
+function checkSlots(){
+	var d = document.getElementById("battleplan");
+	
+	if( document.getElementById("slots").value > 0){
+		document.getElementById("slots").value = <%=c.getAvailableAttackSlot()%> - d.getElementsByTagName("table").length
+		return true;
+	}
+	else{
+		return false;
+	}
+	
+}
+
 </script>
 </body>
 </html>

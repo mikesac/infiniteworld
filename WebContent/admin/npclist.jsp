@@ -208,6 +208,7 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 %>
 <%@ include file="header.jsp" %>
 <p><span class="jspmaker">TABLE: NPC</span></p>
+<p><span class="jspmaker"><a href="list/listNPC.jsp">Open Game View</a></span></p>
 <form action="npclist.jsp">
 <table border="0" cellspacing="0" cellpadding="4">
 	<tr>

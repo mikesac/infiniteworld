@@ -154,6 +154,19 @@
   </servlet-mapping>
   
   
+  <!-- Battle Plan -->
+  <servlet>
+    <servlet-name>BattlePlan</servlet-name>
+    <servlet-class>org.infinite.web.BattlePlan</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BattlePlan</servlet-name>
+    <url-pattern>/battlePlan</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
   <!-- Fight Testbed -->
   <servlet>
     <servlet-name>FightMap</servlet-name>

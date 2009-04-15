@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import javax.xml.transform.TransformerException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Spell;
 import org.infinite.objects.Monster;
@@ -18,6 +20,7 @@ import com.sun.org.apache.xpath.internal.XPathAPI;
 
 public class AIEngine {
 
+	private static final Log log = LogFactory.getLog(AIEngine.class);
 
 	public static Monster spawn(String szName) throws Exception{
 		
@@ -27,7 +30,7 @@ public class AIEngine {
 		
 		Document doc = XmlUtil.name2Doc(szXML);
 		
-		GenericUtil.log(szName);
+		log.debug(szName);
 		
 		String szUrl = "//level"+m.getDao().getLevel();
 		
@@ -41,12 +44,12 @@ public class AIEngine {
 		String szHandRightURL = szUrl + "/handright[@rate <= "+rate+"]";
 		Node nHR;
 		try {
-			GenericUtil.log("rate="+rate);
+			log.debug("rate="+rate);
 			nHR = XPathAPI.selectNodeList(n, szHandRightURL).item(0);
 			
 			if(nHR!=null){
 				m.equipItems(new String[]{nHR.getTextContent()} );
-				GenericUtil.log("--->"+nHR.getTextContent());
+				log.debug("--->"+nHR.getTextContent());
 			}
 			
 		} catch (Exception e1) {}
@@ -55,7 +58,7 @@ public class AIEngine {
 		StringBuilder sb  = new StringBuilder("");
 		for (int i = 0; i < a; i++) {
 			rate = (99 * Math.random())+1;
-			GenericUtil.log("rate="+rate);
+			log.debug("rate="+rate);
 			String szSpellURL = szUrl + "/spellfight[@rate <= "+rate+"]";
 			Node nSP;
 			try {
@@ -65,13 +68,13 @@ public class AIEngine {
 			}
 			if(nSP!=null){
 				sb.append(",").append(nSP.getTextContent());
-				GenericUtil.log("--->"+nSP.getTextContent());
+				log.debug("--->"+nSP.getTextContent());
 			}
 		}
 
 		for (int i = 0; i < h; i++) {
 			rate = (99 * Math.random())+1;
-			GenericUtil.log("rate="+rate);
+			log.debug("rate="+rate);
 			String szSpellURL = szUrl + "/spellheal[@rate <= "+rate+"]";
 			Node nSP;
 			try {
@@ -81,13 +84,13 @@ public class AIEngine {
 			}
 			if(nSP!=null){
 				sb.append(",").append(nSP.getTextContent());
-				GenericUtil.log("--->"+nSP.getTextContent());
+				log.debug("--->"+nSP.getTextContent());
 			}
 		}
 
 		for (int i = 0; i < p; i++) {
 			rate = (99 * Math.random())+1;
-			GenericUtil.log("rate="+rate);
+			log.debug("rate="+rate);
 			String szSpellURL = szUrl + "/spellprotect[@rate <= "+rate+"]";
 			Node nSP;
 			try {
@@ -97,7 +100,7 @@ public class AIEngine {
 			}
 			if(nSP!=null){
 				sb.append(",").append(nSP.getTextContent());
-				GenericUtil.log("--->"+nSP.getTextContent());
+				log.debug("--->"+nSP.getTextContent());
 			}
 		}
 		

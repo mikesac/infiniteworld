@@ -1,5 +1,7 @@
 package org.infinite.objects;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
@@ -8,7 +10,6 @@ import java.util.Vector;
 import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
-import org.infinite.util.GenericUtil;
 import org.infinite.util.XmlUtil;
 import org.junit.Test;
 
@@ -62,8 +63,9 @@ public class FightTest {
 		try {
 
 			for (int i = 0; i < 1000; i++) {
-				GenericUtil.log("----------------------------------------"+i);
-				Monster m1 = AIEngine.spawn("Hobgoblin");
+				System.out.println("-----------------" + i);
+				Monster m = AIEngine.spawn("Hobgoblin");
+				assertNotNull(m);
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
