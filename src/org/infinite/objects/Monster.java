@@ -11,6 +11,7 @@ import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
 import org.infinite.engines.AI.AIEngine;
+import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.engines.magic.MagicEngine;
 import org.infinite.util.GenericUtil;
@@ -58,6 +59,8 @@ public class Monster implements PlayerInterface {
 
 
 	private Vector<Spell> spellsAffecting = new Vector<Spell>();
+	
+	private ArrayList<Object> battlePlan = new ArrayList<Object>();
 
 	/*
 	 * Current points (total is taken from NPC object)
@@ -172,7 +175,7 @@ public class Monster implements PlayerInterface {
 
 	}
 
-	public String[] getAttackName(){
+	public String[] getAttackName(int round){
 		String szReturn[] = new String[2];
 		switch (iAttackKind) {
 		case InfiniteCst.ATTACK_TYPE_WEAPON:
@@ -200,7 +203,7 @@ public class Monster implements PlayerInterface {
 	}
 
 
-	public int getInitiative(){
+	public int getInitiative( int round){
 		// 1d6 random
 		int init = GenericUtil.rollDice(1, 6, 0);
 
@@ -252,7 +255,7 @@ public class Monster implements PlayerInterface {
 
 
 
-	public int getAttackDamage(){
+	public int getAttackDamage(int round){
 		int dmg = 0;
 
 		switch (iAttackKind) {
@@ -650,6 +653,35 @@ public class Monster implements PlayerInterface {
 		
 	}
 
-	
+	@Override
+	public void prepareForFight() {
+		
+		Item[] it = FightEngine.parseUnarmedAttack( getDao().getAttack() );
+		for (int i = 0; i < it.length; i++) {
+			PlayerOwnItem poi = new PlayerOwnItem(null,it[i],0, InfiniteCst.EQUIP_HAND_RIGHT );
+			getBattlePlan().add( poi );
+		}
+				
+	}
+
+
+
+	public void setBattlePlan(ArrayList<Object> battlePlan) {
+		this.battlePlan = battlePlan;
+	}
+
+
+
+	public ArrayList<Object> getBattlePlan() {
+		return battlePlan;
+	}
+
+
+
+	@Override
+	public Object getCurrentAttack(int round) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

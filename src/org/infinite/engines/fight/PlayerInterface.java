@@ -19,9 +19,9 @@ public interface PlayerInterface{
 
 	public int getAttackType(PlayerInterface defender);
 
-	public String[] getAttackName();
+	public String[] getAttackName(int round);
 
-	public int getInitiative();
+	public int getInitiative(int round);
 
 	public int getRollToAttack();
 
@@ -31,7 +31,7 @@ public interface PlayerInterface{
 
 	public void restRound(int i);
 
-	public int getAttackDamage();
+	public int getAttackDamage(int round);
 
 	public boolean isAlive();
 
@@ -41,6 +41,9 @@ public interface PlayerInterface{
 
 	public Item[] getRewardItems();
 
+	public void prepareForFight();
+	
+	public Object getCurrentAttack(int round);
 	
 	// ----------------- Spell Interface -----------------
 	

@@ -176,19 +176,27 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 
 
-	public int getInitiative(){
+	public int getInitiative( int round ){
 		// 1d6 random
 		int init = GenericUtil.rollDice(1, 6, 0);
-
+		
+		int ind = round % getBattlePlan().size();
+		
+		iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
+		
+		//TODO items
+		if( getBattlePlan().get(ind) instanceof PlayerOwnItem )
+			iAttackKind = InfiniteCst.ATTACK_TYPE_WEAPON;
+		else
+			iAttackKind = InfiniteCst.ATTACK_TYPE_MAGIC;
+		
 		//magic attack are based on intelligence, weapon and items on dexterity
 		if(iAttackKind==InfiniteCst.ATTACK_TYPE_MAGIC)
 		{
-			//add dexterity bonus
 			init -= (int)Math.floor( getIntelligence()/5);
 		}
 		else
 		{
-			//add dexterity bonus
 			init -= (int)Math.floor( getDexterity()/5 );			
 		}
 
@@ -250,49 +258,33 @@ public class Character implements PlayerInterface, ItemsInterface {
 	}
 
 
-
-	public int getAttackDamage(){
+	public Object getCurrentAttack(int round){
+			
+		int ind = round % getBattlePlan().size();
+		return getBattlePlan().get(ind);
+	}
+	
+	
+	public int getAttackDamage(int round){
+		
 		int dmg = 0;
-
-		switch (iAttackKind) {
-		case InfiniteCst.ATTACK_TYPE_WEAPON:
-
-			if(getHandRight()==null){
-
-				String[] szNames = getDao().getAttack().split(";");
-				for (int i = 0; i < szNames.length; i++) {
-					String szDice = "";
-					try {
-						szDice = szNames[i].substring(szNames[i].indexOf(",")+1);
-						dmg += GenericUtil.rollDice( szDice ) ;
-					} catch (Exception e) {
-						GenericUtil.err("DICE:"+szDice,e);
-					}
-
-				}			
-			} else
-				try {
-					dmg = GenericUtil.rollDice( getHandRight().getDamage() ) ;
-				} catch (Exception e1) {
-					dmg = 0;
-				}
-				break;
-		case InfiniteCst.ATTACK_TYPE_MAGIC:
-			try {
-				dmg = GenericUtil.rollDice( getPreparedSpells().get(0).getSpell().getDamage() );
-			} catch (Exception e) {
-				GenericUtil.err("DICE:"+getPreparedSpells().get(0).getSpell().getDamage(), e);
-				dmg=0;
-			}
-			break;
-		case InfiniteCst.ATTACK_TYPE_ITEM:
-			//dmg = (int)Math.ceil( (getHandRight().getDamage() * Math.random()) );
-			break;
-
-		default:
-			break;
+		String szDice = "";
+		
+		//TODO getAttackDamage items
+		if( getCurrentAttack(round) instanceof PlayerOwnItem ){
+			szDice = ((PlayerOwnItem)getCurrentAttack(round)).getItem().getDamage();			
 		}
-
+		else{
+			szDice = ((PlayerKnowSpell)getCurrentAttack(round)).getSpell().getDamage();
+		}
+		
+		try {
+			
+			dmg += GenericUtil.rollDice( szDice ) ;
+		} catch (Exception e) {
+			GenericUtil.err("DICE:"+szDice,e);
+		}
+		
 		return dmg;
 	}
 
@@ -381,28 +373,6 @@ public class Character implements PlayerInterface, ItemsInterface {
 	public String getPic() {
 		return getDao().getImage();
 	}
-
-
-
-	public Item parseUnarmedAttack() {
-		// TODO handle multiple items
-
-		Item item = new Item();				
-
-		String[] szNames = getDao().getAttack().split(";");
-		szNames = szNames[0].split(",");
-
-		item.setCostAp(1);
-		item.setName(szNames[0]);
-		item.setImage(szNames[0]);
-		item.setDamage(szNames[1]);
-		item.setInitiative(1);		
-		item.setType( InfiniteCst.EQUIP_ISWEAPON);
-
-		return item;
-	}
-
-
 
 	public ArrayList<PlayerOwnItem> getInventory() {
 		return inventory;
@@ -750,21 +720,26 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 	@Override
 	public int getAttackType(PlayerInterface defender) {
-		// TODO this is done just for testing, implements it really
-		return InfiniteCst.ATTACK_TYPE_WEAPON;
+		return iAttackKind;
 	}
 
-	public String[] getAttackName(){
-		
-		//TODO this is done just for testing, implements it really
+	public String[] getAttackName( int round){
 
-		String ret = "";
-		String[] szNames = getDao().getAttack().split(";");
-		for (int i = 0; i < szNames.length; i++) {
-			ret += ","+szNames[i].substring(0, szNames[i].indexOf(","));
-
+		int ind = round % getBattlePlan().size();
+			
+		String szName = "";
+		String szImage = "";
+		//TODO getAttackName items
+		if( getBattlePlan().get(ind) instanceof PlayerOwnItem ){
+			szName = ((PlayerOwnItem)getBattlePlan().get(ind)).getItem().getName();
+			szImage = ((PlayerOwnItem)getBattlePlan().get(ind)).getItem().getImage();
 		}
-		return  new String[]{ret.substring(1),ret.substring(1)};
+		else{
+			szName = ((PlayerKnowSpell)getBattlePlan().get(ind)).getSpell().getName();
+			szImage = ((PlayerKnowSpell)getBattlePlan().get(ind)).getSpell().getImage();
+		}
+		
+		return  new String[]{szName,szImage};
 	}
 
 	@Override
@@ -953,8 +928,33 @@ public class Character implements PlayerInterface, ItemsInterface {
 		setBattlePlan(battlePlan, true);
 	}
 
+	
 	public ArrayList<Object> getBattlePlan() {
 		return battlePlan;
+	}
+	
+	
+	@Override
+	public void prepareForFight() {
+		
+		if( getBattlePlan().size() == 0 && getDao().getBattle().length()!=0 ){
+			setBattlePlan( deserializeBattlePlan( getDao().getBattle() ) );			
+		}
+		
+		if(getBattlePlan().size()==0 ){
+			
+			if( getHandRightPoi()!=null ){
+				getBattlePlan().add(getHandRightPoi());
+			}
+			else{
+				Item[] it = FightEngine.parseUnarmedAttack( getDao().getAttack() );
+				for (int i = 0; i < it.length; i++) {
+					PlayerOwnItem poi = new PlayerOwnItem(getDao(),it[i],0, InfiniteCst.EQUIP_HAND_RIGHT );
+					getBattlePlan().add( poi );
+				}
+				
+			}			
+		}		
 	}
 	
 }

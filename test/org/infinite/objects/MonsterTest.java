@@ -15,7 +15,7 @@ public class MonsterTest {
 			
 		System.out.println("m.getArmorCA()"+m.getArmorCA());
 		System.out.println("m.getBaseCA()"+m.getBaseCA());
-		System.out.println("m.getInitiative()"+m.getInitiative());
+		System.out.println("m.getInitiative()"+m.getInitiative(0));
 		System.out.println("m.getShieldCA()"+m.getShieldCA());
 		System.out.println("m.getTotalCA()"+m.getTotalCA());
 		
@@ -25,7 +25,7 @@ public class MonsterTest {
 			
 		System.out.println("f.getArmorCA()"+m.getArmorCA());
 		System.out.println("f.getBaseCA()"+m.getBaseCA());
-		System.out.println("f.getInitiative()"+m.getInitiative());
+		System.out.println("f.getInitiative()"+m.getInitiative(0));
 		System.out.println("f.getShieldCA()"+m.getShieldCA());
 		System.out.println("f.getTotalCA()"+m.getTotalCA());
 		

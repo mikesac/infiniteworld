@@ -5,7 +5,9 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
+import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
@@ -54,7 +56,7 @@ public class FightEngine {
 			eRound.setAttribute("num", ""+(round++) );
 
 			//evaluate init & choose targets
-			targetOrder = evaluateInit(firstSide, secondSide, fightOrder, targetOrder);
+			targetOrder = evaluateInit(round,firstSide, secondSide, fightOrder, targetOrder);
 
 
 			//loop and attack
@@ -83,13 +85,13 @@ public class FightEngine {
 
 				switch (atkType) {
 				case InfiniteCst.ATTACK_TYPE_WEAPON:					
-					eAttack.appendChild( meleeFight(attacker, defender,dFight) );
+					eAttack.appendChild( meleeFight(round, attacker, defender,dFight) );
 					break;
 				case InfiniteCst.ATTACK_TYPE_MAGIC:
-					eAttack.appendChild( magicFight(attacker, defender,dFight) );
+					eAttack.appendChild( magicFight(round, attacker, defender,dFight) );
 					break;
 				default: //InfiniteCst.ATTACK_TYPE_IDLE
-					eAttack.appendChild( idleFight(attacker, dFight) );
+					eAttack.appendChild( idleFight(round, attacker, dFight) );
 					
 				break;
 				}
@@ -144,20 +146,20 @@ public class FightEngine {
 		return XmlUtil.xml2String(dFight);
 	}
 
-	private static Node idleFight(PlayerInterface attacker, Document dFight) {
+	private static Node idleFight(int round, PlayerInterface attacker, Document dFight) {
 		attacker.restRound(1);
 		return dFight.createElement("idle");
 		
 	}
 
-	private static Node magicFight(PlayerInterface attacker, PlayerInterface defender,Document doc) {		
+	private static Node magicFight(int round, PlayerInterface attacker, PlayerInterface defender,Document doc) {		
 		Element out = doc.createElement("magic");
 
-		String[] szAtkData = attacker.getAttackName();
+		String[] szAtkData = attacker.getAttackName(round);
 		out.setAttribute("name", szAtkData[0]);
 		out.setAttribute("img", szAtkData[1]);
 
-		Spell spell = attacker.castSpell( attacker.getPreparedSpells().get(0).getSpell() );
+		Spell spell = attacker.castSpell( ((PlayerKnowSpell)attacker.getCurrentAttack(round)).getSpell() );
 		int type = spell.getSpelltype();
 		out.setAttribute("type", ""+type);
 
@@ -208,13 +210,13 @@ public class FightEngine {
 		return out;
 	}
 
-	private static Element meleeFight(PlayerInterface attacker, PlayerInterface defender, Document doc) {
+	private static Element meleeFight(int round, PlayerInterface attacker, PlayerInterface defender, Document doc) {
 
 		Element out = doc.createElement("melee");
 		int atkRoll = attacker.getRollToAttack();
 		int defCA = defender.getTotalCA();
 
-		String[] szAtkData = attacker.getAttackName();
+		String[] szAtkData = attacker.getAttackName(round);
 		out.setAttribute("type", szAtkData[0]);
 		out.setAttribute("img", szAtkData[1]);
 		out.setAttribute("roll", ""+atkRoll);
@@ -222,7 +224,7 @@ public class FightEngine {
 
 
 		if(atkRoll>= defCA){
-			int inflict = attacker.getAttackDamage();
+			int inflict = attacker.getAttackDamage(round);
 			int remain = defender.inflictDamage(inflict);
 			out.setAttribute("hit", "1");
 			out.setAttribute("dmg", ""+inflict);
@@ -236,11 +238,18 @@ public class FightEngine {
 	}
 
 	private static void prepareForFight(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide) {
-		// TODO use this to be sure all data are available inside player/npc
+		
+		for (int i = 0; i < firstSide.size(); i++) {
+			firstSide.get(i).prepareForFight();
+		}
+		
+		for (int i = 0; i < secondSide.size(); i++) {
+			secondSide.get(i).prepareForFight();
+		}
 
 	}
 
-	private static int[] evaluateInit(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide, Vector<PlayerInterface> fightOrder, int[] targetOrder) {
+	private static int[] evaluateInit(int round, Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide, Vector<PlayerInterface> fightOrder, int[] targetOrder) {
 
 		//populate target arrays & temporary whole array
 		fightOrder.removeAllElements();
@@ -253,7 +262,7 @@ public class FightEngine {
 		int[] initOrder = new int[initValues.length];
 		targetOrder = new int[initValues.length];
 		for (int i = 0; i < initValues.length; i++) {
-			initValues[i] = tmpOrder.elementAt(i).getInitiative();			
+			initValues[i] = tmpOrder.elementAt(i).getInitiative( round );			
 		}
 
 		//sort init array and get vector order
@@ -335,6 +344,22 @@ public class FightEngine {
 		return em;
 	}
 
+	
+	public static Item[] parseUnarmedAttack( String attack) {
+
+		String[] szNames = attack.split("/");
+		Item[] items = new Item[szNames.length];
+		
+		for (int i = 0; i < items.length; i++) {
+			szNames = attack.split(",");
+			Item it = new Item(szNames[0],"",szNames[0], 1,0,0,0,0,0,0,0,0,0,0,1,1,szNames[1],1,-1,InfiniteCst.EQUIP_ISWEAPON);
+			items[i] = it;
+		}	
+		
+		return items;
+	}
+	
+	
 	public static int getAvailableAttackSlot(PlayerInterface p) {
 		int slots = 10;//p.getLevel() / InfiniteCst.CFG_LV_TO_BATTLE_PLAN_SLOTS +1;
 		return slots;
