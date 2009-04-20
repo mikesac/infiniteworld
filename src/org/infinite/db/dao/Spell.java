@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 6-apr-2009 8.44.52 by Hibernate Tools 3.2.4.CR1
+// Generated 20-apr-2009 10.52.17 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -33,7 +33,8 @@ public class Spell implements java.io.Serializable {
 	private Integer initiative;
 	private Set<PlayerKnowSpell> playerKnowSpells = new HashSet<PlayerKnowSpell>(
 			0);
-	private Set<Player> players = new HashSet<Player>(0);
+	private Set<SpellAffectPlayer> spellAffectPlayers = new HashSet<SpellAffectPlayer>(
+			0);
 
 	public Spell() {
 	}
@@ -72,7 +73,7 @@ public class Spell implements java.io.Serializable {
 			Integer modCha, float price, Integer lev, Integer duration,
 			Integer spelltype, String damage, Integer savingthrow,
 			Integer initiative, Set<PlayerKnowSpell> playerKnowSpells,
-			Set<Player> players) {
+			Set<SpellAffectPlayer> spellAffectPlayers) {
 		this.name = name;
 		this.desc = desc;
 		this.image = image;
@@ -94,7 +95,7 @@ public class Spell implements java.io.Serializable {
 		this.savingthrow = savingthrow;
 		this.initiative = initiative;
 		this.playerKnowSpells = playerKnowSpells;
-		this.players = players;
+		this.spellAffectPlayers = spellAffectPlayers;
 	}
 
 	public Integer getId() {
@@ -273,12 +274,12 @@ public class Spell implements java.io.Serializable {
 		this.playerKnowSpells = playerKnowSpells;
 	}
 
-	public Set<Player> getPlayers() {
-		return this.players;
+	public Set<SpellAffectPlayer> getSpellAffectPlayers() {
+		return this.spellAffectPlayers;
 	}
 
-	public void setPlayers(Set<Player> players) {
-		this.players = players;
+	public void setSpellAffectPlayers(Set<SpellAffectPlayer> spellAffectPlayers) {
+		this.spellAffectPlayers = spellAffectPlayers;
 	}
 
 }

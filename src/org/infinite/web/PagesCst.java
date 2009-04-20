@@ -11,6 +11,7 @@ public class PagesCst {
 
 	
 	public static final String PAGE_MAPFIGHT = "/player/mapFight.jsp";
+	public static final String PAGE_MAPFIGHTREPORT = "/player/mapFightReport.jsp";
 	public static final String PAGE_ROOT = "/";
 	public static final String PAGE_CHARACTER = "/player/character.jsp";
 	public static final String PAGE_MAP = "/player/map.jsp";
@@ -24,6 +25,9 @@ public class PagesCst {
 	public static final String CONTEXT_MAP = "map";
 	public static final String CONTEXT_SPELLTYPE = "spell_type";
 	public static final String CONTEXT_SPELLPAGE = "spell_page";
+	public static final String CONTEXT_FIGHT_REPORT = "fight_report";
+	public static final String CONTEXT_FIGHT_REPORT_S1 = "fight_report_s1";
+	public static final String CONTEXT_FIGHT_REPORT_S2= "fight_report_s2";
 	
 	public static Character getCharacter(HttpServletRequest req, HttpServletResponse resp) throws IOException{
 		

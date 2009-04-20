@@ -1,66 +1,48 @@
 package org.infinite.engines.fight;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Vector;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.infinite.db.Manager;
 import org.infinite.db.dao.Item;
-import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
+import org.infinite.db.dao.SpellAffectPlayer;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
-import org.infinite.util.XmlUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 
 public class FightEngine {
 
-	public static String runFight(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide) throws Exception{
+	private static final Log log = LogFactory.getLog(FightEngine.class);
 
+	
+	public static ArrayList<FightRound> runFight(ArrayList<PlayerInterface> firstSide, ArrayList<PlayerInterface> secondSide) throws Exception{
+
+		ArrayList<FightRound> report = new ArrayList<FightRound>();
+		
 		Vector<PlayerInterface> fightOrder = new Vector<PlayerInterface>();
 		int[] targetOrder = null;
 
-		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();			
-		Document dFight = docBuilder.newDocument();
-
-		Element parent = dFight.createElement("fight");
-
 		//prepare for fight
 		prepareForFight(firstSide,secondSide);
-
-		Element eParties = dFight.createElement("parties");
-		Element eFirstSide = dFight.createElement("firstside");
-		for (int i = 0; i < firstSide.size(); i++) {
-			eFirstSide.appendChild( getFighterXml( firstSide.elementAt(i) , dFight,true)  );
-		}
-		eParties.appendChild(eFirstSide);
-
-		Element eSecondSide = dFight.createElement("secondside");
-		for (int i = 0; i < secondSide.size(); i++) {
-			eSecondSide.appendChild( getFighterXml( secondSide.elementAt(i) , dFight,false)  );
-		}
-		eParties.appendChild(eSecondSide);
-		parent.appendChild(eParties);
-
-		
 		
 		int round = 0;
 		do {
 
-			
-			Element eRound = dFight.createElement("round");
-			eRound.setAttribute("num", ""+(round++) );
-
 			//evaluate init & choose targets
 			targetOrder = evaluateInit(round,firstSide, secondSide, fightOrder, targetOrder);
 
-
+			evaluateAffectingSpell(fightOrder,round,report);
+			
+			
 			//loop and attack
 			for (int i = 0; i < fightOrder.size(); i++) {
+				
+				FightRound r = new FightRound(round);
 
 				//get attacker
 				PlayerInterface attacker = fightOrder.elementAt( i );
@@ -79,19 +61,20 @@ public class FightEngine {
 				//fight!				
 				int atkType = attacker.getAttackType(defender);
 
-				Element eAttack = dFight.createElement("attack");
-				eAttack.appendChild( getFightXml(attacker, dFight,"attacker",firstSide.contains(attacker)) );
-				eAttack.appendChild( getFightXml(defender, dFight,"defender",firstSide.contains(defender)) );
+				r.setAttacker( attacker.getName() );
+				r.setDefender( defender.getName() );
+				r.setFirstSide( firstSide.contains(attacker) );
+
 
 				switch (atkType) {
 				case InfiniteCst.ATTACK_TYPE_WEAPON:					
-					eAttack.appendChild( meleeFight(round, attacker, defender,dFight) );
+					meleeFight(round, attacker, defender,r );
 					break;
 				case InfiniteCst.ATTACK_TYPE_MAGIC:
-					eAttack.appendChild( magicFight(round, attacker, defender,dFight) );
+					magicFight(round, attacker, defender,r );
 					break;
 				default: //InfiniteCst.ATTACK_TYPE_IDLE
-					eAttack.appendChild( idleFight(round, attacker, dFight) );
+					idleFight(round, attacker, r );
 					
 				break;
 				}
@@ -100,68 +83,136 @@ public class FightEngine {
 
 				//if defender dies
 				if( ! defender.isAlive() ){
-					//TODO handle monster death
-					Element eDeath = dFight.createElement("death");
-					eDeath.setAttribute("name", defender.getName());
+					
+					loot(attacker,defender);
+					
+					r.setEndRound(true);
+					r.setGold(defender.getRewardGold());
+					r.setPx(defender.getRewardPX());
+					r.addItems(null);
 
-					Element eGold = dFight.createElement("gold");
-					eGold.setTextContent( ""+defender.getRewardGold());
-					eDeath.appendChild(eGold);
-
-					Element ePx = dFight.createElement("xp");
-					ePx.setTextContent(""+defender.getRewardPX() );
-					eDeath.appendChild(ePx);
-
-					Element eItem = dFight.createElement("items");
-					eItem.setTextContent("0"); //TODO items xml
-					eDeath.appendChild(eItem);
-
-
-					if( firstSide.removeElement(defender) ){
-						//						System.out.println("------> "+defender.getName()+" removed from firstSide "+firstSide.size()+" remains");
+					
+					
+					if( firstSide.remove(defender) ){
+						log.debug(defender.getName()+" removed from firstSide "+firstSide.size()+" remains");
 					}
-					if( secondSide.removeElement(defender) ){
-						//						System.out.println("------> "+defender.getName()+" removed from secondSide "+secondSide.size()+" remains");
+					if( secondSide.remove(defender) ){
+						log.debug("------> "+defender.getName()+" removed from secondSide "+secondSide.size()+" remains");
 					}
-
-					eAttack.appendChild(eDeath);
 				}
-				eRound.appendChild(eAttack);
-			}
-
-
-			parent.appendChild(eRound);
+				
+				report.add(r);
+			}//for - fightorder
+			
+			round++;
+			
 		} while ( firstSide.size()> 0 && secondSide.size()>0);
 
-		Element esum = dFight.createElement("summary");
+		
 		//TODO add recap XML
-		if(firstSide.size()==0)
-			esum.setTextContent("Second side wins!");
-		else
-			esum.setTextContent("First side wins!");
-		parent.appendChild(esum);		
 
-		dFight.appendChild(parent);
-
-		return XmlUtil.xml2String(dFight);
+		return report;
 	}
 
-	private static Node idleFight(int round, PlayerInterface attacker, Document dFight) {
-		attacker.restRound(1);
-		return dFight.createElement("idle");
+	private static void evaluateAffectingSpell(Vector<PlayerInterface> fightOrder, int round,	ArrayList<FightRound> report) {
+		// TODO evaluate spells effects
+		
+		for (int i = 0; i < fightOrder.size(); i++) {
+			
+			PlayerInterface p = fightOrder.get(i);
+			
+			//fist check if some spell elapsed
+			checkForElapsedSpells(p);
+			
+			for (int j = 0; j < p.getSpellsAffecting().size(); j++) 
+			{
+				
+				Spell s = p.getSpellsAffecting().get(j).getSpell();
+				
+				FightRound r = new FightRound(round);
+				r.setSpellEffect(true);
+				r.setAttacker( s.getName() );
+				r.setAttackImg( s.getImage() );
+				r.setDefender( p.getName() );
+				r.setAttackType(s.getSpelltype());
+				r.setRoundType(InfiniteCst.ATTACK_TYPE_MAGIC);
+				
+				switch (s.getSpelltype()) {
+				case InfiniteCst.MAGIC_ATTACK:
+					int dmg=0;
+						try {
+							dmg = GenericUtil.rollDice( s.getDamage() );
+						} catch (Exception e) {
+							log.error("evaluateAffectingSpell - DIce:"+s.getDamage(),e);
+						}
+					p.inflictDamage(dmg);
+					r.setAttackDmg(dmg);
+					
+					break;
+				case InfiniteCst.MAGIC_HEAL:
+
+					int heal=0;
+					try {
+						heal = GenericUtil.rollDice( s.getDamage() );
+					} catch (Exception e) {
+						log.error("evaluateAffectingSpell - DIce:"+s.getDamage(),e);
+					}
+					p.healDamage(heal);
+					r.setAttackDmg(heal);
+					
+					break;
+				case InfiniteCst.MAGIC_DEFEND:
+					//this should not have any active effect, only stats modification
+					break;
+				}
+				
+				report.add(r);
+				
+			}
+			
+			
+		}
+		
 		
 	}
 
-	private static Node magicFight(int round, PlayerInterface attacker, PlayerInterface defender,Document doc) {		
-		Element out = doc.createElement("magic");
+	private static void loot(PlayerInterface attacker, PlayerInterface defender) {	
+		attacker.addGold( defender.getRewardGold() );
+		attacker.addExperience( defender.getRewardPX() );
+		attacker.lootItems( defender.getRewardItems() );
+	}
+
+	
+	private static void idleFight(int round, PlayerInterface attacker, FightRound r) {
+		int points = attacker.restRound(1);
+		r.setAttacker(attacker.getName());
+		r.setAttackDmg(points);
+		r.setRoundType(InfiniteCst.ATTACK_TYPE_IDLE);
+		
+	}
+
+	
+	private static void magicFight(int round, PlayerInterface attacker, PlayerInterface defender,FightRound r ) {		
+		
 
 		String[] szAtkData = attacker.getAttackName(round);
-		out.setAttribute("name", szAtkData[0]);
-		out.setAttribute("img", szAtkData[1]);
+		
+		r.setAttackName(szAtkData[0]);
+		r.setAttackImg(szAtkData[1]);
+		r.setRoundType(InfiniteCst.ATTACK_TYPE_MAGIC);
 
-		Spell spell = attacker.castSpell( ((PlayerKnowSpell)attacker.getCurrentAttack(round)).getSpell() );
+		Spell spell = ((PlayerKnowSpell)attacker.getCurrentAttack(round)).getSpell();
+		
+		
+		spell = attacker.castSpell( spell );
+		
+		if(spell==null){
+			r.setAttackType(InfiniteCst.MAGIC_UNCAST);
+			return;
+		}
+		
 		int type = spell.getSpelltype();
-		out.setAttribute("type", ""+type);
+		r.setAttackType(type);
 
 		switch (type) 
 		{
@@ -171,8 +222,7 @@ public class FightEngine {
 			try {
 				dmg = GenericUtil.rollDice( spell.getDamage() );
 			} catch (Exception e) {
-				GenericUtil.err("DICE:"+spell.getDamage(),e);
-				e.printStackTrace();
+				log.error("magicFight DICE:"+spell.getDamage(),e);
 			}
 
 			if( (spell.getSavingthrow() >= 0 ) && defender.rollSavingThrow(spell, attacker) ){
@@ -180,7 +230,7 @@ public class FightEngine {
 			}
 
 			defender.inflictDamage(dmg);
-			out.setAttribute("dmg",""+dmg);
+			r.setAttackDmg(dmg);
 			break;
 			
 		case InfiniteCst.MAGIC_HEAL:
@@ -189,10 +239,9 @@ public class FightEngine {
 					int heal = GenericUtil.rollDice( spell.getDamage() );
 					attacker.healDamage( heal );
 					//out.setTextContent("Healed for "+heal+"HP");
-					out.setAttribute("dmg",""+heal);
+					r.setAttackDmg(heal);
 				} catch (Exception e) {
-					GenericUtil.err("DICE:"+spell.getDamage(),e);
-					e.printStackTrace();
+					log.error("DICE:"+spell.getDamage(),e);
 				}
 
 			break;
@@ -201,43 +250,46 @@ public class FightEngine {
 			break;
 		}
 
-
 		//TODO stack effects
-
-		// TODO magicFight
-		//TODO Damage & Saving Throw
-		//TODO Effects stack
-		return out;
+		if(spell.getDuration()>0){
+			//attack spells last on target, protection & heal last on caster
+			if( spell.getSpelltype()== InfiniteCst.MAGIC_ATTACK )
+				defender.addToAffectingSpells(spell);
+			else
+				attacker.addToAffectingSpells(spell);
+		}
+		
 	}
 
-	private static Element meleeFight(int round, PlayerInterface attacker, PlayerInterface defender, Document doc) {
+	
+	private static void meleeFight(int round, PlayerInterface attacker, PlayerInterface defender, FightRound r ) {
 
-		Element out = doc.createElement("melee");
 		int atkRoll = attacker.getRollToAttack();
 		int defCA = defender.getTotalCA();
 
 		String[] szAtkData = attacker.getAttackName(round);
-		out.setAttribute("type", szAtkData[0]);
-		out.setAttribute("img", szAtkData[1]);
-		out.setAttribute("roll", ""+atkRoll);
-		out.setAttribute("ca", ""+defCA);
-
+		
+		r.setRoundType(InfiniteCst.ATTACK_TYPE_WEAPON);
+		r.setAttackName(szAtkData[0]);
+		r.setAttackImg(szAtkData[1]);
+		r.setAttackRoll(atkRoll);
+		r.setDefenderCA(defCA);
 
 		if(atkRoll>= defCA){
 			int inflict = attacker.getAttackDamage(round);
 			int remain = defender.inflictDamage(inflict);
-			out.setAttribute("hit", "1");
-			out.setAttribute("dmg", ""+inflict);
-			out.setAttribute("rhp", ""+remain);
+			r.setHit(true);
+			r.setAttackDmg(inflict);
+			r.setRemainHp(remain);
 		}
 		else{
-			out.setAttribute("hit", "0");
+			r.setHit(false);
 		}
 
-		return out;
 	}
-
-	private static void prepareForFight(Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide) {
+	
+	
+	private static void prepareForFight(ArrayList<PlayerInterface> firstSide, ArrayList<PlayerInterface> secondSide) {
 		
 		for (int i = 0; i < firstSide.size(); i++) {
 			firstSide.get(i).prepareForFight();
@@ -249,7 +301,8 @@ public class FightEngine {
 
 	}
 
-	private static int[] evaluateInit(int round, Vector<PlayerInterface> firstSide, Vector<PlayerInterface> secondSide, Vector<PlayerInterface> fightOrder, int[] targetOrder) {
+	
+	private static int[] evaluateInit(int round, ArrayList<PlayerInterface> firstSide, ArrayList<PlayerInterface> secondSide, Vector<PlayerInterface> fightOrder, int[] targetOrder) {
 
 		//populate target arrays & temporary whole array
 		fightOrder.removeAllElements();
@@ -316,34 +369,6 @@ public class FightEngine {
 		return targetOrder;
 	}
 
-
-	private static Element getFighterXml(PlayerInterface m,Document doc,boolean isFirstPary){
-		return getFightXml(m, doc,null,isFirstPary);
-	}
-
-	private static Element getFightXml(PlayerInterface m,Document doc,String szAttName,boolean isFirstPary){
-		Element em = doc.createElement("monster");
-		if(szAttName!=null && szAttName.length()>0)
-			em.setAttribute("type", szAttName);
-		em.setAttribute("name", m.getName() );
-		em.setAttribute("first", ""+isFirstPary );
-		
-		if(m.getDao() instanceof Player){
-			em.setAttribute("img", "../player/"+m.getPic() );
-		}
-		else{
-			em.setAttribute("img", m.getPic() );
-		}
-		em.setAttribute("thp", ""+m.getPointsLifeMax() );
-		em.setAttribute("chp", ""+m.getPointsLife() );
-		em.setAttribute("tmp", ""+m.getPointsMagicMax() );
-		em.setAttribute("cmp", ""+m.getPointsMagic() );
-		em.setAttribute("tap", ""+m.getPointsActionMax() );
-		em.setAttribute("cap", ""+m.getPointsAction() );
-
-		return em;
-	}
-
 	
 	public static Item[] parseUnarmedAttack( String attack) {
 
@@ -365,5 +390,19 @@ public class FightEngine {
 		return slots;
 	}
 
+	
+	public static void checkForElapsedSpells(PlayerInterface p){
+
+		long now = (new Date()).getTime();
+		for (int i = 0; i < p.getSpellsAffecting().size(); i++) {
+
+			SpellAffectPlayer sap = p.getSpellsAffecting().get(i);
+			if(sap.getElapsing() <= now ){
+				p.removeSpellsAffecting( p.getSpellsAffecting().get(i).getId() );
+				Manager.delete( sap );
+			}		
+			
+		}		
+	}
 	
 }

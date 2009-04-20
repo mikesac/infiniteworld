@@ -34,17 +34,9 @@ font-family: Verdana,Arial;
 	margin-bottom: 1%;
 }
 
-.firstParty {
-	background-image:
-		url("<%=request.getContextPath()%>/imgs/web/silver.jpg");
-	font-size: 10pt;
-}
 
-.secondParty {
-	background-image: url("<%=request.getContextPath()%>/imgs/web/gold.jpg")
-		;
-	font-size: 10pt;
-}
+.firstSide{color:green;}
+.secondSide{color:red;}
 
 .party {
 	width: 90%;

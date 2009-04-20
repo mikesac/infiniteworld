@@ -11,6 +11,7 @@ import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
+import org.infinite.db.dao.SpellAffectPlayer;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.engines.items.ItemsEngine;
@@ -39,38 +40,40 @@ public class Character implements PlayerInterface, ItemsInterface {
 	Player player = null;
 	int iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
 
-	/*
+	/**
 	 * Equipped items
 	 */
 	private PlayerOwnItem handRight = null;
 	private PlayerOwnItem handLeft = null;	
 	private PlayerOwnItem body = null;
 
-	/*
+	/**
 	 * Backpack content
 	 */
 	private ArrayList<PlayerOwnItem> inventory = new ArrayList<PlayerOwnItem>();
 
-	/*
+	/**
 	 * all Known spells, sorted by type 
 	 */
 	private ArrayList<PlayerKnowSpell> spellBookFight = new ArrayList<PlayerKnowSpell>();
 	private ArrayList<PlayerKnowSpell> spellBookHeal = new ArrayList<PlayerKnowSpell>();
 	private ArrayList<PlayerKnowSpell> spellBookProtect = new ArrayList<PlayerKnowSpell>();
 
-	/*
+	/**
 	 * Spells prepared for fight
 	 */
 	private ArrayList<PlayerKnowSpell> preparedSpells = new ArrayList<PlayerKnowSpell>();
 
-	/*
+	/**
 	 * Spells cast over player
 	 */
-	private ArrayList<Spell> spellsAffecting = new ArrayList<Spell>();
+	private ArrayList<SpellAffectPlayer> spellsAffecting = new ArrayList<SpellAffectPlayer>();
 
-	
+	/**
+	 * duel sequence of attacks 
+	 */
 	private ArrayList<Object> battlePlan = new ArrayList<Object>();
-	
+
 
 	@SuppressWarnings("unchecked")
 	public Character(String name, String accountName) throws Exception{
@@ -78,7 +81,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		//get character Dao
 		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
 		String battle = getDao().getBattle();
-		
+
 		//get inventory and assign
 		ArrayList<PlayerOwnItem> poi = (ArrayList<PlayerOwnItem>) Manager.listByQery("from org.infinite.db.dao.PlayerOwnItem poi join fetch poi.item i where poi.player='"+getDao().getId()+"'");
 
@@ -86,67 +89,118 @@ public class Character implements PlayerInterface, ItemsInterface {
 		for (int i = 0; i < poi.size(); i++) {
 			equipItem(poi.get(i));
 		}
-		
+
 		//get spell book and assign
 		ArrayList<PlayerKnowSpell> pks = (ArrayList<PlayerKnowSpell>) Manager.listByQery("from org.infinite.db.dao.PlayerKnowSpell pks join fetch pks.spell a where pks.player='"+getDao().getId()+"'");
 		for (int i = 0; i < pks.size(); i++) {
 			learnSpell( pks.get(i) , false );
 		}
-	
+		
+		//get spell cast on player
+		long now = (new Date()).getTime();
+		ArrayList<SpellAffectPlayer> sap = (ArrayList<SpellAffectPlayer>) Manager.listByQery("from org.infinite.db.dao.SpellAffectPlayer sap join fetch sap.spell a where sap.player='"+getDao().getId()+"'");
+		for (int i = 0; i < sap.size(); i++) {
+			
+			//spell elapsed, removing
+			if(sap.get(i).getElapsing() < now ){
+				Manager.delete( sap.get(i) );
+			}
+			else{ //storing over player
+				getSpellsAffecting().add(sap.get(i));
+			}
+			
+			
+		}
+
+		//convert battle plan to objects
 		battlePlan = new ArrayList<Object>();
 		setBattlePlan( deserializeBattlePlan(battle) );
 		if(getBattlePlan().size()==0 && getHandRightPoi()!=null){
 			changeFromBattlePlan("", "A"+getHandRightPoi().getId());
 		}
-		
-	}
-	
-	
 
-	@Override
+	}
+
+
+
+	/**
+	 * An already owned item is moved to inventory (used to unequip items)
+	 */
 	public void moveToInventory(PlayerOwnItem poi) {
 		ItemsEngine.moveToInventory(this,poi,true);
 	}
 
-	@Override 
+	/**
+	 * A newly owned item is moved to inventory (used to loot/buy items)
+	 */ 
 	public void addToInventory(Item item){
 		ItemsEngine.addToInventory(this,item, true);
 	}
+
 	
+	/**
+	 * A newly owned item is moved to inventory (used to loot/buy items)
+	 * NOTE: no persitence with this method 
+	 */
 	public void addToInventory(PlayerOwnItem poi){
 		getInventory().add(poi);
 	}
 
-	@Override 
+	/**
+	 * dropping an owned item
+	 */
 	public void dropItem(PlayerOwnItem poi){
 		ItemsEngine.dropItem(this, poi);
 	}
 
-	@Override 
+	/**
+	 * Equip item on proper slot defined in PlayerOwnItem, if not set, it will be moved to inventory
+	 * @see org.infinite.engines.items.ItemsInterface#equipItem(org.infinite.db.dao.PlayerOwnItem)
+	 */
 	public void equipItem(PlayerOwnItem poi){
 		int previousId = ItemsEngine.equipItem(this, poi);
 		changeFromBattlePlan("A"+previousId,"A"+poi.getId());
 	}
-	
-	@Override 
+
+	/**
+	 * Equip item on proper slot defined in PlayerOwnItem, if not set an exception will be thrown
+	 * @see org.infinite.engines.items.ItemsInterface#wearItem(org.infinite.db.dao.PlayerOwnItem)
+	 */
 	public void wearItem(PlayerOwnItem poi) throws Exception{
 		int previousId = ItemsEngine.wearItem(this, poi);
 		changeFromBattlePlan("A"+previousId,"A"+poi.getId());
 	}
-	
-	
+
+
 	public void  learnSpell(Spell spell) {
 		MagicEngine.learnSpell(this, spell);
 	}
-	
+
 	public void learnSpell(PlayerKnowSpell pks,boolean persist){
 		MagicEngine.learnSpell(this,pks, persist);
 	}
-	
+
 	public void addToPreparedSpells(PlayerKnowSpell pks){
 		getPreparedSpells().add(pks);
 	}
 	
+	/**
+	 * Add spell to the list of spells affecting the player
+	 * @see org.infinite.engines.fight.PlayerInterface#addToAffectingSpells(org.infinite.db.dao.Spell)
+	 */
+	public void addToAffectingSpells(Spell s){
+		MagicEngine.affectSpells(this,s,true);
+	}
+	
+	/**
+	 * Add spell to the list of spells affecting the player
+	 * NOTE: <b>no persistence is applied with this method</b>
+	 * @see org.infinite.engines.fight.PlayerInterface#addToAffectingSpells(org.infinite.db.dao.SpellAffectPlayer)
+	 */
+	public void addToAffectingSpells(SpellAffectPlayer sap){
+		getSpellsAffecting().add( sap );
+	}
+
 	public int getBaseCA(){
 		return (int)Math.round(InfiniteCst.FIGHT_BASE_CA + ( getDexterity()  / 5) );
 	}
@@ -179,17 +233,17 @@ public class Character implements PlayerInterface, ItemsInterface {
 	public int getInitiative( int round ){
 		// 1d6 random
 		int init = GenericUtil.rollDice(1, 6, 0);
-		
+
 		int ind = round % getBattlePlan().size();
-		
+
 		iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
-		
+
 		//TODO items
 		if( getBattlePlan().get(ind) instanceof PlayerOwnItem )
 			iAttackKind = InfiniteCst.ATTACK_TYPE_WEAPON;
 		else
 			iAttackKind = InfiniteCst.ATTACK_TYPE_MAGIC;
-		
+
 		//magic attack are based on intelligence, weapon and items on dexterity
 		if(iAttackKind==InfiniteCst.ATTACK_TYPE_MAGIC)
 		{
@@ -244,13 +298,16 @@ public class Character implements PlayerInterface, ItemsInterface {
 		return pl;
 	}
 
-	public void restRound(int i) {
+	public int restRound(int i) {
+		int points = i * getDao().getLevel();
 		try {
-			addActionPoints( i * getDao().getLevel() );
+			addMagicPoints( points );
+			addActionPoints( points );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		return points;
 	}
 
 	public int getSpellDuration(){
@@ -259,17 +316,17 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 
 	public Object getCurrentAttack(int round){
-			
+
 		int ind = round % getBattlePlan().size();
 		return getBattlePlan().get(ind);
 	}
-	
-	
+
+
 	public int getAttackDamage(int round){
-		
+
 		int dmg = 0;
 		String szDice = "";
-		
+
 		//TODO getAttackDamage items
 		if( getCurrentAttack(round) instanceof PlayerOwnItem ){
 			szDice = ((PlayerOwnItem)getCurrentAttack(round)).getItem().getDamage();			
@@ -277,14 +334,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 		else{
 			szDice = ((PlayerKnowSpell)getCurrentAttack(round)).getSpell().getDamage();
 		}
-		
+
 		try {
-			
+
 			dmg += GenericUtil.rollDice( szDice ) ;
 		} catch (Exception e) {
 			GenericUtil.err("DICE:"+szDice,e);
 		}
-		
+
 		return dmg;
 	}
 
@@ -296,9 +353,37 @@ public class Character implements PlayerInterface, ItemsInterface {
 		return getDao().getPx();
 	}
 
+	@Override
+	public int addExperience(int rewardPX){
+		int currPx = getExperience() + rewardPX;
+
+		if(currPx<0) currPx=0;
+
+		getDao().setPx(currPx);
+		saveDao();
+
+		return getExperience();
+
+	}
+
 	public float getGold(){
 		return getDao().getGold();
 	}
+
+	@Override
+	public float addGold(float rewardGold){
+		float currGold = getGold() + rewardGold;
+
+		if(currGold<0)
+			currGold = 0;
+
+		getDao().setGold(currGold);
+		saveDao();
+
+		return getGold();
+
+	}
+
 
 	public Item[] getRewardItems(){
 		return new Item[0];
@@ -364,7 +449,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 	public int getAvailableSpellSlot(){
 		return MagicEngine.getAvailableSpellSlots(this);
 	}
-	
+
 	public int getAvailableAttackSlot(){
 		int total = FightEngine.getAvailableAttackSlot(this) - getBattlePlan().size();
 		return total;
@@ -433,7 +518,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModDex();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.get(i).getModDex();
+			mod += spellsAffecting.get(i).getSpell().getModDex();
 		}
 		return mod;
 	}
@@ -446,7 +531,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModStr();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.get(i).getModStr();
+			mod += spellsAffecting.get(i).getSpell().getModStr();
 		}
 		return mod;
 	}
@@ -459,7 +544,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModCha();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.get(i).getModCha();
+			mod += spellsAffecting.get(i).getSpell().getModCha();
 		}
 		return mod;
 	}
@@ -472,7 +557,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		mod += getBody()==null?0:getBody().getModInt();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.get(i).getModInt();
+			mod += spellsAffecting.get(i).getSpell().getModInt();
 		}
 		return mod;
 	}
@@ -668,9 +753,246 @@ public class Character implements PlayerInterface, ItemsInterface {
 	}
 
 
+	
+
+
+
+	@Override
+	public int getAttackType(PlayerInterface defender) {
+		return iAttackKind;
+	}
+
+	public String[] getAttackName( int round){
+
+		String szName = "";
+		String szImage = "";
+		//TODO getAttackName items
+		if( getCurrentAttack(round) instanceof PlayerOwnItem ){
+			szName = ((PlayerOwnItem)getCurrentAttack(round)).getItem().getName();
+			szImage = ((PlayerOwnItem)getCurrentAttack(round)).getItem().getImage();
+		}
+		else if( getCurrentAttack(round) instanceof PlayerKnowSpell ){
+			szName = ((PlayerKnowSpell)getCurrentAttack(round)).getSpell().getName();
+			szImage = ((PlayerKnowSpell)getCurrentAttack(round)).getSpell().getImage();
+		}
+		else{
+			szName = "";
+			szImage = "";
+			iAttackKind = InfiniteCst.ATTACK_TYPE_IDLE;
+		}
+
+		return  new String[]{szName,szImage};
+	}
+
+	@Override
+	public float getRewardGold() {
+		// TODO Decide the amount of GOLD for defeating characters (should depend on levels difference)
+		return 0;
+	}
+
+	@Override
+	public int getRewardPX() {
+		// TODO Decide the amount of PX for defeating characters
+		return getLevel() * 100;
+	}
+
+	@Override
+	public boolean rollSavingThrow(Spell s, PlayerInterface caster) {
+		return MagicEngine.rollSavingThrow(s, caster, this);
+	}
+
+
+	public void setHandRight(PlayerOwnItem handRight) {
+		this.handRight = handRight;
+	}
+	public void setHandLeft(PlayerOwnItem handLeft) {
+		this.handLeft = handLeft;
+	}
+	public void setBody(PlayerOwnItem body) {
+		this.body = body;
+	}
+
+	@Override
+	public Spell castSpell(Spell s) {
+		return MagicEngine.castSpell(this,s);
+	}
+
+	/**
+	 * Set spell as available for being cast in duel
+	 * @see org.infinite.engines.fight.PlayerInterface#prepareSpell(org.infinite.db.dao.PlayerKnowSpell)
+	 */
+	public void prepareSpell(PlayerKnowSpell pks) {
+		MagicEngine.prepareSpell(this,pks);		
+	}
+
+	/**
+	 * Unset spell from being prepared, remove it from battle plan 
+	 * @see org.infinite.engines.fight.PlayerInterface#unprepareSpell(int)
+	 */
+	public void unprepareSpell(int pksId) {
+		MagicEngine.unprepareSpell(this,pksId);	
+		changeFromBattlePlan("s"+pksId, "");
+	}
+
+	/**
+	 * This method takes the string with the list of attacks order from the db 
+	 * and covert it to an array list of items/spell
+	 * 
+	 * Naming convention: 
+	 *   A = attacks
+	 *   S = Spells
+	 *   I = Items
+	 *   the number is object's id from inventory/book, NOT object's own item
+	 */
+	public ArrayList<Object> deserializeBattlePlan(String battle){
+		// String example: A3,S15,I8,S5
+
+		ArrayList<Object> out = new ArrayList<Object>();
+
+		if(battle == null || battle.length()==0 ){
+			return out;
+		}
+
+		String[] list = battle.split(",");
+		for (int i = 0; i < list.length; i++) {
+
+			if(list[i].length()<2)
+				continue;
+
+			String type = list[i].substring(0,1);
+			int num = GenericUtil.toInt(list[i].substring(1),-1);
+			if(num==-1){
+				GenericUtil.err("Invalid BattlePlan token ["+list[i]+"] in "+battle, null);
+				continue;
+			}
+
+			if( type.equalsIgnoreCase("A") ){ //Attack may come only from Hands items
+
+				if(getHandRightPoi()!=null && getHandRightPoi().getId() == num)
+					out.add(getHandRightPoi());
+				else if(getHandLeftPoi()!=null && getHandLeftPoi().getId() == num)
+					out.add(getHandLeftPoi());
+			}
+			else if( type.equalsIgnoreCase("S") ){ //Spells come from prepared spells 
+
+				for (int j = 0; j < getPreparedSpells().size(); j++) {
+					if(getPreparedSpells().get(j).getId()==num)
+						out.add(getPreparedSpells().get(j) );
+				}		
+			}
+			else{
+				//TODO deserialize item from battle plan
+			}	
+		}
+
+		return out;
+	}
+
+	/**
+	 * This method takes the list of attacks order and convert it to a string to be saved on db
+	 */
+	public String serializeBattlePlan(ArrayList<Object> list) {
+
+		String out ="";
+
+		for (int i = 0; i < list.size(); i++) {
+
+			if( list.get(i) instanceof PlayerOwnItem){
+				PlayerOwnItem poi = (PlayerOwnItem)list.get(i);
+				if(getHandRightPoi()!=null && poi.getId() == getHandRightPoi().getId()){
+					out += ",A"+poi.getId();
+				}
+				else if(getHandLeftPoi()!=null && poi.getId() == getHandLeftPoi().getId() && 
+						getHandLeft().getType()==InfiniteCst.ITEM_TYPE_WEAPON ){
+					out += ",A"+poi.getId();
+				}
+			}
+			else if(list.get(i) instanceof PlayerKnowSpell){
+
+				PlayerKnowSpell pks = (PlayerKnowSpell)list.get(i);
+				for (int j = 0; j < getPreparedSpells().size(); j++) {
+					if( getPreparedSpells().get(j).getId()==pks.getId())
+						out += ",S"+pks.getId();
+				}
+			}
+			else{
+				//TODO serialize item to battle plan
+			}			
+		}
+
+		//removing starting comma
+		if(out.length()>0)
+			out = out.substring(1);
+		return out;		
+	}
+
+	
+	/**
+	 * remove one object from the battle plan, add another at its place (if nothing removed, it's appended)
+	 */
+	protected void changeFromBattlePlan(String toBeRemoved,String toBeAdded){
+
+		String actual = serializeBattlePlan( getBattlePlan() );
+
+		String newString ="";
+
+		if(toBeRemoved==null)
+			toBeRemoved="";
+
+		if(toBeAdded==null)
+			toBeAdded="";
+
+		toBeRemoved = toBeRemoved.toLowerCase();
+		String[] list =  actual.toLowerCase().split(",");
+		for (int i = 0; i < list.length; i++) {
+			if( ! list[i].equals(toBeRemoved) )
+				newString += ","+list[i];
+			else{
+				newString += ","+toBeAdded;
+				toBeAdded = "";
+			}
+		}
+
+		//if new (nothing to be removed) it had no match in the previous loop, appending
+		if(toBeAdded.length()>0)
+			newString += ","+toBeAdded;
+
+		newString = newString.replaceAll(",,", ",");
+
+		if(newString.length()>0)
+			newString = newString.substring(1);
+
+
+		setBattlePlan( deserializeBattlePlan(newString),false  );
+		getDao().setBattle(newString);
+		saveDao();
+	}
+
+	private void setBattlePlan(ArrayList<Object> battlePlan, boolean persist) {
+		this.battlePlan = battlePlan;
+		if(persist){
+			getDao().setBattle( serializeBattlePlan( getBattlePlan() ));
+			saveDao();
+		}
+	}
+
+	public void setBattlePlan(ArrayList<Object> battlePlan) {
+		setBattlePlan(battlePlan, true);
+	}
+
+
+	public ArrayList<Object> getBattlePlan() {
+		return battlePlan;
+	}
+
+	
+
 	public static Character checkForRegeneration(Character c){
 
 		long time = c.getDao().getStatsMod();
+
+		//fist check if some cast spell expired
+		FightEngine.checkForElapsedSpells(c);
 
 		if(time!=0){
 
@@ -715,234 +1037,24 @@ public class Character implements PlayerInterface, ItemsInterface {
 		}		
 		return c;
 	}
-
-
-
-	@Override
-	public int getAttackType(PlayerInterface defender) {
-		return iAttackKind;
-	}
-
-	public String[] getAttackName( int round){
-
-		int ind = round % getBattlePlan().size();
-			
-		String szName = "";
-		String szImage = "";
-		//TODO getAttackName items
-		if( getBattlePlan().get(ind) instanceof PlayerOwnItem ){
-			szName = ((PlayerOwnItem)getBattlePlan().get(ind)).getItem().getName();
-			szImage = ((PlayerOwnItem)getBattlePlan().get(ind)).getItem().getImage();
-		}
-		else{
-			szName = ((PlayerKnowSpell)getBattlePlan().get(ind)).getSpell().getName();
-			szImage = ((PlayerKnowSpell)getBattlePlan().get(ind)).getSpell().getImage();
-		}
-		
-		return  new String[]{szName,szImage};
-	}
-
-	@Override
-	public float getRewardGold() {
-		// TODO Decide the amount of GOLD for defeating characters (should depend on levels difference)
-		return 0;
-	}
-
-	@Override
-	public int getRewardPX() {
-		// TODO Decide the amount of PX for defeating characters
-		return getLevel() * 100;
-	}
-
-	@Override
-	public boolean rollSavingThrow(Spell s, PlayerInterface caster) {
-		return MagicEngine.rollSavingThrow(s, caster, this);
-	}
-
-
-	public void setHandRight(PlayerOwnItem handRight) {
-		this.handRight = handRight;
-	}
-	public void setHandLeft(PlayerOwnItem handLeft) {
-		this.handLeft = handLeft;
-	}
-	public void setBody(PlayerOwnItem body) {
-		this.body = body;
-	}
-
-	@Override
-	public Spell castSpell(Spell s) {
-		return MagicEngine.castSpell(this,s);
-	}
-
-	@Override
-	public void prepareSpell(PlayerKnowSpell pks) {
-		MagicEngine.prepareSpell(this,pks);		
-	}
-
-	@Override
-	public void unprepareSpell(int pksId) {
-		MagicEngine.unprepareSpell(this,pksId);	
-		changeFromBattlePlan("s"+pksId, "");
-		}
-
-	/*
-	 * This method takes the string with the list of attacks order from the db 
-	 * and covert it to an array list of items/spell
-	 * 
-	 * Naming convention: 
-	 *   A = attacks
-	 *   S = Spells
-	 *   I = Items
-	 *   the number is object's id from inventory/book, NOT object's own item
+	
+	
+	/**
+	 * Check battleplan, if no weapon is set, parse default unarmed item.
+	 * Check regeneration before start
+	 * @see org.infinite.engines.fight.PlayerInterface#prepareForFight()
 	 */
-	public ArrayList<Object> deserializeBattlePlan(String battle){
-		// String example: A3,S15,I8,S5
-		
-		ArrayList<Object> out = new ArrayList<Object>();
-		
-		if(battle == null || battle.length()==0 ){
-			return out;
-		}
-		
-		String[] list = battle.split(",");
-		for (int i = 0; i < list.length; i++) {
-			
-			if(list[i].length()<2)
-				continue;
-			
-			String type = list[i].substring(0,1);
-			int num = GenericUtil.toInt(list[i].substring(1),-1);
-			if(num==-1){
-				GenericUtil.err("Invalid BattlePlan token ["+list[i]+"] in "+battle, null);
-				continue;
-			}
-			
-			if( type.equalsIgnoreCase("A") ){ //Attack may come only from Hands items
-				
-				if(getHandRightPoi()!=null && getHandRightPoi().getId() == num)
-					out.add(getHandRightPoi());
-				else if(getHandLeftPoi()!=null && getHandLeftPoi().getId() == num)
-					out.add(getHandLeftPoi());
-			}
-			else if( type.equalsIgnoreCase("S") ){ //Spells come from prepared spells 
-				
-				for (int j = 0; j < getPreparedSpells().size(); j++) {
-					if(getPreparedSpells().get(j).getId()==num)
-						out.add(getPreparedSpells().get(j) );
-				}		
-			}
-			else{
-				//TODO deserialize item from battle plan
-			}	
-		}
-		
-		return out;
-	}
-	
-	/*
-	 * This method takes the list of attacks order and convert it to a string to be saved on db
-	 */
-	public String serializeBattlePlan(ArrayList<Object> list) {
-		
-		String out ="";
-		
-		for (int i = 0; i < list.size(); i++) {
-			
-			if( list.get(i) instanceof PlayerOwnItem){
-				PlayerOwnItem poi = (PlayerOwnItem)list.get(i);
-				if(getHandRightPoi()!=null && poi.getId() == getHandRightPoi().getId()){
-					out += ",A"+poi.getId();
-				}
-				else if(getHandLeftPoi()!=null && poi.getId() == getHandLeftPoi().getId() && 
-						getHandLeft().getType()==InfiniteCst.ITEM_TYPE_WEAPON ){
-					out += ",A"+poi.getId();
-				}
-			}
-			else if(list.get(i) instanceof PlayerKnowSpell){
-				
-				PlayerKnowSpell pks = (PlayerKnowSpell)list.get(i);
-				for (int j = 0; j < getPreparedSpells().size(); j++) {
-					if( getPreparedSpells().get(j).getId()==pks.getId())
-						out += ",S"+pks.getId();
-				}
-			}
-			else{
-				//TODO serialize item to battle plan
-			}			
-		}
-		
-		//removing starting comma
-		if(out.length()>0)
-			out = out.substring(1);
-		return out;		
-	}
-	
-	protected void changeFromBattlePlan(String toBeRemoved,String toBeAdded){
-		
-		String actual = serializeBattlePlan( getBattlePlan() );
-		
-		String newString ="";
-		
-		if(toBeRemoved==null)
-			toBeRemoved="";
-		
-		if(toBeAdded==null)
-			toBeAdded="";
-		
-		toBeRemoved = toBeRemoved.toLowerCase();
-		String[] list =  actual.toLowerCase().split(",");
-		for (int i = 0; i < list.length; i++) {
-			if( ! list[i].equals(toBeRemoved) )
-				newString += ","+list[i];
-			else{
-				newString += ","+toBeAdded;
-				toBeAdded = "";
-			}
-		}
-		
-		//if new (nothing to be removed) it had no match in the previous loop, appending
-		if(toBeAdded.length()>0)
-			newString += ","+toBeAdded;
-		
-		newString = newString.replaceAll(",,", ",");
-		
-		if(newString.length()>0)
-			newString = newString.substring(1);
-		
-		
-		setBattlePlan( deserializeBattlePlan(newString),false  );
-		getDao().setBattle(newString);
-		saveDao();
-	}
-
-	private void setBattlePlan(ArrayList<Object> battlePlan, boolean persist) {
-		this.battlePlan = battlePlan;
-		if(persist){
-			getDao().setBattle( serializeBattlePlan( getBattlePlan() ));
-			saveDao();
-		}
-	}
-	
-	public void setBattlePlan(ArrayList<Object> battlePlan) {
-		setBattlePlan(battlePlan, true);
-	}
-
-	
-	public ArrayList<Object> getBattlePlan() {
-		return battlePlan;
-	}
-	
-	
-	@Override
 	public void prepareForFight() {
+
+		//update regeneration & affecting spells status
+		checkForRegeneration(this);
 		
 		if( getBattlePlan().size() == 0 && getDao().getBattle().length()!=0 ){
 			setBattlePlan( deserializeBattlePlan( getDao().getBattle() ) );			
 		}
-		
+
 		if(getBattlePlan().size()==0 ){
-			
+
 			if( getHandRightPoi()!=null ){
 				getBattlePlan().add(getHandRightPoi());
 			}
@@ -952,9 +1064,42 @@ public class Character implements PlayerInterface, ItemsInterface {
 					PlayerOwnItem poi = new PlayerOwnItem(getDao(),it[i],0, InfiniteCst.EQUIP_HAND_RIGHT );
 					getBattlePlan().add( poi );
 				}
-				
+
 			}			
 		}		
 	}
+
+
+	/**
+	 * add all looted items to inventory
+	 * @see org.infinite.engines.fight.PlayerInterface#lootItems(org.infinite.db.dao.Item[])
+	 */
+	public void lootItems(Item[] rewardItems){
+
+		if( rewardItems!=null && rewardItems.length>0){
+
+			for (int i = 0; i < rewardItems.length; i++) {
+				this.addToInventory(rewardItems[i]);
+			}
+		}
+
+	}
+
+
+
+	public void removeSpellsAffecting( int sapId ) {
+		for (int i = 0; i < getSpellsAffecting().size(); i++) {
+			if(getSpellsAffecting().get(i).getId() == sapId){
+				getSpellsAffecting().remove(i);
+				break;
+			}
+		} 
+	}
 	
+	
+	public ArrayList<SpellAffectPlayer> getSpellsAffecting() {
+		return spellsAffecting;
+	}
+	
+
 }

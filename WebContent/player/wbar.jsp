@@ -17,13 +17,13 @@ c = Character.checkForRegeneration(c);
 <table width="100%">
 	<tr>
 		<td align="center" colspan="2"><img alt="No Character" width="100" height="100" class="avatar"
-			src="<%=request.getContextPath()%>/imgs/player/<% out.write( c.getPic() ); %>"></td>
+			src="<%=request.getContextPath()%>/imgs/player/<%=  c.getPic()  %>"></td>
 	</tr>
 	<tr>
-		<td align="center" colspan="2" class="smallfont" ><% out.print(c.getName()); %></td>
+		<td align="center" colspan="2" class="smallfont" ><%= c.getName() %></td>
 	</tr>
 	<tr>
-		<td align="center" colspan="2" class="smallfont" >Level <% out.print(c.getLevel()); %></td>
+		<td align="center" colspan="2" class="smallfont" >Level <%= c.getLevel() %></td>
 	</tr>
 	<tr>
 		<td align="center" colspan="2">
@@ -36,12 +36,8 @@ c = Character.checkForRegeneration(c);
 			alt="Life Points" title="Life Points"></td>
 		<td>
 		<div class="thp_big">
-		<div class="chp_big" style="width:<%out.print( Math.round( (100.0f *c.getPointsLife()) / c.getPointsLifeMax() ) );%>px;" />
-		<div class="hpt_big"><%
-			out.print(c.getPointsLife());
-		%> / <%
-			out.print(c.getPointsLifeMax());
-		%></div>
+		<div class="chp_big" style="width:<%= Math.round( (100.0f *c.getPointsLife()) / c.getPointsLifeMax() ) %>px;" />
+		<div class="hpt_big"><%= c.getPointsLife() %> / <%= c.getPointsLifeMax() %></div>
 		</div>
 		</td>
 	</tr>
@@ -50,12 +46,8 @@ c = Character.checkForRegeneration(c);
 			alt="Magic Points" title="Magic Points"></td>
 		<td>
 		<div class="tmp_big">
-		<div class="cmp_big" style="width: <%out.print( Math.round( (100.0f *c.getPointsMagic()) / c.getPointsMagicMax() ) );%>px;" />
-		<div class="mpt_big"><%
-			out.print(c.getPointsMagic());
-		%> / <%
-			out.print(c.getPointsMagicMax());
-		%></div>
+		<div class="cmp_big" style="width: <%=  Math.round( (100.0f *c.getPointsMagic()) / c.getPointsMagicMax() ) %>px;" />
+		<div class="mpt_big"><%= c.getPointsMagic()	%> / <%= c.getPointsMagicMax()%></div>
 		</div>
 		</td>
 	</tr>
@@ -64,12 +56,8 @@ c = Character.checkForRegeneration(c);
 			alt="Action Points" title="Action Points"></td>
 		<td>
 		<div class="tap_big">
-		<div class="cap_big" style="width:<%out.print( Math.round( (100.0f *c.getPointsAction()) / c.getPointsActionMax() ) );%>px;" />
-		<div class="apt_big"><%
-			out.print(c.getPointsAction());
-		%> / <%
-			out.print(c.getPointsActionMax());
-		%></div>
+		<div class="cap_big" style="width:<%=  Math.round( (100.0f *c.getPointsAction()) / c.getPointsActionMax() ) %>px;" />
+		<div class="apt_big"><%= c.getPointsAction() %> / <%= c.getPointsActionMax()	%></div>
 		</div>
 		</td>
 	</tr>
@@ -78,12 +66,8 @@ c = Character.checkForRegeneration(c);
 			alt="Charm Points" title="Charm Points"></td>
 		<td>
 		<div class="tcp_big">
-			<div class="ccp_big" style="width:<%out.print( Math.round( (100.0f *c.getPointsCharm()) / c.getPointsCharmMax() ) );%>px;" />
-			<div class="cpt_big"><%
-				out.print(c.getPointsCharm());
-			%> / <%
-				out.print(c.getPointsCharmMax());
-			%></div>
+			<div class="ccp_big" style="width:<%=  Math.round( (100.0f *c.getPointsCharm()) / c.getPointsCharmMax() ) %>px;" />
+			<div class="cpt_big"><%= c.getPointsCharm()%> / <%= c.getPointsCharmMax() %></div>
 		</div>
 		</td>
 	</tr>
@@ -92,7 +76,7 @@ c = Character.checkForRegeneration(c);
  if( c.getNexRegenereationTime()!=0){
 	 %>
 	 <tr><td colspan="2" align="center" class="smallfont" id="reg">Regenerate in <span id="regtime2"></span><span style="display:none" id="regtime1">
-	 <%out.print(c.getNexRegenereationTime()); %>
+	 <%= c.getNexRegenereationTime() %>
 	 </span></td></tr> 
 	 <% } %>
 
@@ -105,28 +89,28 @@ c = Character.checkForRegeneration(c);
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/str.png"
 			alt="Strenght" title="Strenght"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getStrenght()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getStrenght() %>"
 			style="text-align: right;" /></td>
 	</tr>
 
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/int.png"
 			alt="Intelligence" title="Intelligence"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getIntelligence()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getIntelligence() %>"
 			style="text-align: right;" /></td>
 	</tr>
 
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/dex.png"
 			alt="Dexterity" title="Dexterity"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getDexterity()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getDexterity() %>"
 			style="text-align: right;" /></td>
 	</tr>
 
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/cha.png"
 			alt="Charisma" title="Charisma"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getCharisma()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getCharisma() %>"
 			style="text-align: right;" /></td>
 	</tr>
 	<tr>
@@ -138,19 +122,19 @@ c = Character.checkForRegeneration(c);
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/ca.png"
 			alt="Armor Class" title="Armor Class"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getArmorCA()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getTotalCA() %>"
 			style="text-align: right;" /></td>
 	</tr>
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/px.png"
 			alt="Experience" title="Experience"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getExperience()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getExperience() %>"
 			style="text-align: right;" /></td>
 	</tr>
 	<tr>
 		<td><img src="<%=request.getContextPath()%>/imgs/web/gp.png"
 			alt="Gold" title="Gold"></td>
-		<td><input type="text" size="10" readonly="readonly" value="<% out.print(c.getGold()); %>"
+		<td><input type="text" size="10" readonly="readonly" value="<%=c.getGold() %>"
 			style="text-align: right;" /></td>
 	</tr>
 

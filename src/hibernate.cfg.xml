@@ -12,7 +12,7 @@
         <property name="hibernate.cache.use_query_cache">false</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.password">qemenldan</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mikesac_mikesac?autoReconnect=true</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/mikesac_mikesac</property>
         <property name="hibernate.connection.username">mikesac_mikesac</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
@@ -22,6 +22,7 @@
         <mapping resource="org/infinite/db/dao/Npc.hbm.xml" />
         <mapping resource="org/infinite/db/dao/TomcatUsers.hbm.xml" />
         <mapping resource="org/infinite/db/dao/TomcatRoles.hbm.xml" />
+        <mapping resource="org/infinite/db/dao/SpellAffectPlayer.hbm.xml" />
         <mapping resource="org/infinite/db/dao/Player.hbm.xml" />
         <mapping resource="org/infinite/db/dao/Spell.hbm.xml" />
         <mapping resource="org/infinite/db/dao/AreaItem.hbm.xml" />

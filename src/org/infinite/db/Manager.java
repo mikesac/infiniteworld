@@ -11,8 +11,17 @@ import org.hibernate.Transaction;
 public class Manager {
 
 	
-	public static Session openSession(){		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+	public static Session getSession(){		
+		Session session = null;
+		try {
+			session = HibernateUtil.getSessionFactory().getCurrentSession();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		
+		if(session==null || !session.isOpen() )
+			session = HibernateUtil.getSessionFactory().openSession();
+		
 		return session;
 	}
 		
@@ -24,7 +33,7 @@ public class Manager {
 	
 	@SuppressWarnings("unchecked")
 	public static List listByQery(String query){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		session.beginTransaction();
 		List l = listByQery(session, query);
 		session.getTransaction().commit();
@@ -32,7 +41,7 @@ public class Manager {
 	}
        
 	public static boolean delete(Object o){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		boolean b = delete(session, o);
 		return b;
 	}
@@ -55,7 +64,7 @@ public class Manager {
     
 	
 	public static boolean create(Object o){
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();;
+		Session session = getSession();;
 		boolean b = create(session, o);
 		return b;
 	}
@@ -80,7 +89,7 @@ public class Manager {
 	
 	public static boolean update(Object o){
 		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = getSession();
 		boolean b = update(session, o);
 		return b;
 	}
@@ -105,7 +114,7 @@ public class Manager {
 	
 	public static Object findById(String className, int id) {	
 		
-			Session s = HibernateUtil.getSessionFactory().getCurrentSession();
+			Session s = getSession();
 			s.beginTransaction();
 			Object o = s.get(className, id);
 			s.getTransaction().commit();

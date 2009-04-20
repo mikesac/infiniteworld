@@ -28,6 +28,7 @@ public class InfiniteCst {
 	public static final int OWN_STATUS_OWNED	= 0;
 	public static final int OWN_STATUS_EQUIPPED	= 1;
 	
+	public static final int MAGIC_UNCAST 	= -1;
 	public static final int MAGIC_ATTACK 	= 0;
 	public static final int MAGIC_HEAL 		= 1;
 	public static final int MAGIC_DEFEND 	= 2;

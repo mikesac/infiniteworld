@@ -1,8 +1,8 @@
 package org.infinite.objects;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Item;
@@ -10,6 +10,7 @@ import org.infinite.db.dao.Npc;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
+import org.infinite.db.dao.SpellAffectPlayer;
 import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
@@ -58,7 +59,7 @@ public class Monster implements PlayerInterface {
 	private ArrayList<PlayerKnowSpell> spellBookProtect = new ArrayList<PlayerKnowSpell>();
 
 
-	private Vector<Spell> spellsAffecting = new Vector<Spell>();
+	private ArrayList<SpellAffectPlayer> spellsAffecting = new ArrayList<SpellAffectPlayer>();
 	
 	private ArrayList<Object> battlePlan = new ArrayList<Object>();
 
@@ -245,8 +246,11 @@ public class Monster implements PlayerInterface {
 		return getPointsLife();
 	}
 
-	public void restRound(int i) {
-		currActionPoint += i * getDao().getLevel();		
+	public int restRound(int i) {
+		int points = i * getDao().getLevel();
+		currActionPoint += points;		
+		currMagicPoint += points;
+		return points;
 	}
 
 	public int getSpellDuration(){
@@ -347,7 +351,28 @@ public class Monster implements PlayerInterface {
 	}
 
 	public void addToPreparedSpells(PlayerKnowSpell s){
-		preparedSpell.add(s);
+		getPreparedSpells().add(s);
+	}
+	
+	public void addToAffectingSpells(Spell s){
+		SpellAffectPlayer sap = new SpellAffectPlayer();
+		sap.setSpell(s);
+		sap.setPlayer(null);
+		sap.setElapsing( (new Date()).getTime() + s.getDuration()  );
+		addToAffectingSpells(sap);
+	}
+	
+	public void addToAffectingSpells(SpellAffectPlayer sap ){
+		getSpellsAffecting().add(sap);
+	}
+	
+	public void removeSpellsAffecting( int sapId ) {
+		for (int i = 0; i < getSpellsAffecting().size(); i++) {
+			if(getSpellsAffecting().get(i).getId() == sapId){
+				getSpellsAffecting().remove(i);
+				break;
+			}
+		} 
 	}
 
 	//TODO move to private once spawn engine is available
@@ -483,7 +508,7 @@ public class Monster implements PlayerInterface {
 		mod += getBody()==null?0:getBody().getModDex();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModDex();
+			mod += spellsAffecting.get(i).getSpell().getModDex();
 		}
 		return mod;
 	}
@@ -496,7 +521,7 @@ public class Monster implements PlayerInterface {
 		mod += getBody()==null?0:getBody().getModStr();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModStr();
+			mod += spellsAffecting.get(i).getSpell().getModStr();
 		}
 		return mod;
 	}
@@ -509,7 +534,7 @@ public class Monster implements PlayerInterface {
 		mod += getBody()==null?0:getBody().getModCha();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModCha();
+			mod += spellsAffecting.get(i).getSpell().getModCha();
 		}
 		return mod;
 	}
@@ -522,7 +547,7 @@ public class Monster implements PlayerInterface {
 		mod += getBody()==null?0:getBody().getModInt();
 
 		for (int i = 0; i < spellsAffecting.size(); i++) {
-			mod += spellsAffecting.elementAt(i).getModInt();
+			mod += spellsAffecting.get(i).getSpell().getModInt();
 		}
 		return mod;
 	}
@@ -682,6 +707,79 @@ public class Monster implements PlayerInterface {
 	public Object getCurrentAttack(int round) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	/*
+	 * Unimplemented method - useless for spawned monster
+	 * @see org.infinite.engines.fight.PlayerInterface#addExperience(int)
+	 */
+	public int addExperience(int rewardPX) {
+		return 0;
+	}
+
+	/*
+	 * Unimplemented method - useless for spawned monster
+	 * @see org.infinite.engines.fight.PlayerInterface#addGold(float)
+	 */
+	public float addGold(float rewardGold) {
+		return 0;
+	}
+
+	/*
+	 * Unimplemented method - useless for spawned monster
+	 * @see org.infinite.engines.fight.PlayerInterface#lootItems(org.infinite.db.dao.Item[])
+	 */
+	public void lootItems(Item[] rewardItems) {
+		return;		
+	}
+
+
+
+	public int getIBehaveStatus() {
+		return iBehaveStatus;
+	}
+
+
+
+	public int getIAttackKind() {
+		return iAttackKind;
+	}
+
+
+
+	public ArrayList<PlayerKnowSpell> getPreparedSpell() {
+		return preparedSpell;
+	}
+
+
+
+	public ArrayList<SpellAffectPlayer> getSpellsAffecting() {
+		return spellsAffecting;
+	}
+
+
+
+	public int getCurrLifePoint() {
+		return currLifePoint;
+	}
+
+
+
+	public int getCurrMagicPoint() {
+		return currMagicPoint;
+	}
+
+
+
+	public int getCurrActionPoint() {
+		return currActionPoint;
+	}
+
+
+
+	public int getCurrCharmPoint() {
+		return currCharmPoint;
 	}
 
 }

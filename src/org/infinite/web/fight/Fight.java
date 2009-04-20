@@ -2,7 +2,7 @@ package org.infinite.web.fight;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.fight.FightEngine;
+import org.infinite.engines.fight.FightRound;
 import org.infinite.engines.fight.PlayerInterface;
-import org.infinite.util.XmlUtil;
 
 public class Fight  extends HttpServlet {
 
@@ -42,8 +42,8 @@ public class Fight  extends HttpServlet {
 			return;
 		}
 		
-		Vector<PlayerInterface> side1  = new Vector<PlayerInterface>();
-		Vector<PlayerInterface> side2  = new Vector<PlayerInterface>();
+		ArrayList<PlayerInterface> side1  = new ArrayList<PlayerInterface>();
+		ArrayList<PlayerInterface> side2  = new ArrayList<PlayerInterface>();
 
 		String[] allParty = party1.split(",");
 		for (int i = 0; i < allParty.length; i++) {
@@ -69,10 +69,8 @@ public class Fight  extends HttpServlet {
 
 		try {
 			
-			String xml =  FightEngine.runFight(side1,side2);			
-			xml = XmlUtil.xml2String(xml, "fight/fight");
+			ArrayList<FightRound> report =  FightEngine.runFight(side1,side2);			
 			
-			pw.write(xml);
 			resp.setContentType("text/html");
 			
 		} catch (Exception e) {

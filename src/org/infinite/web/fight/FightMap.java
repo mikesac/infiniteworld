@@ -1,7 +1,7 @@
 package org.infinite.web.fight;
 
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,9 +13,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.fight.FightEngine;
+import org.infinite.engines.fight.FightRound;
 import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.objects.Character;
-import org.infinite.util.XmlUtil;
 import org.infinite.web.PagesCst;
 
 public class FightMap  extends HttpServlet {
@@ -46,16 +46,15 @@ public class FightMap  extends HttpServlet {
 			}		
 			
 			//Party one is player, party 2 depends on map area				
-			Vector<PlayerInterface> side1  = new Vector<PlayerInterface>();
-			Vector<PlayerInterface> side2  = new Vector<PlayerInterface>();
+			ArrayList<PlayerInterface> side1  = new ArrayList<PlayerInterface>();
+			ArrayList<PlayerInterface> side2  = new ArrayList<PlayerInterface>();
 
 			Character c = (Character)req.getSession().getAttribute( PagesCst.CONTEXT_CHARACTER);
 			
 			if(c.getPointsLife()<=0){
 				throw new Exception("Cannot enter fight, insufficent Life Points");
 			}
-			
-			
+						
 			side1.add(c);
 			
 			//TODO get party2 randomly
@@ -70,12 +69,13 @@ public class FightMap  extends HttpServlet {
 					
 
 			try {
+				//sides must be saved first, after fight death pc are missing
+				req.getSession().setAttribute(PagesCst.CONTEXT_FIGHT_REPORT_S1, side1.clone());
+				req.getSession().setAttribute(PagesCst.CONTEXT_FIGHT_REPORT_S2, side2.clone());
 				
-				String xml =  FightEngine.runFight(side1,side2);
-				//System.out.println(xml);
-				xml = XmlUtil.xml2String(xml, "fight/fight");
+				ArrayList<FightRound> report = FightEngine.runFight(side1,side2);				
+				req.getSession().setAttribute(PagesCst.CONTEXT_FIGHT_REPORT, report);
 				
-				req.getSession().setAttribute("mapfight", xml);
 				
 				
 			} catch (Exception e) {
@@ -90,13 +90,7 @@ public class FightMap  extends HttpServlet {
 			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR,e.getMessage());
 			log.error("Generic Error",e);
 			resp.sendRedirect( req.getContextPath() + PagesCst.PAGE_MAP);
-		}
-		
-		
-		
-					
+		}	
 		
 	}
-	
-
 }

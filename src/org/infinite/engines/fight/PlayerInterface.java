@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
+import org.infinite.db.dao.SpellAffectPlayer;
 
 public interface PlayerInterface{
 
@@ -29,7 +30,7 @@ public interface PlayerInterface{
 
 	public int healDamage(int heal);
 
-	public void restRound(int i);
+	public int restRound(int i);
 
 	public int getAttackDamage(int round);
 
@@ -44,6 +45,14 @@ public interface PlayerInterface{
 	public void prepareForFight();
 	
 	public Object getCurrentAttack(int round);
+	
+	public float addGold(float rewardGold);
+
+	public int addExperience(int rewardPX);
+
+	public void lootItems(Item[] rewardItems);
+	
+	public ArrayList<SpellAffectPlayer> getSpellsAffecting();
 	
 	// ----------------- Spell Interface -----------------
 	
@@ -68,6 +77,12 @@ public interface PlayerInterface{
 	public ArrayList<PlayerKnowSpell> getPreparedSpells();
 
 	public void addToPreparedSpells(PlayerKnowSpell pks);
+	
+	public void addToAffectingSpells(Spell s);
+	
+	public void addToAffectingSpells(SpellAffectPlayer sap);
+	
+	public void removeSpellsAffecting( int sapId );
 	
 	// ----------------- Character Interface -----------------
 	
@@ -116,5 +131,6 @@ public interface PlayerInterface{
 	public int addActionPoints(int points) throws Exception;
 
 	public int addCharmPoints(int points) throws Exception;
+	
 
 }

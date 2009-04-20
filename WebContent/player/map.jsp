@@ -6,7 +6,7 @@
 <%
 	if(StartPlaying.redirectToCharSelect(session,request,response))
 		return;
-    Map m = (Map)session.getAttribute("map");
+    Map m = (Map)session.getAttribute(PagesCst.CONTEXT_MAP);
 	
     %>
 
@@ -14,7 +14,8 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.infinite.db.dao.AreaItem"%>
 <%@page import="java.util.List"%>
-<%@page import="java.util.Iterator"%><html>
+<%@page import="java.util.Iterator"%>
+<%@page import="org.infinite.web.PagesCst"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Map - <% out.print(m.getAreaName()); %></title>
@@ -24,10 +25,10 @@
 <body>
 
 <%
-	if(session.getAttribute("error")!=null){
+	if(session.getAttribute(PagesCst.CONTEXT_ERROR)!=null){
 		%><%@ include file="../decorators/b2pre.jsp"%>
 <div align="center">
-<div class="error"><%=session.getAttribute("error")%></div>
+<div class="error"><%=session.getAttribute(PagesCst.CONTEXT_ERROR)%></div>
 </div>
 <%@ include file="../decorators/b2post.jsp"%><br />
 <%

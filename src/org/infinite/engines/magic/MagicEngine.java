@@ -1,11 +1,13 @@
 package org.infinite.engines.magic;
 
+import java.util.Date;
+
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
+import org.infinite.db.dao.SpellAffectPlayer;
 import org.infinite.engines.fight.PlayerInterface;
-
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
@@ -19,6 +21,11 @@ public class MagicEngine {
 	}
 
 	public static Spell castSpell(PlayerInterface player, Spell s) {
+		
+		//not enough magic point to cast
+		if( player.getPointsMagic()<s.getCostMp() )
+			return null;
+		
 		try {
 			player.addMagicPoints( -1* s.getCostMp() );
 		} catch (Exception e) {
@@ -109,6 +116,22 @@ public class MagicEngine {
 	public static int getAvailableSpellSlots(PlayerInterface p) {
 		int slot = p.getPointsMagic()/InfiniteCst.CFG_MP_TO_SPELLS_SLOTS - p.getPreparedSpells().size();
 		return slot<0?0:slot;
+	}
+
+	public static void affectSpells(PlayerInterface p, Spell s,boolean persist) {
+		
+		SpellAffectPlayer sap= new SpellAffectPlayer();
+		sap.setPlayer( (Player) p.getDao() );
+		sap.setSpell( s );
+		sap.setElapsing( (new Date()).getTime() + s.getDuration() );
+		
+		p.addToAffectingSpells(sap);
+		
+		if(persist){
+			Manager.create(sap);
+		}
+		
+		
 	}
 
 }

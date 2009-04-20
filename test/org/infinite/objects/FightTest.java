@@ -2,15 +2,13 @@ package org.infinite.objects;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
 
 import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.fight.FightEngine;
+import org.infinite.engines.fight.FightRound;
 import org.infinite.engines.fight.PlayerInterface;
-import org.infinite.util.XmlUtil;
 import org.junit.Test;
 
 public class FightTest {
@@ -18,8 +16,8 @@ public class FightTest {
 	@Test
 	public void testFight() {
 
-		Vector<PlayerInterface> side1  = new Vector<PlayerInterface>();
-		Vector<PlayerInterface> side2  = new Vector<PlayerInterface>();
+		ArrayList<PlayerInterface> side1  = new ArrayList<PlayerInterface>();
+		ArrayList<PlayerInterface> side2  = new ArrayList<PlayerInterface>();
 
 		try {
 			
@@ -36,16 +34,12 @@ public class FightTest {
 
 		try {
 			long t1 = (new Date()).getTime();
-			String xml =  FightEngine.runFight(side1,side2);
+			ArrayList<FightRound> report =  FightEngine.runFight(side1,side2);
+			assertNotNull(report);
 			long t2 = (new Date()).getTime();
 			System.out.println("time:"+(t2-t1));
 			
-			xml = XmlUtil.xml2String(xml, "fight");
-			FileOutputStream fos = new FileOutputStream(new File("./out/fight.html"));
-			fos.write(xml.getBytes());
-			fos.flush();
-			fos.close();
-			System.out.println( "html written" );
+			
 			
 			
 		} catch (Exception e) {
@@ -61,9 +55,9 @@ public class FightTest {
 
 
 		try {
-
-			for (int i = 0; i < 1000; i++) {
-				System.out.println("-----------------" + i);
+			System.out.print("Fight stress test:");
+			for (int i = 0; i < 100; i++) {
+				System.out.print(".");
 				Monster m = AIEngine.spawn("Hobgoblin");
 				assertNotNull(m);
 			}
