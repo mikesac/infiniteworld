@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
+import org.infinite.db.dao.AreaItem;
 import org.infinite.objects.Character;
 import org.infinite.objects.Map;
 
@@ -30,7 +31,7 @@ public class MapMove extends HttpServlet {
 		}
 		else{
 
-			Area nextArea = (Area)Manager.listByQery("select a from org.infinite.db.dao.Area a where a.name='"+next+"'").get(0);
+			AreaItem nextArea = (AreaItem)Manager.listByQuery("select a from org.infinite.db.dao.AreaItem a where a.id="+next).get(0);
 
 			Character c = (Character)req.getSession().getAttribute("character");
 
@@ -38,15 +39,15 @@ public class MapMove extends HttpServlet {
 				req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "You do not have enough Action Point to move to that Area!");
 			}
 			else{
-				Area currArea = c.getArea();
+				AreaItem currArea = c.getAreaItem();
 
-				if( c.moveToArea(nextArea) ){
-					req.getSession().setAttribute(PagesCst.CONTEXT_MAP, new Map(nextArea));
+				if( c.moveToAreaItem(nextArea) ){
+					req.getSession().setAttribute(PagesCst.CONTEXT_MAP, new Map(nextArea,c));
 					req.getSession().setAttribute(PagesCst.CONTEXT_CHARACTER, c);
 				}
 				else{
 					req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "You cannot move to that area");
-					req.getSession().setAttribute(PagesCst.CONTEXT_MAP, new Map(currArea) );
+					req.getSession().setAttribute(PagesCst.CONTEXT_MAP, new Map(currArea,c) );
 				}
 			}
 		}

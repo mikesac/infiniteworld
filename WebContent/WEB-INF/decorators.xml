@@ -18,7 +18,8 @@
 	<excludes>
 		<pattern>*monsterXML*</pattern>
 		<pattern>*css*</pattern>
-		<pattern>*prepare*</pattern>
+		<pattern>*spellbook.jsp</pattern>
+		<pattern>*testimg.jsp</pattern>
 	</excludes>
 
 

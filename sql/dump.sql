@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 2.11.9.4
+-- version 2.11.7
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 20 Apr, 2009 at 10:36 AM
+-- Generato il: 25 Apr, 2009 at 11:03 AM
 -- Versione MySQL: 5.0.67
--- Versione PHP: 5.2.4
+-- Versione PHP: 5.2.6-2ubuntu4.2
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
@@ -39,6 +39,34 @@ CREATE TABLE IF NOT EXISTS `Area` (
 --
 
 CREATE TABLE IF NOT EXISTS `AreaItem` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(64) NOT NULL default 'testAreaItem' COMMENT 'Area item name',
+  `icon` varchar(64) NOT NULL default 'area',
+  `cost` int(11) NOT NULL default '1',
+  `areaid` int(11) NOT NULL default '1' COMMENT 'parent area',
+  `areax` smallint(6) NOT NULL default '0' COMMENT 'parent area x',
+  `areay` smallint(6) NOT NULL default '0' COMMENT 'parent area y',
+  `x` int(11) NOT NULL default '0' COMMENT 'x coord',
+  `y` int(11) NOT NULL default '0' COMMENT 'ycoord',
+  `arealock` varchar(64) NOT NULL COMMENT 'lock id',
+  `questlock` varchar(64) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `direct` tinyint(1) NOT NULL default '0',
+  `hidemode` bit(11) NOT NULL default '\00',
+  `areaItemLevel` int(11) NOT NULL default '1',
+  `npcs` varchar(64) NOT NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `name` (`name`,`areaid`),
+  KEY `fk_area` (`areaid`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Item inside area' AUTO_INCREMENT=9 ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `AreaItem_old`
+--
+
+CREATE TABLE IF NOT EXISTS `AreaItem_old` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(64) NOT NULL default 'testAreaItem' COMMENT 'Area item name',
   `icon` varchar(64) NOT NULL default 'area',
@@ -165,15 +193,15 @@ CREATE TABLE IF NOT EXISTS `Player` (
   `px` int(10) NOT NULL default '1' COMMENT 'experience points',
   `assign` smallint(6) NOT NULL default '0',
   `status` int(10) NOT NULL default '0' COMMENT 'status',
-  `area` int(10) NOT NULL default '0' COMMENT 'player location',
+  `areaItem` int(10) NOT NULL default '0' COMMENT 'player location',
   `gold` float NOT NULL default '0.1' COMMENT 'money',
   `nattack` int(11) NOT NULL default '1',
-  `attack` varchar(255) NOT NULL default '{"base":1}',
+  `attack` varchar(255) NOT NULL default 'Fists,1d1',
   `battle` varchar(512) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `PlayerLocation` (`area`),
+  KEY `PlayerLocation` (`areaItem`),
   KEY `AccountName` (`aid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -187,6 +215,7 @@ CREATE TABLE IF NOT EXISTS `PlayerKnowSpell` (
   `Spellid` int(10) NOT NULL,
   `status` int(11) NOT NULL default '0',
   PRIMARY KEY  (`id`),
+  UNIQUE KEY `PlayerSpell` (`Playerid`,`Spellid`),
   KEY `Knowing` (`Playerid`),
   KEY `Known` (`Spellid`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
@@ -206,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `PlayerOwnItem` (
   PRIMARY KEY  (`id`),
   KEY `PlayerOwn` (`Playerid`),
   KEY `ItemOwned` (`Itemid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -237,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `Spell` (
   `savingthrow` int(11) NOT NULL default '-1',
   `initiative` int(11) NOT NULL default '1' COMMENT 'priority in combat',
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
@@ -289,20 +318,14 @@ CREATE TABLE IF NOT EXISTS `tomcat_users` (
 -- Limiti per la tabella `Area`
 --
 ALTER TABLE `Area`
-  ADD CONSTRAINT `Area_ibfk_1` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `Area_ibfk_1` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`);
 
 --
--- Limiti per la tabella `AreaItem`
+-- Limiti per la tabella `AreaItem_old`
 --
-ALTER TABLE `AreaItem`
-  ADD CONSTRAINT `AreaItem_ibfk_1` FOREIGN KEY (`areaid`) REFERENCES `Area` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `AreaItem_ibfk_2` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`);
-
---
--- Limiti per la tabella `Item`
---
-ALTER TABLE `Item`
-  ADD CONSTRAINT `Item_ibfk_1` FOREIGN KEY (`spell`) REFERENCES `Spell` (`id`) ON DELETE CASCADE;
+ALTER TABLE `AreaItem_old`
+  ADD CONSTRAINT `AreaItem_old_ibfk_1` FOREIGN KEY (`areaid`) REFERENCES `Area` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `AreaItem_old_ibfk_2` FOREIGN KEY (`lockid`) REFERENCES `locks` (`id`);
 
 --
 -- Limiti per la tabella `locks`
@@ -320,8 +343,8 @@ ALTER TABLE `NPC`
 -- Limiti per la tabella `Player`
 --
 ALTER TABLE `Player`
-  ADD CONSTRAINT `Player_ibfk_2` FOREIGN KEY (`aid`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE,
-  ADD CONSTRAINT `Player_ibfk_3` FOREIGN KEY (`area`) REFERENCES `Area` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `Player_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Player_ibfk_2` FOREIGN KEY (`areaItem`) REFERENCES `AreaItem` (`id`);
 
 --
 -- Limiti per la tabella `PlayerKnowSpell`
@@ -334,18 +357,18 @@ ALTER TABLE `PlayerKnowSpell`
 -- Limiti per la tabella `PlayerOwnItem`
 --
 ALTER TABLE `PlayerOwnItem`
-  ADD CONSTRAINT `PlayerOwnItem_ibfk_3` FOREIGN KEY (`Playerid`) REFERENCES `Player` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `PlayerOwnItem_ibfk_4` FOREIGN KEY (`Itemid`) REFERENCES `Item` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `PlayerOwnItem_ibfk_1` FOREIGN KEY (`Playerid`) REFERENCES `Player` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `PlayerOwnItem_ibfk_2` FOREIGN KEY (`Itemid`) REFERENCES `Item` (`id`) ON DELETE CASCADE;
 
 --
 -- Limiti per la tabella `SpellAffectPlayer`
 --
 ALTER TABLE `SpellAffectPlayer`
-  ADD CONSTRAINT `SpellAffectPlayer_ibfk_1` FOREIGN KEY (`Playerid`) REFERENCES `Player` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `SpellAffectPlayer_ibfk_2` FOREIGN KEY (`Spellid`) REFERENCES `Spell` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `SpellAffectPlayer_ibfk_3` FOREIGN KEY (`Playerid`) REFERENCES `Player` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `SpellAffectPlayer_ibfk_4` FOREIGN KEY (`Spellid`) REFERENCES `Spell` (`id`) ON DELETE CASCADE;
 
 --
 -- Limiti per la tabella `tomcat_roles`
 --
 ALTER TABLE `tomcat_roles`
-  ADD CONSTRAINT `tomcat_roles_ibfk_1` FOREIGN KEY (`user`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tomcat_roles_ibfk_1` FOREIGN KEY (`user`) REFERENCES `tomcat_users` (`user`) ON DELETE CASCADE;

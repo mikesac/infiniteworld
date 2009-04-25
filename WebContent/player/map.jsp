@@ -15,52 +15,66 @@
 <%@page import="org.infinite.db.dao.AreaItem"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Iterator"%>
-<%@page import="org.infinite.web.PagesCst"%><html>
+<%@page import="org.infinite.web.PagesCst"%>
+<%@page import="org.infinite.engines.map.MapEngine"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Map - <% out.print(m.getAreaName()); %></title>
+<title>Map - <%= m.getAreaName() %></title>
 
 
 </head>
 <body>
 
-<%
-	if(session.getAttribute(PagesCst.CONTEXT_ERROR)!=null){
-		%><%@ include file="../decorators/b2pre.jsp"%>
-<div align="center">
-<div class="error"><%=session.getAttribute(PagesCst.CONTEXT_ERROR)%></div>
-</div>
-<%@ include file="../decorators/b2post.jsp"%><br />
-<%
-	session.removeAttribute("error");
-	}%>
-
-
-<div style="width:<% out.print( (Map.MAP_WIDTH + 20) ); %>px;">
+<div style="width:<%= Map.MAP_WIDTH + 20 %>px;">
 <%@ include file="../decorators/b2pre.jsp"%>
-<table cellpadding=0 cellspacing=0 border=0 width="<% out.print(Map.MAP_WIDTH); %>px" height="<% out.print(Map.MAP_HEIGHT); %>">
+<table cellpadding=0 cellspacing=0 border=0 width="<%=Map.MAP_WIDTH%>px" height="<%=Map.MAP_HEIGHT%>">
 <%
 for(int y=0;y<m.getNy();y++){
 	%><tr> <%
 	for(int x=0;x<m.getNx();x++){
-		out.print("<td  style=\"width:"+ (Map.MAP_WIDTH / m.getNx())+";height:"+ (Map.MAP_HEIGHT / m.getNy())+";background-image:url('"+request.getContextPath()+"/imgs/maps/"+m.getAreaName()+"/"+m.getAreaName()+"_"+y+x+".jpg');\">");
+		%>
+		<td style="width:<%= (Map.MAP_WIDTH / m.getNx()) %>;height:<%=(Map.MAP_HEIGHT / m.getNy())%>;background-image:url('<%=request.getContextPath()+"/imgs/maps/"+m.getAreaName()+"/"+m.getAreaName()+"_"+y+x%>.jpg');">
+		<%
 		List<AreaItem> l = m.getAreaItem(x,y);
-		for (Iterator iterator = l.iterator(); iterator.hasNext();) {
+		
+		Iterator<Integer> stat_it = m.getAreaStatus(x,y).iterator();
+		
+		for (Iterator<AreaItem> iterator = l.iterator(); iterator.hasNext();) {
 			AreaItem areaItem = (AreaItem) iterator.next();
-			
-			//out.print("<a href=\""+request.getContextPath()+areaItem.getUrl()+"\">");
-			//out.print("<img width=25 height=25 src=\""+request.getContextPath()+"/imgs/maps/icons/"+areaItem.getIcon()+".png\" alt=\""+areaItem.getName()+"\" title=\""+areaItem.getName()+"\" style=\"border:1px outset gray;position:relative;top:"+areaItem.getY()+"px;left:"+areaItem.getX()+"px;\">");
-			//out.print("</a>");
+			int status = stat_it.next();
 			
 			%>
 				<div class="iconmedium"	style="position:relative;top:<%=areaItem.getY() %>px;left:<%=areaItem.getX() %>px;background-image: url(<%=request.getContextPath()%>/imgs/maps/icons/<%=areaItem.getIcon()%>.png);">
-				<div class="tile"><a href="<%= request.getContextPath()%><%=areaItem.getUrl()%>" ></a></div>
+				<div class="tile">
+				<%
+				switch(status){
+				case MapEngine.AREA_STATUS_HERE:
+					%><img style="margin-top:5px;margin-left:5px;" src="<%=request.getContextPath()%>/imgs/maps/icons/here.gif" width="34" /><%
+					break;
+				case MapEngine.AREA_STATUS_ACCESSIBLE:
+					%><img src="<%=request.getContextPath()%>/imgs/maps/icons/ok.gif" width="22" /><%
+					break;
+				case MapEngine.AREA_STATUS_BANNED:
+					%><img style="margin-top:5px;margin-left:5px;" src="<%=request.getContextPath()%>/imgs/maps/icons/banned.png" width="34" /><%
+					break;
+				case MapEngine.AREA_STATUS_FAR:
+					%><img style="margin-top:5px;margin-left:5px;" src="<%=request.getContextPath()%>/imgs/maps/icons/step.png" width="34" /><%
+					break;
+				case MapEngine.AREA_STATUS_HIDDEN:
+					break;
+				case MapEngine.AREA_STATUS_LOCKED:
+					%><img style="margin-top:5px;margin-left:5px;" src="<%=request.getContextPath()%>/imgs/maps/icons/lock.png" width="34" /><%					break;
+				}
+				 
+				
+				%>
+				<a href="<%= request.getContextPath()%><%=areaItem.getUrl()%>" ></a>
+				</div>
 				</div>
 			<%
 			
-			
 		}
-		out.print("</td>");
+		%></td><%;
 	}
 	 %></tr>
 	 <%

@@ -75,7 +75,7 @@ public class Monster implements PlayerInterface {
 	public Monster(String name){
 
 		
-		npc = (Npc)Manager.listByQery("select npc from Npc as npc where name='"+name+"'").get(0);
+		npc = (Npc)Manager.listByQuery("select npc from Npc as npc where name='"+name+"'").get(0);
 		
 		
 		iBehaveStatus= InfiniteCst.NPC_BEHAVE_FIGHT;
@@ -392,19 +392,19 @@ public class Monster implements PlayerInterface {
 		
 
 		//fighting spells
-		List<Spell> l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_ATTACK );
+		List<Spell> l = Manager.listByQuery( query+" and s.spelltype="+InfiniteCst.MAGIC_ATTACK );
 		for (int i = 0; i < l.size(); i++) {
 			spellBookFight.add( new PlayerKnowSpell(null,l.get(i),0) );
 		}		
 
 		//healing spells
-		l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_HEAL );
+		l = Manager.listByQuery( query+" and s.spelltype="+InfiniteCst.MAGIC_HEAL );
 		for (int i = 0; i < l.size(); i++) {
 			spellBookHeal.add( new PlayerKnowSpell(null,l.get(i),0) );
 		}
 
 		//protection spells
-		l = Manager.listByQery( query+" and s.spelltype="+InfiniteCst.MAGIC_DEFEND );
+		l = Manager.listByQuery( query+" and s.spelltype="+InfiniteCst.MAGIC_DEFEND );
 		for (int i = 0; i < l.size(); i++) {
 			spellBookProtect.add( new PlayerKnowSpell(null,l.get(i),0) );
 		}
@@ -429,7 +429,7 @@ public class Monster implements PlayerInterface {
 		String query = "select i from org.infinite.db.dao.Item i where i.name in ("+
 		sb.toString().substring(1)	+ ")";
 
-		List<Item> l = Manager.listByQery( query);
+		List<Item> l = Manager.listByQuery( query);
 		for (int i = 0; i < l.size(); i++) {
 			inventory.add( new PlayerOwnItem(null,l.get(i),0,InfiniteCst.EQUIP_STORE) );
 		}
@@ -560,7 +560,7 @@ public class Monster implements PlayerInterface {
 	@SuppressWarnings("unchecked")
 	public static String[] getMonsterListing(){
 
-		List<String> l = Manager.listByQery("select m.name from Npc m where m.ismonster=1");
+		List<String> l = Manager.listByQuery("select m.name from Npc m where m.ismonster=1");
 
 		String[] s = new String[l.size()];
 		for (int i = 0; i < l.size(); i++) {

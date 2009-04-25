@@ -4,7 +4,8 @@
 
 <%@page import="org.infinite.objects.Character"%>
 <%@page import="org.infinite.util.InfiniteCst"%>
-<%@page import="org.infinite.web.PagesCst"%><html>
+<%@page import="org.infinite.web.PagesCst"%>
+<%@page import="org.infinite.engines.map.MapEngine"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -91,11 +92,11 @@
 
 	<tr>
 		<td align="center"><a
-			href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>"><%=c.getArea().getName()%></a></td>
+			href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>"><%= MapEngine.getAreaFromAreaItem( c.getAreaItem() ).getName()%></a></td>
 	</tr>
 	<tr>
 		<td align="center"
-			style="border: 3px double #B69F7F; font-size: x-small; background-color: white; color: black; font-style: italic;"><%=c.getArea().getDescription()%></td>
+			style="border: 3px double #B69F7F; font-size: x-small; background-color: white; color: black; font-style: italic;"><%=MapEngine.getAreaFromAreaItem( c.getAreaItem() ).getDescription()%></td>
 	</tr>
 </table>
 

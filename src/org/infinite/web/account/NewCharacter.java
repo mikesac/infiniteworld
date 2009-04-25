@@ -17,7 +17,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.infinite.db.Manager;
-import org.infinite.db.dao.Area;
+import org.infinite.db.dao.AreaItem;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.TomcatUsers;
 import org.infinite.web.PagesCst;
@@ -87,13 +87,13 @@ public class NewCharacter extends HttpServlet {
 				is.close();
 			}
 
-			List<TomcatUsers> lu = Manager.listByQery("from org.infinite.db.dao.TomcatUsers u where u.user='"+szUser+"'");
-			List<Area> la = Manager.listByQery("from org.infinite.db.dao.Area u where u.id='1'");
+			List<TomcatUsers> lu = Manager.listByQuery("from org.infinite.db.dao.TomcatUsers u where u.user='"+szUser+"'");
+			List<AreaItem> lai = Manager.listByQuery("from org.infinite.db.dao.AreaItem u where u.id='1'");
 
 			charName = charName.replaceAll(" ", "");			
 			Player p = new Player(
 					lu.get(0),  //user
-					la.get(0),  //Area
+					lai.get(0),  //Area
 					charName,
 					charPic,
 					5,5,5,5, //str,int,dex,cha

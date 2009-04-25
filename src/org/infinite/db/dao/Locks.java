@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 20-apr-2009 10.52.17 by Hibernate Tools 3.2.4.CR1
+// Generated 24-apr-2009 23.55.52 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,6 @@ public class Locks implements java.io.Serializable {
 	private Integer id;
 	private Locks locks;
 	private String name;
-	private Set<AreaItem> areaItems = new HashSet<AreaItem>(0);
 	private Set<Area> areas = new HashSet<Area>(0);
 	private Set<Locks> lockses = new HashSet<Locks>(0);
 
@@ -24,11 +23,9 @@ public class Locks implements java.io.Serializable {
 		this.name = name;
 	}
 
-	public Locks(Locks locks, String name, Set<AreaItem> areaItems,
-			Set<Area> areas, Set<Locks> lockses) {
+	public Locks(Locks locks, String name, Set<Area> areas, Set<Locks> lockses) {
 		this.locks = locks;
 		this.name = name;
-		this.areaItems = areaItems;
 		this.areas = areas;
 		this.lockses = lockses;
 	}
@@ -55,14 +52,6 @@ public class Locks implements java.io.Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Set<AreaItem> getAreaItems() {
-		return this.areaItems;
-	}
-
-	public void setAreaItems(Set<AreaItem> areaItems) {
-		this.areaItems = areaItems;
 	}
 
 	public Set<Area> getAreas() {

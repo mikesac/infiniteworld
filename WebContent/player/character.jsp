@@ -5,6 +5,8 @@
 <%@page import="org.infinite.objects.Character"%>
 <%@page import="java.util.List"%>
 <%@page import="org.infinite.db.dao.Player"%><html>
+<%@page import="org.infinite.engines.map.MapEngine"%><html>
+
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Choose Your Character</title>
@@ -16,12 +18,6 @@
 <%@ include file="../decorators/b2pre.jsp"%>
 <table width="99%">
 	<tr><td colspan=5 " align="center">Choose your character</td></tr>
-	<%
-		String err = (String)session.getAttribute("error");
-		if(err!=null && err.length()>0){
-			%><tr><td colspan=5 " align="center"><div class="error"><% out.print(err);%></div></td></tr><%
-		}
-	%>
 </table>
 <%@ include file="../decorators/b2post.jsp"%>
 </div>
@@ -66,7 +62,7 @@
 					<td><img src="<%=request.getContextPath()%>/imgs/web/cha.png" alt="Charisma" title="Charisma"></td>
 					<td><input readonly="readonly" type="text" size=8" value="<% out.write( ""+l.get(i).getBaseCha() ); %>" /></td>
 					<td><img src="<%=request.getContextPath()%>/imgs/web/area.png" alt="Area" title="Area"></td>
-					<td colspan="3"><input readonly="readonly" type="text" size="20" value="<% out.write( ""+l.get(i).getArea().getName() ); %>" /></td>
+					<td colspan="3"><input readonly="readonly" type="text" size="20" value="<%=  MapEngine.getAreaFromAreaItem( l.get(i).getAreaItem() ).getName()  %>" /></td>
 				</tr>
 			</table>
 			

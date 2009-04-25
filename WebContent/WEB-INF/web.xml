@@ -5,6 +5,16 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+
+<!-- JDBC -->
+<resource-ref>
+  <description>DB Connection</description>
+  <res-ref-name>jdbc/hib</res-ref-name>
+  <res-type>javax.sql.DataSource</res-type>
+  <res-auth>Container</res-auth>
+</resource-ref>
+
+
 <!-- Hibernate -->
 <listener>
     <listener-class>org.infinite.db.HibernateListener</listener-class>
@@ -77,7 +87,7 @@
 	<!--  CAPTCHA -->
 	<servlet>
 		<servlet-name>jcaptcha</servlet-name>
-		<servlet-class>org.infinite.web.account.ImageCaptchaServlet</servlet-class>
+		<servlet-class>org.infinite.engines.account.ImageCaptchaServlet</servlet-class>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
 

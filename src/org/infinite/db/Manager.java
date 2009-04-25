@@ -27,15 +27,15 @@ public class Manager {
 		
 	
 	@SuppressWarnings("unchecked")
-	public static List listByQery(Session openedSession,String query){		
+	private static List listByQuery(Session openedSession,String query){		
 		return openedSession.createQuery(query).list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static List listByQery(String query){
+	public static List listByQuery(String query){
 		Session session = getSession();
 		session.beginTransaction();
-		List l = listByQery(session, query);
+		List l = listByQuery(session, query);
 		session.getTransaction().commit();
 		return l;
 	}
@@ -47,7 +47,7 @@ public class Manager {
 	}
 	
 	
-	public static boolean delete(Session openedSession,Object o){
+	private static boolean delete(Session openedSession,Object o){
 		Transaction tx = null;
 		try {
 			tx = openedSession.beginTransaction();
@@ -71,7 +71,7 @@ public class Manager {
 	
 	
     
-	public static boolean create(Session openedSession,Object o) {
+	private static boolean create(Session openedSession,Object o) {
 		Transaction tx = null;
 		try {
 			tx = openedSession.beginTransaction();
@@ -96,7 +96,7 @@ public class Manager {
 	
 	
 	
-	public static boolean update(Session openedSession,Object o) {
+	private static boolean update(Session openedSession,Object o) {
 		Transaction tx = null;
 		try {
 			tx = openedSession.beginTransaction();

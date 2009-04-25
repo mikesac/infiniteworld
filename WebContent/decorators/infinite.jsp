@@ -1,6 +1,8 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator"
 	prefix="decorator"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<%@ page errorPage="../login/error.jsp" %> 
+<%@ page import="org.infinite.web.PagesCst"%>
 <html>
 <head>
 <title>Infinite World - <decorator:title default="Infinite World" /></title>
@@ -22,7 +24,20 @@
 			<%@ include file="/player/wbar.jsp"%>
 			<%@ include file="b1post.jsp"%>			
 		</td>
-		<td><center><decorator:body /></center></td>
+		<td>
+			<center>
+			<%
+				if(session.getAttribute(PagesCst.CONTEXT_ERROR)!=null){
+					%><%@ include file="../decorators/b2pre.jsp"%>
+			<%
+					out.print("<div align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
+					session.removeAttribute(PagesCst.CONTEXT_ERROR);
+					%><%@ include file="../decorators/b2post.jsp"%><br />
+			<%}%>
+	
+				<decorator:body />
+			</center>
+		</td>
 		<td id="east" width="180px" >
 			<%@ include file="b1pre.jsp"%>
 			<%@ include file="/player/ebar.jsp"%>
