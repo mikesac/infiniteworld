@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-apr-2009 10.52.17 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 24-apr-2009 23.55.52 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.PlayerOwnItem" table="PlayerOwnItem" catalog="mikesac_mikesac">
         <meta attribute="not-null" inherit="false">false</meta>
@@ -13,7 +13,7 @@
         <many-to-one name="player" class="org.infinite.db.dao.Player" fetch="select">
             <column name="Playerid" not-null="true" />
         </many-to-one>
-        <many-to-one name="item" class="org.infinite.db.dao.Item" fetch="select">
+        <many-to-one name="item" class="org.infinite.db.dao.Item" fetch="join">
             <meta attribute="fetch" inherit="false">join</meta>
             <column name="Itemid" not-null="true" />
         </many-to-one>

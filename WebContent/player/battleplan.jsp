@@ -25,19 +25,6 @@
 </head>
 <body>
 
-<%
-	if (session.getAttribute("error") != null) {
-%><%@ include file="../decorators/b2pre.jsp"%>
-<div align="center">
-<div class="error"><%=session.getAttribute("error")%></div>
-</div>
-<%@ include file="../decorators/b2post.jsp"%><br />
-<%
-	session.removeAttribute("error");
-	}
-%>
-
-
 <div style="width: 1020px;"><%@ include
 	file="../decorators/b1pre.jsp"%>
 

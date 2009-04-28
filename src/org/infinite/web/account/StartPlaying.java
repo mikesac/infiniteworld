@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.infinite.engines.map.MapEngine;
 import org.infinite.objects.Character;
 import org.infinite.objects.Map;
 import org.infinite.web.PagesCst;
@@ -35,7 +36,7 @@ public class StartPlaying extends HttpServlet {
 			resp.sendRedirect( req.getContextPath() + PagesCst.PAGE_CHARACTER);
 			return;
 		}		
-		Map m = new Map(c.getArea());
+		Map m = new Map( MapEngine.getAreaFromAreaItem( c.getAreaItem() ),c);
 		
 		//TODO before saving into context check if some regeneration or effect occurred 
 		
@@ -51,8 +52,8 @@ public class StartPlaying extends HttpServlet {
 	
 	public static boolean redirectToCharSelect(HttpSession s,HttpServletRequest request,HttpServletResponse response) throws IOException{
 		
-		if(s.getAttribute("character")==null){
-			response.sendRedirect(request.getContextPath()+"/player/character.jsp");
+		if(s.getAttribute(PagesCst.CONTEXT_CHARACTER)==null){
+			response.sendRedirect(request.getContextPath()+PagesCst.PAGE_CHARACTER);
 			return true;
 		}
 		return false;

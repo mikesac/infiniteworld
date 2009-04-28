@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.infinite.db.Manager;
 import org.infinite.db.dao.Area;
+import org.infinite.db.dao.AreaItem;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.Player;
 import org.infinite.db.dao.PlayerKnowSpell;
@@ -17,6 +18,8 @@ import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.engines.items.ItemsEngine;
 import org.infinite.engines.items.ItemsInterface;
 import org.infinite.engines.magic.MagicEngine;
+import org.infinite.engines.map.InaccessibleAreaException;
+import org.infinite.engines.map.MapEngine;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
@@ -79,11 +82,11 @@ public class Character implements PlayerInterface, ItemsInterface {
 	public Character(String name, String accountName) throws Exception{
 
 		//get character Dao
-		player = (Player)Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
+		player = (Player)Manager.listByQuery("from org.infinite.db.dao.Player p join fetch p.areaItem a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
 		String battle = getDao().getBattle();
 
 		//get inventory and assign
-		ArrayList<PlayerOwnItem> poi = (ArrayList<PlayerOwnItem>) Manager.listByQery("from org.infinite.db.dao.PlayerOwnItem poi join fetch poi.item i where poi.player='"+getDao().getId()+"'");
+		ArrayList<PlayerOwnItem> poi = (ArrayList<PlayerOwnItem>) Manager.listByQuery("from org.infinite.db.dao.PlayerOwnItem poi join fetch poi.item i where poi.player='"+getDao().getId()+"'");
 
 		//equip all items without re-sync to DB
 		for (int i = 0; i < poi.size(); i++) {
@@ -91,14 +94,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 		}
 
 		//get spell book and assign
-		ArrayList<PlayerKnowSpell> pks = (ArrayList<PlayerKnowSpell>) Manager.listByQery("from org.infinite.db.dao.PlayerKnowSpell pks join fetch pks.spell a where pks.player='"+getDao().getId()+"'");
+		ArrayList<PlayerKnowSpell> pks = (ArrayList<PlayerKnowSpell>) Manager.listByQuery("from org.infinite.db.dao.PlayerKnowSpell pks join fetch pks.spell a where pks.player='"+getDao().getId()+"'");
 		for (int i = 0; i < pks.size(); i++) {
 			learnSpell( pks.get(i) , false );
 		}
 		
 		//get spell cast on player
 		long now = (new Date()).getTime();
-		ArrayList<SpellAffectPlayer> sap = (ArrayList<SpellAffectPlayer>) Manager.listByQery("from org.infinite.db.dao.SpellAffectPlayer sap join fetch sap.spell a where sap.player='"+getDao().getId()+"'");
+		ArrayList<SpellAffectPlayer> sap = (ArrayList<SpellAffectPlayer>) Manager.listByQuery("from org.infinite.db.dao.SpellAffectPlayer sap join fetch sap.spell a where sap.player='"+getDao().getId()+"'");
 		for (int i = 0; i < sap.size(); i++) {
 			
 			//spell elapsed, removing
@@ -570,33 +573,22 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 	@SuppressWarnings("unchecked")
 	public static List<Player> getCharacterListing(String account){
-		return Manager.listByQery("from org.infinite.db.dao.Player p join fetch p.area a where p.tomcatUsers.user='"+account+"'  ");
+		return Manager.listByQuery("from org.infinite.db.dao.Player p join fetch p.areaItem a where p.tomcatUsers.user='"+account+"'  ");
 
 	}
 
 
 
-	public Area getArea() {		
-		return getDao().getArea();
+	public AreaItem getAreaItem() {		
+		return getDao().getAreaItem();
 	}
 
-	public boolean moveToArea(Area a){
-
-		boolean ret = true;
-		//TODO check if player owns lock for that area before moving
-		if(true){
-			getDao().setArea(a);
-			try {
-				addActionPoints( -1 * a.getCost() );
-			} catch (Exception e) {
-				e.printStackTrace();
-				ret = false;
-			}
-		}
-
+	public Area moveToAreaItem(AreaItem ai) throws InaccessibleAreaException{
+		Area ret = MapEngine.moveToAreaItem(this, ai);
 		return ret;
-
 	}
+	
+	
 
 	@Override
 	public int addLifePoints(int points) throws Exception {

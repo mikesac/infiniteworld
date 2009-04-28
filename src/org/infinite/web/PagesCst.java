@@ -17,15 +17,20 @@ public class PagesCst {
 	public static final String PAGE_MAP = "/player/map.jsp";
 	public static final String PAGE_EQUIP = "/player/equip.jsp";
 	public static final String PAGE_SPELL = "/player/spell.jsp";
+	public static final String PAGE_SPELLBOOK = "/player/spellbook.jsp";
 	public static final String PAGE_REGISTER = "/login/register.jsp";
 	public static final String PAGE_BATTLEPLAN= "/player/battleplan.jsp";
 	
 	public static final String CONTEXT_CHARACTER = "character";
 	public static final String CONTEXT_ERROR = "error";
 	public static final String CONTEXT_MAP = "map";
+	public static final String CONTEXT_MAPITEM = "map_item";
 	public static final String CONTEXT_SPELLTYPE = "spell_type";
 	public static final String CONTEXT_SPELLPAGE = "spell_page";
 	public static final String CONTEXT_FIGHT_REPORT = "fight_report";
+	
+	public static final String CONTEXT_SPELLBOOK = "spell_book";
+	
 	public static final String CONTEXT_FIGHT_REPORT_S1 = "fight_report_s1";
 	public static final String CONTEXT_FIGHT_REPORT_S2= "fight_report_s2";
 	

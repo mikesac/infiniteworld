@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-apr-2009 10.52.17 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 24-apr-2009 23.55.52 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Area" table="Area" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
@@ -41,22 +41,6 @@
                 <comment>AP cost to acces the area</comment>
             </column>
         </property>
-        <set name="areaItems" inverse="true">
-            <key>
-                <column name="areaid" not-null="true">
-                    <comment>parent area</comment>
-                </column>
-            </key>
-            <one-to-many class="org.infinite.db.dao.AreaItem" />
-        </set>
-        <set name="players" inverse="true">
-            <key>
-                <column name="area" not-null="true">
-                    <comment>player location</comment>
-                </column>
-            </key>
-            <one-to-many class="org.infinite.db.dao.Player" />
-        </set>
         <set name="npcs" inverse="true">
             <key>
                 <column name="area" not-null="true">

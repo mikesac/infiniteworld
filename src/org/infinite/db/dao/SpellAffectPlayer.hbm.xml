@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-apr-2009 10.52.17 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 24-apr-2009 23.55.52 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.SpellAffectPlayer" table="SpellAffectPlayer" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
@@ -11,7 +11,7 @@
         <many-to-one name="player" class="org.infinite.db.dao.Player" fetch="select">
             <column name="Playerid" not-null="true" />
         </many-to-one>
-        <many-to-one name="spell" class="org.infinite.db.dao.Spell" fetch="select">
+        <many-to-one name="spell" class="org.infinite.db.dao.Spell" fetch="join">
             <column name="Spellid" not-null="true" />
         </many-to-one>
         <property name="elapsing" type="long">

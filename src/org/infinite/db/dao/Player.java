@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 20-apr-2009 10.52.17 by Hibernate Tools 3.2.4.CR1
+// Generated 24-apr-2009 23.55.52 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ public class Player implements java.io.Serializable {
 
 	private int id;
 	private TomcatUsers tomcatUsers;
-	private Area area;
+	private AreaItem areaItem;
 	private String name;
 	private String image;
 	private Integer baseStr;
@@ -45,7 +45,7 @@ public class Player implements java.io.Serializable {
 	public Player() {
 	}
 
-	public Player(TomcatUsers tomcatUsers, Area area, String name,
+	public Player(TomcatUsers tomcatUsers, AreaItem areaItem, String name,
 			String image, Integer baseStr, Integer baseInt, Integer baseDex,
 			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
@@ -53,7 +53,7 @@ public class Player implements java.io.Serializable {
 			Integer status, float gold, Integer nattack, String attack,
 			String battle) {
 		this.tomcatUsers = tomcatUsers;
-		this.area = area;
+		this.areaItem = areaItem;
 		this.name = name;
 		this.image = image;
 		this.baseStr = baseStr;
@@ -79,7 +79,7 @@ public class Player implements java.io.Serializable {
 		this.battle = battle;
 	}
 
-	public Player(TomcatUsers tomcatUsers, Area area, String name,
+	public Player(TomcatUsers tomcatUsers, AreaItem areaItem, String name,
 			String image, Integer baseStr, Integer baseInt, Integer baseDex,
 			Integer baseCha, Integer basePl, Integer basePm, Integer basePa,
 			Integer basePc, Integer pl, Integer pm, Integer pa, Integer pc,
@@ -89,7 +89,7 @@ public class Player implements java.io.Serializable {
 			Set<SpellAffectPlayer> spellAffectPlayers,
 			Set<PlayerKnowSpell> playerKnowSpells) {
 		this.tomcatUsers = tomcatUsers;
-		this.area = area;
+		this.areaItem = areaItem;
 		this.name = name;
 		this.image = image;
 		this.baseStr = baseStr;
@@ -134,12 +134,12 @@ public class Player implements java.io.Serializable {
 		this.tomcatUsers = tomcatUsers;
 	}
 
-	public Area getArea() {
-		return this.area;
+	public AreaItem getAreaItem() {
+		return this.areaItem;
 	}
 
-	public void setArea(Area area) {
-		this.area = area;
+	public void setAreaItem(AreaItem areaItem) {
+		this.areaItem = areaItem;
 	}
 
 	public String getName() {

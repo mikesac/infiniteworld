@@ -22,10 +22,6 @@
 <body>
 
 <%
-	if(session.getAttribute(PagesCst.CONTEXT_ERROR)!=null){
-		out.print("<div class=\"char\" align=\"center\"><div class=\"error\">"+session.getAttribute(PagesCst.CONTEXT_ERROR)+"</div></div>");
-		session.removeAttribute(PagesCst.CONTEXT_ERROR);
-	}
 	Character c = (Character) session.getAttribute(PagesCst.CONTEXT_CHARACTER);
 %>
 
