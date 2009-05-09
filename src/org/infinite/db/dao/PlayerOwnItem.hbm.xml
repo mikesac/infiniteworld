@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 24-apr-2009 23.55.52 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 5-mag-2009 22.23.06 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.PlayerOwnItem" table="PlayerOwnItem" catalog="mikesac_mikesac">
         <meta attribute="not-null" inherit="false">false</meta>

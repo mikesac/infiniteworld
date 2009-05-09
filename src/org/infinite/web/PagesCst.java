@@ -20,6 +20,9 @@ public class PagesCst {
 	public static final String PAGE_SPELLBOOK = "/player/spellbook.jsp";
 	public static final String PAGE_REGISTER = "/login/register.jsp";
 	public static final String PAGE_BATTLEPLAN= "/player/battleplan.jsp";
+	public static final String PAGE_NPCDIALOG= "/player/npcdialog.jsp";
+	
+	
 	
 	public static final String CONTEXT_CHARACTER = "character";
 	public static final String CONTEXT_ERROR = "error";

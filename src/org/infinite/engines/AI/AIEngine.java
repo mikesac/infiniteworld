@@ -26,7 +26,7 @@ public class AIEngine {
 		
 		Monster m = new Monster(szName);
 		//String szXML = XmlUtil.XMLPATH + "monster/" + m.getNpc().getXmlItems();
-		String szXML = "xml/monster/"+m.getDao().getXmlItems();
+		String szXML = "xml/monster/"+m.getDao().getItems();
 		
 		Document doc = XmlUtil.name2Doc(szXML);
 		
