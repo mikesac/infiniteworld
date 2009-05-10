@@ -135,7 +135,7 @@
   <!-- Map Moving -->
   <servlet>
     <servlet-name>MapMove</servlet-name>
-    <servlet-class>org.infinite.web.MapMove</servlet-class>
+    <servlet-class>org.infinite.web.map.MapMove</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>MapMove</servlet-name>
@@ -186,16 +186,18 @@
   </servlet-mapping>
   
   
-  <!-- Fight Testbed -->
+  <!-- Fight -->
   <servlet>
     <servlet-name>FightMap</servlet-name>
-    <servlet-class>org.infinite.web.fight.FightMap</servlet-class>
+    <servlet-class>org.infinite.web.map.FightMap</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FightMap</servlet-name>
     <url-pattern>/mapfight</url-pattern>
   </servlet-mapping>
   
+  
+  <!--  monster XML -->
   <servlet>
     <servlet-name>MonsterXML</servlet-name>
     <servlet-class>org.infinite.web.MonsterXML</servlet-class>

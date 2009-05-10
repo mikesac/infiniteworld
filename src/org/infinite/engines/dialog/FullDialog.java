@@ -1,6 +1,7 @@
 package org.infinite.engines.dialog;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -11,7 +12,11 @@ public class FullDialog {
 	private HashMap<String , int[]> answers = new HashMap<String, int[]>();
 
 	protected void storeProperties(String filename) throws IOException{
-		p.load( FullDialog.class.getResourceAsStream(filename)  );
+		p.load( FullDialog.class.getClassLoader().getResourceAsStream(filename)  );		
+	}
+	
+	protected void storeProperties(InputStream is) throws IOException{
+		p.load( is  );		
 	}
 
 
@@ -20,7 +25,10 @@ public class FullDialog {
 	}
 
 	public String getSentenceString(int sentenceIndex){
-		return p.getProperty(FullDialogEngine.S+sentenceIndex,"[Sentence not found!]");
+		
+		String out = p.getProperty(FullDialogEngine.S+sentenceIndex,"[Sentence not found!]");
+		out = FullDialogEngine.parsePagesCST(out);
+		return out;
 	}
 
 	public String[] getAnswersString(int sentenceIndex){
@@ -40,8 +48,12 @@ public class FullDialog {
 		int[] indexes = answers.get(FullDialogEngine.S+sentenceIndex);
 		return indexes[answerIndex];
 	}
+	
+	public boolean isUrl(String sentence){
+		return sentence.startsWith("/");			
+	}
 
 
-
+	
 
 }

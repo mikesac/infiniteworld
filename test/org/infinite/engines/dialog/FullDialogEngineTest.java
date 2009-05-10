@@ -30,9 +30,18 @@ public class FullDialogEngineTest {
 		assertEquals("getPcAnswers goto",3,fd.getAnswersRedirect(0, 2) );
 		
 		assertEquals("getNpcSentence","Rumors? Nope, this is a really quiet town!",fd.getSentenceString(2));
-		assertEquals("getPcAnswers",1,fd.getAnswersString(2).length);
-		assertEquals("getPcAnswers","Never mind, see you",fd.getAnswersString(2)[0]);
+		assertEquals("getPcAnswers size",1,fd.getAnswersString(2).length);
+		assertEquals("getPcAnswers txt","Never mind, see you",fd.getAnswersString(2)[0]);
 		assertEquals("getPcAnswers goto",3,fd.getAnswersRedirect(2, 0) );
+		
+		assertEquals("Pages Parser","/player/map.jsp",FullDialogEngine.parsePagesCST("org.infinite.web.PagesCst.PAGE_MAP") );
+		
+		assertEquals("getNpcSentence","/player/map.jsp",fd.getSentenceString(3));
+		
+		
+		
+		
+				
 	}
 	
 	

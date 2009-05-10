@@ -262,3 +262,15 @@ font-family: Verdana,Arial;
 .down{width:30px;background-image: url("<%=request.getContextPath()%>/imgs/web/down.png");background-repeat:no-repeat;background-position: center;}
 .rem{width:30px;background-image: url("<%=request.getContextPath()%>/imgs/web/remove.png");background-repeat:no-repeat;background-position: center;}
 .nobut{width:30px;}
+
+/* Applies to all unvisited links */
+a:link {text-decoration:none;font-weight:bold;background-color:transparent;color:#684331;} 
+
+/* Applies to all visited links */
+a:visited {text-decoration:none;font-weight:bold;background-color: transparent;color:#684331;} 
+
+/* Applies to links under the pointer */
+a:hover{text-decoration:underline;font-weight:bold;background-color:transparent;color:#684331;} 
+
+/* Applies to activated links */
+a:active {text-decoration:underline;font-weight:bold;background-color:transparent;color:#684331;} 

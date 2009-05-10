@@ -2,25 +2,37 @@ package org.infinite.engines.dialog;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.infinite.util.GenericUtil;
+import org.infinite.web.PagesCst;
 
 public class FullDialogEngine {
 
 	protected static final String S = "sentence.";
 	protected static final String A = "answer.";
-	
+
 	public static FullDialog getDialogData(String filename) throws IOException {
+		return getDialogData( FullDialogEngine.class.getResourceAsStream(filename));
+	}
+
+	public static FullDialog getDialogData(InputStream is) throws IOException {
 
 		FullDialog fd = new FullDialog();
 		
-		fd.storeProperties(filename);
+		is.mark(is.available());
+		fd.storeProperties(is);
+		is.reset();
+		
+		BufferedReader br = new BufferedReader( new InputStreamReader( is ));
 
-		BufferedReader br = new BufferedReader( new InputStreamReader( FullDialogEngine.class.getResourceAsStream(filename)));
-			
 		String sentence = "";
 		String sentenceKey = "";
 		ArrayList<Integer> answersGoto = new ArrayList<Integer>();
@@ -31,18 +43,18 @@ public class FullDialogEngine {
 
 				if(sentence.startsWith("#") || sentence.length()==0)
 					continue;				
-				
+
 				if(sentence.toLowerCase().startsWith(S))
 				{					
 					if(firstloop){
 						firstloop = false;
 					}
 					else{
-						storeAnswers(fd,getPropertyName(sentenceKey), answersGoto);
+						storeAnswers(fd,sentenceKey, answersGoto);
 					}
 					sentenceKey = sentence;
 					answersGoto.clear();	
-					
+
 				}
 				else{
 					answersGoto.add( getAnswerGoto(sentence));
@@ -55,13 +67,13 @@ public class FullDialogEngine {
 			GenericUtil.err(FullDialogEngine.class.getName(), e);
 		}
 		storeAnswers(fd,sentenceKey, answersGoto);
-		
+
 		return fd;
-		
-		
-		
-		
-		
+
+
+
+
+
 	}
 
 	private static void storeAnswers(FullDialog fd , String sentenceKey, ArrayList<Integer> answersGoto) {
@@ -70,11 +82,11 @@ public class FullDialogEngine {
 		for (Iterator<Integer> iterator = answersGoto.iterator(); iterator.hasNext();) {
 			gotovalues[i++] = iterator.next();							
 		}
-		fd.storeAnswer(sentenceKey, gotovalues);
+		fd.storeAnswer( getPropertyName(sentenceKey), gotovalues);
 	}
-	
-	
-	
+
+
+
 	private static String getPropertyName(String line){
 
 		String out = line;
@@ -97,8 +109,25 @@ public class FullDialogEngine {
 
 		return GenericUtil.toInt(out, 0);
 	}
-	
-	
-	
-	
+
+	protected static String parsePagesCST(String myinput){
+
+		if( myinput.startsWith(PagesCst.class.getName()) ){
+
+			ScriptEngine js = new ScriptEngineManager().getEngineByName("javascript");
+
+			js.put("myinputjs", myinput);
+
+			try {
+				myinput = (String) js.eval("eval(myinputjs);"
+				);
+			} catch (ScriptException e) {
+				GenericUtil.err("Rinho error:", e);
+			}
+
+		}
+		return myinput;
+	}
+
+
 }

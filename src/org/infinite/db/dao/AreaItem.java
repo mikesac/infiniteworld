@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 5-mag-2009 22.23.06 by Hibernate Tools 3.2.4.CR1
+// Generated 10-mag-2009 10.46.59 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +23,7 @@ public class AreaItem implements java.io.Serializable {
 	private String questlock;
 	private String url;
 	private boolean direct;
+	private boolean loop;
 	private boolean hidemode;
 	private Integer areaItemLevel;
 	private String npcs;
@@ -33,8 +34,8 @@ public class AreaItem implements java.io.Serializable {
 
 	public AreaItem(String name, String icon, Integer cost, Integer areaid,
 			short areax, short areay, Integer x, Integer y, String arealock,
-			String questlock, String url, boolean direct, boolean hidemode,
-			Integer areaItemLevel, String npcs) {
+			String questlock, String url, boolean direct, boolean loop,
+			boolean hidemode, Integer areaItemLevel, String npcs) {
 		this.name = name;
 		this.icon = icon;
 		this.cost = cost;
@@ -47,6 +48,7 @@ public class AreaItem implements java.io.Serializable {
 		this.questlock = questlock;
 		this.url = url;
 		this.direct = direct;
+		this.loop = loop;
 		this.hidemode = hidemode;
 		this.areaItemLevel = areaItemLevel;
 		this.npcs = npcs;
@@ -54,8 +56,9 @@ public class AreaItem implements java.io.Serializable {
 
 	public AreaItem(String name, String icon, Integer cost, Integer areaid,
 			short areax, short areay, Integer x, Integer y, String arealock,
-			String questlock, String url, boolean direct, boolean hidemode,
-			Integer areaItemLevel, String npcs, Set<Player> players) {
+			String questlock, String url, boolean direct, boolean loop,
+			boolean hidemode, Integer areaItemLevel, String npcs,
+			Set<Player> players) {
 		this.name = name;
 		this.icon = icon;
 		this.cost = cost;
@@ -68,6 +71,7 @@ public class AreaItem implements java.io.Serializable {
 		this.questlock = questlock;
 		this.url = url;
 		this.direct = direct;
+		this.loop = loop;
 		this.hidemode = hidemode;
 		this.areaItemLevel = areaItemLevel;
 		this.npcs = npcs;
@@ -176,6 +180,14 @@ public class AreaItem implements java.io.Serializable {
 
 	public void setDirect(boolean direct) {
 		this.direct = direct;
+	}
+
+	public boolean isLoop() {
+		return this.loop;
+	}
+
+	public void setLoop(boolean loop) {
+		this.loop = loop;
 	}
 
 	public boolean isHidemode() {

@@ -166,7 +166,7 @@ public class AIEngine {
 			int dMin = 0;
 			int init = 0;
 			int points = 0;
-			String szName = "";
+//			String szName = "";
 
 			if(availableAttacks.elementAt(i) instanceof Item){
 				Item item = (Item)availableAttacks.elementAt(i);
@@ -175,7 +175,7 @@ public class AIEngine {
 				dMin = GenericUtil.getMinRollDice( item.getDamage() );
 				init = item.getInitiative();
 				points = m.getPointsAction();
-				szName = item.getName();
+//				szName = item.getName();
 			}
 			else if(availableAttacks.elementAt(i) instanceof Spell){
 				Spell spell = (Spell)availableAttacks.elementAt(i);
@@ -184,7 +184,7 @@ public class AIEngine {
 				dMin = GenericUtil.getMinRollDice( spell.getDamage() );
 				init = spell.getInitiative();
 				points = m.getPointsMagic();
-				szName = spell.getName();
+//				szName = spell.getName();
 			}
 
 			float p = (1.0f*points/totalPoints)+(1.0f*dMax/totalMax)+(1.0f*dMin/totalMin);

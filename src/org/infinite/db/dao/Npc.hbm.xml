@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 5-mag-2009 22.23.06 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 10-mag-2009 10.46.59 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="name" type="string">
             <column name="name" not-null="true">
