@@ -62,7 +62,7 @@ font-family: Verdana,Arial;
 
 .thp {width: 100px;height: 10px;background-color: black;z-index: 1;position:relative;}
 .hpt {color: white;font-size: 6pt;z-index: 30;position: absolute;white-space:nowrap;top:0px;}
-.chp {height: 10px;background-color: #EF1D1D;color: white;font-size: 6pt;position: relative;z-index: 2}
+.chp {height: 10px;background-image: url(<%=request.getContextPath()%>/imgs/web/flame.gif);color: white;font-size: 6pt;position: relative;z-index: 2;}
 
 
 .tmp {width: 100px;height: 10px;background-color: black;z-index: 1;position:relative;}
@@ -199,19 +199,23 @@ font-family: Verdana,Arial;
 
 .thp_big{width: 100px;height: 15px;background-color: black;z-index: 1; border:3px outset gray;}
 .hpt_big{color: white;font-size: 6pt;z-index: 30;position: absolute;white-space:nowrap;}
-.chp_big{height: 15px;background-color: #EF1D1D;color: white;font-size: 8pt;position: absolute;z-index: 2;}
+.chp_big{height: 15px;background-image:url(<%=request.getContextPath()%>/imgs/web/blood.gif);color: white;font-size: 8pt;position: absolute;z-index: 2;}
 
 .tmp_big{width: 100px;height: 15px;background-color: black;z-index: 1;  border:3px outset gray;}
 .mpt_big{color: white;font-size: 6pt;z-index: 30;position: absolute;white-space:nowrap;}
-.cmp_big{height: 15px;background-color: #1B1DDF;color: white;font-size: 8pt;position: absolute;z-index: 2;}
+.cmp_big{height: 15px;background-image:url(<%=request.getContextPath()%>/imgs/web/bubble.gif);color: white;font-size: 8pt;position: absolute;z-index: 2;}
 
 .tap_big{width: 100px;height: 15px;background-color: black;z-index: 1;  border:3px outset gray;}
 .apt_big{color: white;font-size: 6pt;z-index: 30;position: absolute;white-space:nowrap;}
-.cap_big{height: 15px;background-color: #EFC20E;color: white;font-size: 8pt;position: absolute;z-index: 2;}
+.cap_big{height: 15px;background-image:url(<%=request.getContextPath()%>/imgs/web/flame.gif);color: white;font-size: 8pt;position: absolute;z-index: 2;}
 
 .tcp_big{width: 100px;height: 15px;background-color: black;z-index: 1;  border:3px outset gray;}
 .cpt_big{color: white;font-size: 6pt;z-index: 30;position: absolute;white-space:nowrap;}
 .ccp_big{height: 15px;background-color: #9800F0;color: white;font-size: 8pt;position: absolute;z-index: 2;}
+
+.txp_big{width: 200px;height: 30px;background-color: black;z-index: 1;  border:3px outset gray;}
+.xpt_big{color: white;font-size: 6pt;z-index: 30;position: absolute;white-space:nowrap;}
+.cxp_big{height: 30px;background-color: #07E4F6;color:#001B8F;font-size: 8pt;position: absolute;z-index: 2;}
 
 .avatar{margin:5px 5px 5px 5px;width: 100px;height: 100px;border:5px double #61402D;}
 

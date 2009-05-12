@@ -87,11 +87,10 @@ try{
 		<td>level&nbsp;</td>
 		<td>px&nbsp;</td>
 		<td>status&nbsp;</td>
-		<td>area&nbsp;</td>
 		<td>gold&nbsp;</td>
-		<td>xml dialog&nbsp;</td>
-		<td>xml items&nbsp;</td>
-		<td>xml behave&nbsp;</td>
+		<td>dialog&nbsp;</td>
+		<td>items&nbsp;</td>
+		<td>behave&nbsp;</td>
 		<td>ismonster&nbsp;</td>
 		<td>nattack&nbsp;</td>
 		<td>attack&nbsp;</td>
@@ -123,11 +122,10 @@ while (rs.next()){
 	String x_level = "";
 	String x_px = "";
 	String x_status = "";
-	String x_area = "";
 	String x_gold = "";
-	String x_xml_dialog = "";
-	String x_xml_items = "";
-	String x_xml_behave = "";
+	String x_dialog = "";
+	String x_items = "";
+	String x_behave = "";
 	String x_ismonster = "";
 	String x_nattack = "";
 	String x_attack = "";
@@ -192,34 +190,31 @@ while (rs.next()){
 	// status
 	x_status = String.valueOf(rs.getLong("status"));
 
-	// area
-	x_area = String.valueOf(rs.getLong("area"));
-
 	// gold
 	x_gold = String.valueOf(rs.getDouble("gold"));
 
-	// xml_dialog
-	if (rs.getString("xml_dialog") != null){
-		x_xml_dialog = rs.getString("xml_dialog");
+	// dialog
+	if (rs.getString("dialog") != null){
+		x_dialog = rs.getString("dialog");
 	}
 	else{
-		x_xml_dialog = "";
+		x_dialog = "";
 	}
 
-	// xml_items
-	if (rs.getString("xml_items") != null){
-		x_xml_items = rs.getString("xml_items");
+	// items
+	if (rs.getString("items") != null){
+		x_items = rs.getString("items");
 	}
 	else{
-		x_xml_items = "";
+		x_items = "";
 	}
 
-	// xml_behave
-	if (rs.getString("xml_behave") != null){
-		x_xml_behave = rs.getString("xml_behave");
+	// behave
+	if (rs.getString("behave") != null){
+		x_behave = rs.getString("behave");
 	}
 	else{
-		x_xml_behave = "";
+		x_behave = "";
 	}
 
 	// ismonster
@@ -253,11 +248,10 @@ while (rs.next()){
 		<td class="<%= rowclass %>"><% out.print(x_level); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_px); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_status); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_area); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_gold); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_xml_dialog); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_xml_items); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_xml_behave); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_dialog); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_items); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_behave); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_ismonster); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_nattack); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_attack); %>&nbsp;</td>

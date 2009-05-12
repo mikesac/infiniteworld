@@ -32,14 +32,20 @@ if (a == null || a.length() == 0) {
 Object x_id = null;
 Object x_name = null;
 Object x_icon = null;
+Object x_cost = null;
 Object x_areaid = null;
-Object x_ax = null;
-Object x_ay = null;
+Object x_areax = null;
+Object x_areay = null;
 Object x_x = null;
 Object x_y = null;
-Object x_lockid = null;
+Object x_arealock = null;
+Object x_questlock = null;
 Object x_url = null;
 Object x_direct = null;
+Object x_loop = null;
+Object x_hidemode = null;
+Object x_areaItemLevel = null;
+Object x_npcs = null;
 
 // Open Connection to the database
 try{
@@ -75,18 +81,36 @@ try{
 			}else{
 				x_icon = "";
 			}
+	x_cost = String.valueOf(rs.getLong("cost"));
 	x_areaid = String.valueOf(rs.getLong("areaid"));
-	x_ax = String.valueOf(rs.getLong("ax"));
-	x_ay = String.valueOf(rs.getLong("ay"));
+	x_areax = String.valueOf(rs.getLong("areax"));
+	x_areay = String.valueOf(rs.getLong("areay"));
 	x_x = String.valueOf(rs.getLong("x"));
 	x_y = String.valueOf(rs.getLong("y"));
-	x_lockid = String.valueOf(rs.getLong("lockid"));
+			if (rs.getString("arealock") != null){
+				x_arealock = rs.getString("arealock");
+			}else{
+				x_arealock = "";
+			}
+			if (rs.getString("questlock") != null){
+				x_questlock = rs.getString("questlock");
+			}else{
+				x_questlock = "";
+			}
 			if (rs.getString("url") != null){
 				x_url = rs.getString("url");
 			}else{
 				x_url = "";
 			}
 	x_direct = String.valueOf(rs.getLong("direct"));
+	x_loop = String.valueOf(rs.getLong("loop"));
+	x_hidemode = String.valueOf(rs.getLong("hidemode"));
+	x_areaItemLevel = String.valueOf(rs.getLong("areaItemLevel"));
+			if (rs.getString("npcs") != null){
+				x_npcs = rs.getString("npcs");
+			}else{
+				x_npcs = "";
+			}
 		}
 		rs.close();
 	}else if (a.equals("U")) {// Update
@@ -102,20 +126,25 @@ try{
 		}else{
 			x_icon = "";
 		}
+		if (request.getParameter("x_cost") != null){
+			x_cost = (String) request.getParameter("x_cost");
+		}else{
+			x_cost = "";
+		}
 		if (request.getParameter("x_areaid") != null){
 			x_areaid = (String) request.getParameter("x_areaid");
 		}else{
 			x_areaid = "";
 		}
-		if (request.getParameter("x_ax") != null){
-			x_ax = (String) request.getParameter("x_ax");
+		if (request.getParameter("x_areax") != null){
+			x_areax = (String) request.getParameter("x_areax");
 		}else{
-			x_ax = "";
+			x_areax = "";
 		}
-		if (request.getParameter("x_ay") != null){
-			x_ay = (String) request.getParameter("x_ay");
+		if (request.getParameter("x_areay") != null){
+			x_areay = (String) request.getParameter("x_areay");
 		}else{
-			x_ay = "";
+			x_areay = "";
 		}
 		if (request.getParameter("x_x") != null){
 			x_x = (String) request.getParameter("x_x");
@@ -127,10 +156,15 @@ try{
 		}else{
 			x_y = "";
 		}
-		if (request.getParameter("x_lockid") != null){
-			x_lockid = (String) request.getParameter("x_lockid");
+		if (request.getParameter("x_arealock") != null){
+			x_arealock = (String) request.getParameter("x_arealock");
 		}else{
-			x_lockid = "";
+			x_arealock = "";
+		}
+		if (request.getParameter("x_questlock") != null){
+			x_questlock = (String) request.getParameter("x_questlock");
+		}else{
+			x_questlock = "";
 		}
 		if (request.getParameter("x_url") != null){
 			x_url = (String) request.getParameter("x_url");
@@ -141,6 +175,26 @@ try{
 			x_direct = (String) request.getParameter("x_direct");
 		}else{
 			x_direct = "";
+		}
+		if (request.getParameter("x_loop") != null){
+			x_loop = (String) request.getParameter("x_loop");
+		}else{
+			x_loop = "";
+		}
+		if (request.getParameter("x_hidemode") != null){
+			x_hidemode = (String) request.getParameter("x_hidemode");
+		}else{
+			x_hidemode = "";
+		}
+		if (request.getParameter("x_areaItemLevel") != null){
+			x_areaItemLevel = (String) request.getParameter("x_areaItemLevel");
+		}else{
+			x_areaItemLevel = "";
+		}
+		if (request.getParameter("x_npcs") != null){
+			x_npcs = (String) request.getParameter("x_npcs");
+		}else{
+			x_npcs = "";
 		}
 
 		// Open record
@@ -182,6 +236,15 @@ try{
 			rs.updateString("icon", tmpfld);
 		}
 
+		// Field cost
+		tmpfld = ((String) x_cost).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("cost");
+		} else {
+			rs.updateInt("cost",Integer.parseInt(tmpfld));
+		}
+
 		// Field areaid
 		tmpfld = ((String) x_areaid).trim();
 		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
@@ -191,22 +254,22 @@ try{
 			rs.updateInt("areaid",Integer.parseInt(tmpfld));
 		}
 
-		// Field ax
-		tmpfld = ((String) x_ax).trim();
+		// Field areax
+		tmpfld = ((String) x_areax).trim();
 		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
 		if (tmpfld == null) {
-			rs.updateNull("ax");
+			rs.updateNull("areax");
 		} else {
-			rs.updateInt("ax",Integer.parseInt(tmpfld));
+			rs.updateInt("areax",Integer.parseInt(tmpfld));
 		}
 
-		// Field ay
-		tmpfld = ((String) x_ay).trim();
+		// Field areay
+		tmpfld = ((String) x_areay).trim();
 		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
 		if (tmpfld == null) {
-			rs.updateNull("ay");
+			rs.updateNull("areay");
 		} else {
-			rs.updateInt("ay",Integer.parseInt(tmpfld));
+			rs.updateInt("areay",Integer.parseInt(tmpfld));
 		}
 
 		// Field x
@@ -227,13 +290,26 @@ try{
 			rs.updateInt("y",Integer.parseInt(tmpfld));
 		}
 
-		// Field lockid
-		tmpfld = ((String) x_lockid).trim();
-		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		// Field arealock
+		tmpfld = ((String) x_arealock);
+		if (tmpfld == null || tmpfld.trim().length() == 0) {
+			tmpfld = "";
+		}
 		if (tmpfld == null) {
-			rs.updateNull("lockid");
-		} else {
-			rs.updateInt("lockid",Integer.parseInt(tmpfld));
+			rs.updateNull("arealock");
+		}else{
+			rs.updateString("arealock", tmpfld);
+		}
+
+		// Field questlock
+		tmpfld = ((String) x_questlock);
+		if (tmpfld == null || tmpfld.trim().length() == 0) {
+			tmpfld = "";
+		}
+		if (tmpfld == null) {
+			rs.updateNull("questlock");
+		}else{
+			rs.updateString("questlock", tmpfld);
 		}
 
 		// Field url
@@ -254,6 +330,44 @@ try{
 			rs.updateNull("direct");
 		} else {
 			rs.updateInt("direct",Integer.parseInt(tmpfld));
+		}
+
+		// Field loop
+		tmpfld = ((String) x_loop).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("loop");
+		} else {
+			rs.updateInt("loop",Integer.parseInt(tmpfld));
+		}
+
+		// Field hidemode
+		tmpfld = ((String) x_hidemode).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("hidemode");
+		} else {
+			rs.updateInt("hidemode",Integer.parseInt(tmpfld));
+		}
+
+		// Field areaItemLevel
+		tmpfld = ((String) x_areaItemLevel).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("areaItemLevel");
+		} else {
+			rs.updateInt("areaItemLevel",Integer.parseInt(tmpfld));
+		}
+
+		// Field npcs
+		tmpfld = ((String) x_npcs);
+		if (tmpfld == null || tmpfld.trim().length() == 0) {
+			tmpfld = "";
+		}
+		if (tmpfld == null) {
+			rs.updateNull("npcs");
+		}else{
+			rs.updateString("npcs", tmpfld);
 		}
 		rs.updateRow();
 		rs.close();
@@ -284,6 +398,14 @@ if (EW_this.x_icon && !EW_hasValue(EW_this.x_icon, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_icon, "TEXT", "Invalid Field - icon"))
                 return false; 
         }
+if (EW_this.x_cost && !EW_hasValue(EW_this.x_cost, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_cost, "TEXT", "Incorrect integer - cost"))
+                return false; 
+        }
+if (EW_this.x_cost && !EW_checkinteger(EW_this.x_cost.value)) {
+        if (!EW_onError(EW_this, EW_this.x_cost, "TEXT", "Incorrect integer - cost"))
+            return false; 
+        }
 if (EW_this.x_areaid && !EW_hasValue(EW_this.x_areaid, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_areaid, "TEXT", "Incorrect integer - areaid"))
                 return false; 
@@ -292,20 +414,20 @@ if (EW_this.x_areaid && !EW_checkinteger(EW_this.x_areaid.value)) {
         if (!EW_onError(EW_this, EW_this.x_areaid, "TEXT", "Incorrect integer - areaid"))
             return false; 
         }
-if (EW_this.x_ax && !EW_hasValue(EW_this.x_ax, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_ax, "TEXT", "Incorrect integer - ax"))
+if (EW_this.x_areax && !EW_hasValue(EW_this.x_areax, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_areax, "TEXT", "Incorrect integer - areax"))
                 return false; 
         }
-if (EW_this.x_ax && !EW_checkinteger(EW_this.x_ax.value)) {
-        if (!EW_onError(EW_this, EW_this.x_ax, "TEXT", "Incorrect integer - ax"))
+if (EW_this.x_areax && !EW_checkinteger(EW_this.x_areax.value)) {
+        if (!EW_onError(EW_this, EW_this.x_areax, "TEXT", "Incorrect integer - areax"))
             return false; 
         }
-if (EW_this.x_ay && !EW_hasValue(EW_this.x_ay, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_ay, "TEXT", "Incorrect integer - ay"))
+if (EW_this.x_areay && !EW_hasValue(EW_this.x_areay, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_areay, "TEXT", "Incorrect integer - areay"))
                 return false; 
         }
-if (EW_this.x_ay && !EW_checkinteger(EW_this.x_ay.value)) {
-        if (!EW_onError(EW_this, EW_this.x_ay, "TEXT", "Incorrect integer - ay"))
+if (EW_this.x_areay && !EW_checkinteger(EW_this.x_areay.value)) {
+        if (!EW_onError(EW_this, EW_this.x_areay, "TEXT", "Incorrect integer - areay"))
             return false; 
         }
 if (EW_this.x_x && !EW_hasValue(EW_this.x_x, "TEXT" )) {
@@ -324,13 +446,13 @@ if (EW_this.x_y && !EW_checkinteger(EW_this.x_y.value)) {
         if (!EW_onError(EW_this, EW_this.x_y, "TEXT", "Incorrect integer - y"))
             return false; 
         }
-if (EW_this.x_lockid && !EW_hasValue(EW_this.x_lockid, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_lockid, "TEXT", "Incorrect integer - lockid"))
+if (EW_this.x_arealock && !EW_hasValue(EW_this.x_arealock, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_arealock, "TEXT", "Invalid Field - arealock"))
                 return false; 
         }
-if (EW_this.x_lockid && !EW_checkinteger(EW_this.x_lockid.value)) {
-        if (!EW_onError(EW_this, EW_this.x_lockid, "TEXT", "Incorrect integer - lockid"))
-            return false; 
+if (EW_this.x_questlock && !EW_hasValue(EW_this.x_questlock, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_questlock, "TEXT", "Invalid Field - questlock"))
+                return false; 
         }
 if (EW_this.x_url && !EW_hasValue(EW_this.x_url, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_url, "TEXT", "Invalid Field - url"))
@@ -343,6 +465,34 @@ if (EW_this.x_direct && !EW_hasValue(EW_this.x_direct, "TEXT" )) {
 if (EW_this.x_direct && !EW_checkinteger(EW_this.x_direct.value)) {
         if (!EW_onError(EW_this, EW_this.x_direct, "TEXT", "Incorrect integer - direct"))
             return false; 
+        }
+if (EW_this.x_loop && !EW_hasValue(EW_this.x_loop, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_loop, "TEXT", "Incorrect integer - loop"))
+                return false; 
+        }
+if (EW_this.x_loop && !EW_checkinteger(EW_this.x_loop.value)) {
+        if (!EW_onError(EW_this, EW_this.x_loop, "TEXT", "Incorrect integer - loop"))
+            return false; 
+        }
+if (EW_this.x_hidemode && !EW_hasValue(EW_this.x_hidemode, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_hidemode, "TEXT", "Incorrect integer - hidemode"))
+                return false; 
+        }
+if (EW_this.x_hidemode && !EW_checkinteger(EW_this.x_hidemode.value)) {
+        if (!EW_onError(EW_this, EW_this.x_hidemode, "TEXT", "Incorrect integer - hidemode"))
+            return false; 
+        }
+if (EW_this.x_areaItemLevel && !EW_hasValue(EW_this.x_areaItemLevel, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_areaItemLevel, "TEXT", "Incorrect integer - area Item Level"))
+                return false; 
+        }
+if (EW_this.x_areaItemLevel && !EW_checkinteger(EW_this.x_areaItemLevel.value)) {
+        if (!EW_onError(EW_this, EW_this.x_areaItemLevel, "TEXT", "Incorrect integer - area Item Level"))
+            return false; 
+        }
+if (EW_this.x_npcs && !EW_hasValue(EW_this.x_npcs, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_npcs, "TEXT", "Invalid Field - npcs"))
+                return false; 
         }
 return true;
 }
@@ -367,16 +517,20 @@ return true;
 		<td class="ewTableAltRow"><input type="text" name="x_icon" size="30" maxlength="64" value="<%= HTMLEncode((String)x_icon) %>">&nbsp;</td>
 	</tr>
 	<tr>
+		<td class="ewTableHeader">cost&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_cost" size="30" value="<%= HTMLEncode((String)x_cost) %>">&nbsp;</td>
+	</tr>
+	<tr>
 		<td class="ewTableHeader">areaid&nbsp;</td>
 		<td class="ewTableAltRow"><input type="text" name="x_areaid" size="30" value="<%= HTMLEncode((String)x_areaid) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">ax&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_ax" size="30" value="<%= HTMLEncode((String)x_ax) %>">&nbsp;</td>
+		<td class="ewTableHeader">areax&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_areax" size="30" value="<%= HTMLEncode((String)x_areax) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">ay&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_ay" size="30" value="<%= HTMLEncode((String)x_ay) %>">&nbsp;</td>
+		<td class="ewTableHeader">areay&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_areay" size="30" value="<%= HTMLEncode((String)x_areay) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">x&nbsp;</td>
@@ -387,8 +541,12 @@ return true;
 		<td class="ewTableAltRow"><input type="text" name="x_y" size="30" value="<%= HTMLEncode((String)x_y) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">lockid&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_lockid" size="30" value="<%= HTMLEncode((String)x_lockid) %>">&nbsp;</td>
+		<td class="ewTableHeader">arealock&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_arealock" size="30" maxlength="64" value="<%= HTMLEncode((String)x_arealock) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">questlock&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_questlock" size="30" maxlength="64" value="<%= HTMLEncode((String)x_questlock) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">url&nbsp;</td>
@@ -397,6 +555,22 @@ return true;
 	<tr>
 		<td class="ewTableHeader">direct&nbsp;</td>
 		<td class="ewTableAltRow"><input type="text" name="x_direct" size="30" value="<%= HTMLEncode((String)x_direct) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">loop&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_loop" size="30" value="<%= HTMLEncode((String)x_loop) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">hidemode&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_hidemode" size="30" value="<%= HTMLEncode((String)x_hidemode) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">area Item Level&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_areaItemLevel" size="30" value="<%= HTMLEncode((String)x_areaItemLevel) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">npcs&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_npcs" size="30" maxlength="64" value="<%= HTMLEncode((String)x_npcs) %>">&nbsp;</td>
 	</tr>
 </table>
 <p>

@@ -42,11 +42,10 @@ Object x_base_pc = null;
 Object x_level = null;
 Object x_px = null;
 Object x_status = null;
-Object x_area = null;
 Object x_gold = null;
-Object x_xml_dialog = null;
-Object x_xml_items = null;
-Object x_xml_behave = null;
+Object x_dialog = null;
+Object x_items = null;
+Object x_behave = null;
 Object x_ismonster = null;
 Object x_nattack = null;
 Object x_attack = null;
@@ -74,7 +73,6 @@ try{
 		rs.first();
 
 			// Get the field contents
-	x_id = String.valueOf(rs.getLong("id"));
 	if (rs.getString("name") != null){
 		x_name = rs.getString("name");
 	}else{
@@ -102,22 +100,21 @@ try{
 	x_level = String.valueOf(rs.getLong("level"));
 	x_px = String.valueOf(rs.getLong("px"));
 	x_status = String.valueOf(rs.getLong("status"));
-	x_area = String.valueOf(rs.getLong("area"));
 	x_gold = String.valueOf(rs.getDouble("gold"));
-	if (rs.getString("xml_dialog") != null){
-		x_xml_dialog = rs.getString("xml_dialog");
+	if (rs.getString("dialog") != null){
+		x_dialog = rs.getString("dialog");
 	}else{
-		x_xml_dialog = "";
+		x_dialog = "";
 	}
-	if (rs.getString("xml_items") != null){
-		x_xml_items = rs.getString("xml_items");
+	if (rs.getString("items") != null){
+		x_items = rs.getString("items");
 	}else{
-		x_xml_items = "";
+		x_items = "";
 	}
-	if (rs.getString("xml_behave") != null){
-		x_xml_behave = rs.getString("xml_behave");
+	if (rs.getString("behave") != null){
+		x_behave = rs.getString("behave");
 	}else{
-		x_xml_behave = "";
+		x_behave = "";
 	}
 	x_ismonster = String.valueOf(rs.getLong("ismonster"));
 	x_nattack = String.valueOf(rs.getLong("nattack"));
@@ -131,11 +128,6 @@ try{
 	}else if (a.equals("A")) { // Add
 
 		// Get fields from form
-		if (request.getParameter("x_id") != null){
-			x_id = (String) request.getParameter("x_id");
-		}else{
-			x_id = "";
-		}
 		if (request.getParameter("x_name") != null){
 			x_name = (String) request.getParameter("x_name");
 		}else{
@@ -206,30 +198,25 @@ try{
 		}else{
 			x_status = "";
 		}
-		if (request.getParameter("x_area") != null){
-			x_area = (String) request.getParameter("x_area");
-		}else{
-			x_area = "";
-		}
 		if (request.getParameter("x_gold") != null){
 			x_gold = (String) request.getParameter("x_gold");
 		}else{
 			x_gold = "";
 		}
-		if (request.getParameter("x_xml_dialog") != null){
-			x_xml_dialog = (String) request.getParameter("x_xml_dialog");
+		if (request.getParameter("x_dialog") != null){
+			x_dialog = (String) request.getParameter("x_dialog");
 		}else{
-			x_xml_dialog = "";
+			x_dialog = "";
 		}
-		if (request.getParameter("x_xml_items") != null){
-			x_xml_items = (String) request.getParameter("x_xml_items");
+		if (request.getParameter("x_items") != null){
+			x_items = (String) request.getParameter("x_items");
 		}else{
-			x_xml_items = "";
+			x_items = "";
 		}
-		if (request.getParameter("x_xml_behave") != null){
-			x_xml_behave = (String) request.getParameter("x_xml_behave");
+		if (request.getParameter("x_behave") != null){
+			x_behave = (String) request.getParameter("x_behave");
 		}else{
-			x_xml_behave = "";
+			x_behave = "";
 		}
 		if (request.getParameter("x_ismonster") != null){
 			x_ismonster = (String) request.getParameter("x_ismonster");
@@ -251,27 +238,6 @@ try{
 		String strsql = "SELECT * FROM `NPC` WHERE 0 = 1";
 		rs = stmt.executeQuery(strsql);
 		rs.moveToInsertRow();
-
-		// Field id
-		tmpfld = ((String) x_id).trim();
-		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
-		if (tmpfld == null) {
-			rs.updateNull("id");
-		} else {
-		String srchfld = tmpfld;
-			srchfld = srchfld.replaceAll("'","\\\\'");
-			strsql = "SELECT * FROM `NPC` WHERE `id` = " + srchfld;
-			Statement stmtchk = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			ResultSet rschk = stmtchk.executeQuery(strsql);
-			if (rschk.next()) {
-				out.print("Duplicate key for id, value = " + tmpfld + "<br>");
-				out.print("Press [Previous Page] key to continue!");
-				return;
-			}
-			rschk.close();
-			rschk = null;
-			rs.updateInt("id",Integer.parseInt(tmpfld));
-		}
 
 		// Field name
 		tmpfld = ((String) x_name);
@@ -405,15 +371,6 @@ try{
 			rs.updateInt("status",Integer.parseInt(tmpfld));
 		}
 
-		// Field area
-		tmpfld = ((String) x_area).trim();
-		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
-		if (tmpfld == null) {
-			rs.updateNull("area");
-		} else {
-			rs.updateInt("area",Integer.parseInt(tmpfld));
-		}
-
 		// Field gold
 		tmpfld = ((String) x_gold).trim();
 		if (!IsNumeric(tmpfld)) {tmpfld = "0";}
@@ -423,37 +380,37 @@ try{
 			rs.updateNull("gold");
 		}
 
-		// Field xml_dialog
-		tmpfld = ((String) x_xml_dialog);
+		// Field dialog
+		tmpfld = ((String) x_dialog);
 		if (tmpfld == null || tmpfld.trim().length() == 0) {
 			tmpfld = "";
 		}
 		if (tmpfld == null) {
-			rs.updateNull("xml_dialog");
+			rs.updateNull("dialog");
 		}else{
-			rs.updateString("xml_dialog", tmpfld);
+			rs.updateString("dialog", tmpfld);
 		}
 
-		// Field xml_items
-		tmpfld = ((String) x_xml_items);
+		// Field items
+		tmpfld = ((String) x_items);
 		if (tmpfld == null || tmpfld.trim().length() == 0) {
 			tmpfld = "";
 		}
 		if (tmpfld == null) {
-			rs.updateNull("xml_items");
+			rs.updateNull("items");
 		}else{
-			rs.updateString("xml_items", tmpfld);
+			rs.updateString("items", tmpfld);
 		}
 
-		// Field xml_behave
-		tmpfld = ((String) x_xml_behave);
+		// Field behave
+		tmpfld = ((String) x_behave);
 		if (tmpfld == null || tmpfld.trim().length() == 0) {
 			tmpfld = "";
 		}
 		if (tmpfld == null) {
-			rs.updateNull("xml_behave");
+			rs.updateNull("behave");
 		}else{
-			rs.updateString("xml_behave", tmpfld);
+			rs.updateString("behave", tmpfld);
 		}
 
 		// Field ismonster
@@ -506,14 +463,6 @@ try{
 <script language="JavaScript">
 <!-- start Javascript
 function  EW_checkMyForm(EW_this) {
-if (EW_this.x_id && !EW_hasValue(EW_this.x_id, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_id, "TEXT", "Incorrect integer - id"))
-                return false; 
-        }
-if (EW_this.x_id && !EW_checkinteger(EW_this.x_id.value)) {
-        if (!EW_onError(EW_this, EW_this.x_id, "TEXT", "Incorrect integer - id"))
-            return false; 
-        }
 if (EW_this.x_name && !EW_hasValue(EW_this.x_name, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_name, "TEXT", "Invalid Field - name"))
                 return false; 
@@ -614,14 +563,6 @@ if (EW_this.x_status && !EW_checkinteger(EW_this.x_status.value)) {
         if (!EW_onError(EW_this, EW_this.x_status, "TEXT", "Incorrect integer - status"))
             return false; 
         }
-if (EW_this.x_area && !EW_hasValue(EW_this.x_area, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_area, "TEXT", "Incorrect integer - area"))
-                return false; 
-        }
-if (EW_this.x_area && !EW_checkinteger(EW_this.x_area.value)) {
-        if (!EW_onError(EW_this, EW_this.x_area, "TEXT", "Incorrect integer - area"))
-            return false; 
-        }
 if (EW_this.x_gold && !EW_hasValue(EW_this.x_gold, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_gold, "TEXT", "Incorrect floating point number - gold"))
                 return false; 
@@ -630,16 +571,16 @@ if (EW_this.x_gold && !EW_checknumber(EW_this.x_gold.value)) {
         if (!EW_onError(EW_this, EW_this.x_gold, "TEXT", "Incorrect floating point number - gold"))
             return false; 
         }
-if (EW_this.x_xml_dialog && !EW_hasValue(EW_this.x_xml_dialog, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_xml_dialog, "TEXT", "Invalid Field - xml dialog"))
+if (EW_this.x_dialog && !EW_hasValue(EW_this.x_dialog, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_dialog, "TEXT", "Invalid Field - dialog"))
                 return false; 
         }
-if (EW_this.x_xml_items && !EW_hasValue(EW_this.x_xml_items, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_xml_items, "TEXT", "Invalid Field - xml items"))
+if (EW_this.x_items && !EW_hasValue(EW_this.x_items, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_items, "TEXT", "Invalid Field - items"))
                 return false; 
         }
-if (EW_this.x_xml_behave && !EW_hasValue(EW_this.x_xml_behave, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_xml_behave, "TEXT", "Invalid Field - xml behave"))
+if (EW_this.x_behave && !EW_hasValue(EW_this.x_behave, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_behave, "TEXT", "Invalid Field - behave"))
                 return false; 
         }
 if (EW_this.x_ismonster && !EW_hasValue(EW_this.x_ismonster, "TEXT" )) {
@@ -671,10 +612,6 @@ return true;
 <p>
 <input type="hidden" name="a" value="A">
 <table class="ewTable">
-	<tr>
-		<td class="ewTableHeader">id&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_id" size="30" value="<%= HTMLEncode((String)x_id) %>">&nbsp;</td>
-	</tr>
 	<tr>
 		<td class="ewTableHeader">name&nbsp;</td>
 		<td class="ewTableAltRow"><% if (x_name== null || ((String)x_name).equals("")) {x_name = "Nobody"; } // set default value %><input type="text" name="x_name" size="30" maxlength="255" value="<%= HTMLEncode((String)x_name) %>">&nbsp;</td>
@@ -732,24 +669,20 @@ return true;
 		<td class="ewTableAltRow"><% if (x_status== null || ((String)x_status).equals("")) {x_status = "0"; } // set default value %><input type="text" name="x_status" size="30" value="<%= HTMLEncode((String)x_status) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">area&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_area" size="30" value="<%= HTMLEncode((String)x_area) %>">&nbsp;</td>
-	</tr>
-	<tr>
 		<td class="ewTableHeader">gold&nbsp;</td>
 		<td class="ewTableAltRow"><input type="text" name="x_gold" size="30" value="<%= HTMLEncode((String)x_gold) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">xml dialog&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_xml_dialog== null || ((String)x_xml_dialog).equals("")) {x_xml_dialog = "basedialog.xml"; } // set default value %><input type="text" name="x_xml_dialog" size="30" maxlength="255" value="<%= HTMLEncode((String)x_xml_dialog) %>">&nbsp;</td>
+		<td class="ewTableHeader">dialog&nbsp;</td>
+		<td class="ewTableAltRow"><% if (x_dialog== null || ((String)x_dialog).equals("")) {x_dialog = "basedialog"; } // set default value %><input type="text" name="x_dialog" size="30" maxlength="255" value="<%= HTMLEncode((String)x_dialog) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">xml items&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_xml_items== null || ((String)x_xml_items).equals("")) {x_xml_items = "baseitem.xml"; } // set default value %><input type="text" name="x_xml_items" size="30" maxlength="255" value="<%= HTMLEncode((String)x_xml_items) %>">&nbsp;</td>
+		<td class="ewTableHeader">items&nbsp;</td>
+		<td class="ewTableAltRow"><% if (x_items== null || ((String)x_items).equals("")) {x_items = "baseitem"; } // set default value %><input type="text" name="x_items" size="30" maxlength="255" value="<%= HTMLEncode((String)x_items) %>">&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">xml behave&nbsp;</td>
-		<td class="ewTableAltRow"><% if (x_xml_behave== null || ((String)x_xml_behave).equals("")) {x_xml_behave = "baseact.xml"; } // set default value %><input type="text" name="x_xml_behave" size="30" maxlength="255" value="<%= HTMLEncode((String)x_xml_behave) %>">&nbsp;</td>
+		<td class="ewTableHeader">behave&nbsp;</td>
+		<td class="ewTableAltRow"><% if (x_behave== null || ((String)x_behave).equals("")) {x_behave = "baseact"; } // set default value %><input type="text" name="x_behave" size="30" maxlength="255" value="<%= HTMLEncode((String)x_behave) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">ismonster&nbsp;</td>

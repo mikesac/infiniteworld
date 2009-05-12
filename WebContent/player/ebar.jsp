@@ -60,7 +60,7 @@
 				<td>
 				<div class="iconmedium"	style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_stat.png);">
 				<div class="tile"><a
-					href="javascript:alert('TODO')" ></a></div>
+					href="<%=request.getContextPath()%><%=PagesCst.PAGE_STATUS%>" ></a></div>
 				</div>
 				</td>
 				<td>

@@ -36,7 +36,7 @@
 		<th>Type</th>
 		<tr>
 	<%
-	ArrayList<Item> items= (ArrayList<Item>)Manager.listByQery("from org.infinite.db.dao.Item");
+	ArrayList<Item> items= (ArrayList<Item>)Manager.listByQuery("from org.infinite.db.dao.Item");
 	for(int i=0;i<items.size();i++){
 		%><tr  class="<%=(i%2==0)?"ewTableAltRow":"ewTableRow" %>">
 		<td><a href="../itemedit.jsp?key=<%= items.get(i).getId() %>">Edit</a></td>

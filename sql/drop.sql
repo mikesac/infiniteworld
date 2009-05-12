@@ -1,4 +1,5 @@
-DROP TABLE NpcOwnItem;
+DROP TABLE PlayerOwnQuest;
+DROP TABLE Quest;
 DROP TABLE PlayerKnowSpell;
 DROP TABLE PlayerOwnItem;
 DROP TABLE SpellAffectPlayer;

@@ -211,6 +211,62 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 	<tr><td>&nbsp;</td><td><span class="jspmaker"><input type="radio" name="psearchtype" value="" checked>Exact phrase&nbsp;&nbsp;<input type="radio" name="psearchtype" value="AND">All words&nbsp;&nbsp;<input type="radio" name="psearchtype" value="OR">Any word</span></td></tr>
 </table>
 </form>
+<table border="0" cellspacing="0" cellpadding="10"><tr><td>
+<%
+boolean rsEof = false;
+if (totalRecs > 0) {
+	rsEof = (totalRecs < (startRec + displayRecs));
+	int PrevStart = startRec - displayRecs;
+	if (PrevStart < 1) { PrevStart = 1;}
+	int NextStart = startRec + displayRecs;
+	if (NextStart > totalRecs) { NextStart = startRec;}
+	int LastStart = ((totalRecs-1)/displayRecs)*displayRecs+1;
+	%>
+<form>
+	<table border="0" cellspacing="0" cellpadding="0"><tr><td><span class="jspmaker">Page</span>&nbsp;</td>
+<!--first page button-->
+	<% if (startRec==1) { %>
+	<td><img src="images/firstdisab.gif" alt="First" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="arealist.jsp?start=1"><img src="images/first.gif" alt="First" width="20" height="15" border="0"></a></td>
+	<% } %>
+<!--previous page button-->
+	<% if (PrevStart == startRec) { %>
+	<td><img src="images/prevdisab.gif" alt="Previous" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="arealist.jsp?start=<%=PrevStart%>"><img src="images/prev.gif" alt="Previous" width="20" height="15" border="0"></a></td>
+	<% } %>
+<!--current page number-->
+	<td><input type="text" name="pageno" value="<%=(startRec-1)/displayRecs+1%>" size="4"></td>
+<!--next page button-->
+	<% if (NextStart == startRec) { %>
+	<td><img src="images/nextdisab.gif" alt="Next" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="arealist.jsp?start=<%=NextStart%>"><img src="images/next.gif" alt="Next" width="20" height="15" border="0"></a></td>
+	<% } %>
+<!--last page button-->
+	<% if (LastStart == startRec) { %>
+	<td><img src="images/lastdisab.gif" alt="Last" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="arealist.jsp?start=<%=LastStart%>"><img src="images/last.gif" alt="Last" width="20" height="15" border="0"></a></td>
+	<% } %>
+	<td><a href="areaadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a></td>
+	<td><span class="jspmaker">&nbsp;of <%=(totalRecs-1)/displayRecs+1%></span></td>
+	</td></tr></table>
+</form>
+	<% if (startRec > totalRecs) { startRec = totalRecs;}
+	stopRec = startRec + displayRecs - 1;
+	recCount = totalRecs - 1;
+	if (rsEof) { recCount = totalRecs;}
+	if (stopRec > recCount) { stopRec = recCount;} %>
+	<span class="jspmaker">Records <%= startRec %> to <%= stopRec %> of <%= totalRecs %></span>
+<% }else{ %>
+	<span class="jspmaker">No records found</span>
+<p>
+<a href="areaadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a>
+</p>
+<% } %>
+</td></tr></table>
 <form method="post">
 <table class="ewTable">
 	<tr class="ewTableHeader">
@@ -373,60 +429,4 @@ conn = null;
 	out.println(ex.toString());
 }
 %>
-<table border="0" cellspacing="0" cellpadding="10"><tr><td>
-<%
-boolean rsEof = false;
-if (totalRecs > 0) {
-	rsEof = (totalRecs < (startRec + displayRecs));
-	int PrevStart = startRec - displayRecs;
-	if (PrevStart < 1) { PrevStart = 1;}
-	int NextStart = startRec + displayRecs;
-	if (NextStart > totalRecs) { NextStart = startRec;}
-	int LastStart = ((totalRecs-1)/displayRecs)*displayRecs+1;
-	%>
-<form>
-	<table border="0" cellspacing="0" cellpadding="0"><tr><td><span class="jspmaker">Page</span>&nbsp;</td>
-<!--first page button-->
-	<% if (startRec==1) { %>
-	<td><img src="images/firstdisab.gif" alt="First" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="arealist.jsp?start=1"><img src="images/first.gif" alt="First" width="20" height="15" border="0"></a></td>
-	<% } %>
-<!--previous page button-->
-	<% if (PrevStart == startRec) { %>
-	<td><img src="images/prevdisab.gif" alt="Previous" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="arealist.jsp?start=<%=PrevStart%>"><img src="images/prev.gif" alt="Previous" width="20" height="15" border="0"></a></td>
-	<% } %>
-<!--current page number-->
-	<td><input type="text" name="pageno" value="<%=(startRec-1)/displayRecs+1%>" size="4"></td>
-<!--next page button-->
-	<% if (NextStart == startRec) { %>
-	<td><img src="images/nextdisab.gif" alt="Next" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="arealist.jsp?start=<%=NextStart%>"><img src="images/next.gif" alt="Next" width="20" height="15" border="0"></a></td>
-	<% } %>
-<!--last page button-->
-	<% if (LastStart == startRec) { %>
-	<td><img src="images/lastdisab.gif" alt="Last" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="arealist.jsp?start=<%=LastStart%>"><img src="images/last.gif" alt="Last" width="20" height="15" border="0"></a></td>
-	<% } %>
-	<td><a href="areaadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a></td>
-	<td><span class="jspmaker">&nbsp;of <%=(totalRecs-1)/displayRecs+1%></span></td>
-	</td></tr></table>
-</form>
-	<% if (startRec > totalRecs) { startRec = totalRecs;}
-	stopRec = startRec + displayRecs - 1;
-	recCount = totalRecs - 1;
-	if (rsEof) { recCount = totalRecs;}
-	if (stopRec > recCount) { stopRec = recCount;} %>
-	<span class="jspmaker">Records <%= startRec %> to <%= stopRec %> of <%= totalRecs %></span>
-<% }else{ %>
-	<span class="jspmaker">No records found</span>
-<p>
-<a href="areaadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a>
-</p>
-<% } %>
-</td></tr></table>
 <%@ include file="footer.jsp" %>

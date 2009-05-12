@@ -44,9 +44,9 @@ if (pSearch != null && pSearch.length() > 0) {
 			b_search = b_search + "`name` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`image` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`description` LIKE '%" + kw + "%' OR ";
-			b_search = b_search + "`xml_dialog` LIKE '%" + kw + "%' OR ";
-			b_search = b_search + "`xml_items` LIKE '%" + kw + "%' OR ";
-			b_search = b_search + "`xml_behave` LIKE '%" + kw + "%' OR ";
+			b_search = b_search + "`dialog` LIKE '%" + kw + "%' OR ";
+			b_search = b_search + "`items` LIKE '%" + kw + "%' OR ";
+			b_search = b_search + "`behave` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`attack` LIKE '%" + kw + "%' OR ";
 			if (b_search.substring(b_search.length()-4,b_search.length()).equals(" OR ")) { b_search = b_search.substring(0,b_search.length()-4);}
 			b_search = b_search + ") " + pSearchType + " ";
@@ -55,9 +55,9 @@ if (pSearch != null && pSearch.length() > 0) {
 		b_search = b_search + "`name` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`image` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`description` LIKE '%" + pSearch + "%' OR ";
-		b_search = b_search + "`xml_dialog` LIKE '%" + pSearch + "%' OR ";
-		b_search = b_search + "`xml_items` LIKE '%" + pSearch + "%' OR ";
-		b_search = b_search + "`xml_behave` LIKE '%" + pSearch + "%' OR ";
+		b_search = b_search + "`dialog` LIKE '%" + pSearch + "%' OR ";
+		b_search = b_search + "`items` LIKE '%" + pSearch + "%' OR ";
+		b_search = b_search + "`behave` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`attack` LIKE '%" + pSearch + "%' OR ";
 	}
 }
@@ -222,6 +222,62 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 	<tr><td>&nbsp;</td><td><span class="jspmaker"><input type="radio" name="psearchtype" value="" checked>Exact phrase&nbsp;&nbsp;<input type="radio" name="psearchtype" value="AND">All words&nbsp;&nbsp;<input type="radio" name="psearchtype" value="OR">Any word</span></td></tr>
 </table>
 </form>
+<table border="0" cellspacing="0" cellpadding="10"><tr><td>
+<%
+boolean rsEof = false;
+if (totalRecs > 0) {
+	rsEof = (totalRecs < (startRec + displayRecs));
+	int PrevStart = startRec - displayRecs;
+	if (PrevStart < 1) { PrevStart = 1;}
+	int NextStart = startRec + displayRecs;
+	if (NextStart > totalRecs) { NextStart = startRec;}
+	int LastStart = ((totalRecs-1)/displayRecs)*displayRecs+1;
+	%>
+<form>
+	<table border="0" cellspacing="0" cellpadding="0"><tr><td><span class="jspmaker">Page</span>&nbsp;</td>
+<!--first page button-->
+	<% if (startRec==1) { %>
+	<td><img src="images/firstdisab.gif" alt="First" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="npclist.jsp?start=1"><img src="images/first.gif" alt="First" width="20" height="15" border="0"></a></td>
+	<% } %>
+<!--previous page button-->
+	<% if (PrevStart == startRec) { %>
+	<td><img src="images/prevdisab.gif" alt="Previous" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="npclist.jsp?start=<%=PrevStart%>"><img src="images/prev.gif" alt="Previous" width="20" height="15" border="0"></a></td>
+	<% } %>
+<!--current page number-->
+	<td><input type="text" name="pageno" value="<%=(startRec-1)/displayRecs+1%>" size="4"></td>
+<!--next page button-->
+	<% if (NextStart == startRec) { %>
+	<td><img src="images/nextdisab.gif" alt="Next" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="npclist.jsp?start=<%=NextStart%>"><img src="images/next.gif" alt="Next" width="20" height="15" border="0"></a></td>
+	<% } %>
+<!--last page button-->
+	<% if (LastStart == startRec) { %>
+	<td><img src="images/lastdisab.gif" alt="Last" width="20" height="15" border="0"></td>
+	<% }else{ %>
+	<td><a href="npclist.jsp?start=<%=LastStart%>"><img src="images/last.gif" alt="Last" width="20" height="15" border="0"></a></td>
+	<% } %>
+	<td><a href="npcadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a></td>
+	<td><span class="jspmaker">&nbsp;of <%=(totalRecs-1)/displayRecs+1%></span></td>
+	</td></tr></table>
+</form>
+	<% if (startRec > totalRecs) { startRec = totalRecs;}
+	stopRec = startRec + displayRecs - 1;
+	recCount = totalRecs - 1;
+	if (rsEof) { recCount = totalRecs;}
+	if (stopRec > recCount) { stopRec = recCount;} %>
+	<span class="jspmaker">Records <%= startRec %> to <%= stopRec %> of <%= totalRecs %></span>
+<% }else{ %>
+	<span class="jspmaker">No records found</span>
+<p>
+<a href="npcadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a>
+</p>
+<% } %>
+</td></tr></table>
 <form method="post">
 <table class="ewTable">
 	<tr class="ewTableHeader">
@@ -272,19 +328,16 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 <a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("status","UTF-8") %>">status&nbsp;<% if (OrderBy != null && OrderBy.equals("status")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
-<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("area","UTF-8") %>">area&nbsp;<% if (OrderBy != null && OrderBy.equals("area")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
 <a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("gold","UTF-8") %>">gold&nbsp;<% if (OrderBy != null && OrderBy.equals("gold")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
-<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("xml_dialog","UTF-8") %>">xml dialog&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("xml_dialog")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("dialog","UTF-8") %>">dialog&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("dialog")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
-<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("xml_items","UTF-8") %>">xml items&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("xml_items")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("items","UTF-8") %>">items&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("items")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
-<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("xml_behave","UTF-8") %>">xml behave&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("xml_behave")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("behave","UTF-8") %>">behave&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("behave")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
 <a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("ismonster","UTF-8") %>">ismonster&nbsp;<% if (OrderBy != null && OrderBy.equals("ismonster")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
@@ -346,11 +399,10 @@ while (rs.next() && recCount < stopRec) {
 	String x_level = "";
 	String x_px = "";
 	String x_status = "";
-	String x_area = "";
 	String x_gold = "";
-	String x_xml_dialog = "";
-	String x_xml_items = "";
-	String x_xml_behave = "";
+	String x_dialog = "";
+	String x_items = "";
+	String x_behave = "";
 	String x_ismonster = "";
 	String x_nattack = "";
 	String x_attack = "";
@@ -417,31 +469,28 @@ while (rs.next() && recCount < stopRec) {
 	// status
 	x_status = String.valueOf(rs.getLong("status"));
 
-	// area
-	x_area = String.valueOf(rs.getLong("area"));
-
 	// gold
 	x_gold = String.valueOf(rs.getDouble("gold"));
 
-	// xml_dialog
-	if (rs.getString("xml_dialog") != null){
-		x_xml_dialog = rs.getString("xml_dialog");
+	// dialog
+	if (rs.getString("dialog") != null){
+		x_dialog = rs.getString("dialog");
 	}else{
-		x_xml_dialog = "";
+		x_dialog = "";
 	}
 
-	// xml_items
-	if (rs.getString("xml_items") != null){
-		x_xml_items = rs.getString("xml_items");
+	// items
+	if (rs.getString("items") != null){
+		x_items = rs.getString("items");
 	}else{
-		x_xml_items = "";
+		x_items = "";
 	}
 
-	// xml_behave
-	if (rs.getString("xml_behave") != null){
-		x_xml_behave = rs.getString("xml_behave");
+	// behave
+	if (rs.getString("behave") != null){
+		x_behave = rs.getString("behave");
 	}else{
-		x_xml_behave = "";
+		x_behave = "";
 	}
 
 	// ismonster
@@ -491,11 +540,10 @@ if (key != null && key.length() > 0) {
 		<td><% out.print(x_level); %>&nbsp;</td>
 		<td><% out.print(x_px); %>&nbsp;</td>
 		<td><% out.print(x_status); %>&nbsp;</td>
-		<td><% out.print(x_area); %>&nbsp;</td>
 		<td><% out.print(x_gold); %>&nbsp;</td>
-		<td><% out.print(x_xml_dialog); %>&nbsp;</td>
-		<td><% out.print(x_xml_items); %>&nbsp;</td>
-		<td><% out.print(x_xml_behave); %>&nbsp;</td>
+		<td><% out.print(x_dialog); %>&nbsp;</td>
+		<td><% out.print(x_items); %>&nbsp;</td>
+		<td><% out.print(x_behave); %>&nbsp;</td>
 		<td><% out.print(x_ismonster); %>&nbsp;</td>
 		<td><% out.print(x_nattack); %>&nbsp;</td>
 		<td><% out.print(x_attack); %>&nbsp;</td>
@@ -524,60 +572,4 @@ conn = null;
 	out.println(ex.toString());
 }
 %>
-<table border="0" cellspacing="0" cellpadding="10"><tr><td>
-<%
-boolean rsEof = false;
-if (totalRecs > 0) {
-	rsEof = (totalRecs < (startRec + displayRecs));
-	int PrevStart = startRec - displayRecs;
-	if (PrevStart < 1) { PrevStart = 1;}
-	int NextStart = startRec + displayRecs;
-	if (NextStart > totalRecs) { NextStart = startRec;}
-	int LastStart = ((totalRecs-1)/displayRecs)*displayRecs+1;
-	%>
-<form>
-	<table border="0" cellspacing="0" cellpadding="0"><tr><td><span class="jspmaker">Page</span>&nbsp;</td>
-<!--first page button-->
-	<% if (startRec==1) { %>
-	<td><img src="images/firstdisab.gif" alt="First" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="npclist.jsp?start=1"><img src="images/first.gif" alt="First" width="20" height="15" border="0"></a></td>
-	<% } %>
-<!--previous page button-->
-	<% if (PrevStart == startRec) { %>
-	<td><img src="images/prevdisab.gif" alt="Previous" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="npclist.jsp?start=<%=PrevStart%>"><img src="images/prev.gif" alt="Previous" width="20" height="15" border="0"></a></td>
-	<% } %>
-<!--current page number-->
-	<td><input type="text" name="pageno" value="<%=(startRec-1)/displayRecs+1%>" size="4"></td>
-<!--next page button-->
-	<% if (NextStart == startRec) { %>
-	<td><img src="images/nextdisab.gif" alt="Next" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="npclist.jsp?start=<%=NextStart%>"><img src="images/next.gif" alt="Next" width="20" height="15" border="0"></a></td>
-	<% } %>
-<!--last page button-->
-	<% if (LastStart == startRec) { %>
-	<td><img src="images/lastdisab.gif" alt="Last" width="20" height="15" border="0"></td>
-	<% }else{ %>
-	<td><a href="npclist.jsp?start=<%=LastStart%>"><img src="images/last.gif" alt="Last" width="20" height="15" border="0"></a></td>
-	<% } %>
-	<td><a href="npcadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a></td>
-	<td><span class="jspmaker">&nbsp;of <%=(totalRecs-1)/displayRecs+1%></span></td>
-	</td></tr></table>
-</form>
-	<% if (startRec > totalRecs) { startRec = totalRecs;}
-	stopRec = startRec + displayRecs - 1;
-	recCount = totalRecs - 1;
-	if (rsEof) { recCount = totalRecs;}
-	if (stopRec > recCount) { stopRec = recCount;} %>
-	<span class="jspmaker">Records <%= startRec %> to <%= stopRec %> of <%= totalRecs %></span>
-<% }else{ %>
-	<span class="jspmaker">No records found</span>
-<p>
-<a href="npcadd.jsp"><img src="images/addnew.gif" alt="Add new" width="20" height="15" border="0"></a>
-</p>
-<% } %>
-</td></tr></table>
 <%@ include file="footer.jsp" %>

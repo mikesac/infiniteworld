@@ -43,14 +43,20 @@ if (pSearch != null && pSearch.length() > 0) {
 			b_search = b_search + "(";
 			b_search = b_search + "`name` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`icon` LIKE '%" + kw + "%' OR ";
+			b_search = b_search + "`arealock` LIKE '%" + kw + "%' OR ";
+			b_search = b_search + "`questlock` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`url` LIKE '%" + kw + "%' OR ";
+			b_search = b_search + "`npcs` LIKE '%" + kw + "%' OR ";
 			if (b_search.substring(b_search.length()-4,b_search.length()).equals(" OR ")) { b_search = b_search.substring(0,b_search.length()-4);}
 			b_search = b_search + ") " + pSearchType + " ";
 		}
 	}else{
 		b_search = b_search + "`name` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`icon` LIKE '%" + pSearch + "%' OR ";
+		b_search = b_search + "`arealock` LIKE '%" + pSearch + "%' OR ";
+		b_search = b_search + "`questlock` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`url` LIKE '%" + pSearch + "%' OR ";
+		b_search = b_search + "`npcs` LIKE '%" + pSearch + "%' OR ";
 	}
 }
 if (b_search.length() > 4 && b_search.substring(b_search.length()-4,b_search.length()).equals(" OR ")) {b_search = b_search.substring(0, b_search.length()-4);}
@@ -213,199 +219,6 @@ if (request.getParameter("start") != null && Integer.parseInt(request.getParamet
 	<tr><td>&nbsp;</td><td><span class="jspmaker"><input type="radio" name="psearchtype" value="" checked>Exact phrase&nbsp;&nbsp;<input type="radio" name="psearchtype" value="AND">All words&nbsp;&nbsp;<input type="radio" name="psearchtype" value="OR">Any word</span></td></tr>
 </table>
 </form>
-<form method="post">
-<table class="ewTable">
-	<tr class="ewTableHeader">
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("id","UTF-8") %>">id&nbsp;<% if (OrderBy != null && OrderBy.equals("id")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("name","UTF-8") %>">name&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("name")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("icon","UTF-8") %>">icon&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("icon")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("areaid","UTF-8") %>">areaid&nbsp;<% if (OrderBy != null && OrderBy.equals("areaid")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("ax","UTF-8") %>">ax&nbsp;<% if (OrderBy != null && OrderBy.equals("ax")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("ay","UTF-8") %>">ay&nbsp;<% if (OrderBy != null && OrderBy.equals("ay")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("x","UTF-8") %>">x&nbsp;<% if (OrderBy != null && OrderBy.equals("x")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("y","UTF-8") %>">y&nbsp;<% if (OrderBy != null && OrderBy.equals("y")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("lockid","UTF-8") %>">lockid&nbsp;<% if (OrderBy != null && OrderBy.equals("lockid")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("url","UTF-8") %>">url&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("url")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("direct","UTF-8") %>">direct&nbsp;<% if (OrderBy != null && OrderBy.equals("direct")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-</tr>
-<%
-
-// Avoid starting record > total records
-if (startRec > totalRecs) {
-	startRec = totalRecs;
-}
-
-// Set the last record to display
-stopRec = startRec + displayRecs - 1;
-
-// Move to first record directly for performance reason
-recCount = startRec - 1;
-if (rs.next()) {
-	rs.first();
-	rs.relative(startRec - 1);
-}
-long recActual = 0;
-if (startRec == 1)
-   rs.beforeFirst();
-else
-   rs.previous();
-while (rs.next() && recCount < stopRec) {
-	recCount++;
-	if (recCount >= startRec) {
-		recActual++;
-%>
-<%
-	String rowclass = "ewTableRow"; // Set row color
-%>
-<%
-	if (recCount%2 != 0) { // Display alternate color for rows
-		rowclass = "ewTableAltRow";
-	}
-%>
-<%
-	String x_id = "";
-	String x_name = "";
-	String x_icon = "";
-	String x_areaid = "";
-	String x_ax = "";
-	String x_ay = "";
-	String x_x = "";
-	String x_y = "";
-	String x_lockid = "";
-	String x_url = "";
-	String x_direct = "";
-
-	// Load Key for record
-	String key = "";
-	key = String.valueOf(rs.getLong("id"));
-
-	// id
-	x_id = String.valueOf(rs.getLong("id"));
-
-	// name
-	if (rs.getString("name") != null){
-		x_name = rs.getString("name");
-	}else{
-		x_name = "";
-	}
-
-	// icon
-	if (rs.getString("icon") != null){
-		x_icon = rs.getString("icon");
-	}else{
-		x_icon = "";
-	}
-
-	// areaid
-	x_areaid = String.valueOf(rs.getLong("areaid"));
-
-	// ax
-	x_ax = String.valueOf(rs.getLong("ax"));
-
-	// ay
-	x_ay = String.valueOf(rs.getLong("ay"));
-
-	// x
-	x_x = String.valueOf(rs.getLong("x"));
-
-	// y
-	x_y = String.valueOf(rs.getLong("y"));
-
-	// lockid
-	x_lockid = String.valueOf(rs.getLong("lockid"));
-
-	// url
-	if (rs.getString("url") != null){
-		x_url = rs.getString("url");
-	}else{
-		x_url = "";
-	}
-
-	// direct
-	x_direct = String.valueOf(rs.getLong("direct"));
-%>
-	<tr class="<%= rowclass %>">
-<td><span class="jspmaker"><a href="<% key =  rs.getString("id"); 
-if (key != null && key.length() > 0) { 
-	out.print("areaitemview.jsp?key=" + java.net.URLEncoder.encode(key,"UTF-8"));
-}else{
-	out.print("javascript:alert('Invalid Record! Key is null');");
-} %>">View</a></span></td>
-<td><span class="jspmaker"><a href="<% key =  rs.getString("id"); 
-if (key != null && key.length() > 0) { 
-	out.print("areaitemedit.jsp?key=" + java.net.URLEncoder.encode(key,"UTF-8"));
-}else{
-	out.print("javascript:alert('Invalid Record! Key is null');");
-} %>">Edit</a></span></td>
-<td><span class="jspmaker"><a href="<% key =  rs.getString("id"); 
-if (key != null && key.length() > 0) { 
-	out.print("areaitemadd.jsp?key=" + java.net.URLEncoder.encode(key,"UTF-8"));
-}else{
-	out.print("javascript:alert('Invalid Record! Key is null');");
-} %>">Copy</a></span></td>
-<td><span class="jspmaker"><input type="checkbox" name="key" value="<%=key %>" class="jspmaker">Delete</span></td>
-		<td><% out.print(x_id); %>&nbsp;</td>
-		<td><% out.print(x_name); %>&nbsp;</td>
-		<td><% out.print(x_icon); %>&nbsp;</td>
-		<td><% out.print(x_areaid); %>&nbsp;</td>
-		<td><% out.print(x_ax); %>&nbsp;</td>
-		<td><% out.print(x_ay); %>&nbsp;</td>
-		<td><% out.print(x_x); %>&nbsp;</td>
-		<td><% out.print(x_y); %>&nbsp;</td>
-		<td><% out.print(x_lockid); %>&nbsp;</td>
-		<td><% out.print(x_url); %>&nbsp;</td>
-		<td><% out.print(x_direct); %>&nbsp;</td>
-	</tr>
-<%
-
-//	}
-}
-}
-%>
-</table>
-<% if (recActual > 0) { %>
-<p><input type="button" name="btndelete" value="DELETE SELECTED" onClick="this.form.action='areaitemdelete.jsp';this.form.submit();"></p>
-<% } %>
-</form>
-<%
-
-// Close recordset and connection
-rs.close();
-rs = null;
-stmt.close();
-stmt = null;
-conn.close();
-conn = null;
-}catch(SQLException ex){
-	out.println(ex.toString());
-}
-%>
 <table border="0" cellspacing="0" cellpadding="10"><tr><td>
 <%
 boolean rsEof = false;
@@ -462,4 +275,257 @@ if (totalRecs > 0) {
 </p>
 <% } %>
 </td></tr></table>
+<form method="post">
+<table class="ewTable">
+	<tr class="ewTableHeader">
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("id","UTF-8") %>">id&nbsp;<% if (OrderBy != null && OrderBy.equals("id")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("name","UTF-8") %>">name&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("name")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("icon","UTF-8") %>">icon&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("icon")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("cost","UTF-8") %>">cost&nbsp;<% if (OrderBy != null && OrderBy.equals("cost")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("areaid","UTF-8") %>">areaid&nbsp;<% if (OrderBy != null && OrderBy.equals("areaid")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("areax","UTF-8") %>">areax&nbsp;<% if (OrderBy != null && OrderBy.equals("areax")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("areay","UTF-8") %>">areay&nbsp;<% if (OrderBy != null && OrderBy.equals("areay")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("x","UTF-8") %>">x&nbsp;<% if (OrderBy != null && OrderBy.equals("x")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("y","UTF-8") %>">y&nbsp;<% if (OrderBy != null && OrderBy.equals("y")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("arealock","UTF-8") %>">arealock&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("arealock")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("questlock","UTF-8") %>">questlock&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("questlock")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("url","UTF-8") %>">url&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("url")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("direct","UTF-8") %>">direct&nbsp;<% if (OrderBy != null && OrderBy.equals("direct")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("loop","UTF-8") %>">loop&nbsp;<% if (OrderBy != null && OrderBy.equals("loop")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("hidemode","UTF-8") %>">hidemode&nbsp;<% if (OrderBy != null && OrderBy.equals("hidemode")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("areaItemLevel","UTF-8") %>">area Item Level&nbsp;<% if (OrderBy != null && OrderBy.equals("areaItemLevel")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="areaitemlist.jsp?order=<%= java.net.URLEncoder.encode("npcs","UTF-8") %>">npcs&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("npcs")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("AreaItem_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("AreaItem_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+</tr>
+<%
+
+// Avoid starting record > total records
+if (startRec > totalRecs) {
+	startRec = totalRecs;
+}
+
+// Set the last record to display
+stopRec = startRec + displayRecs - 1;
+
+// Move to first record directly for performance reason
+recCount = startRec - 1;
+if (rs.next()) {
+	rs.first();
+	rs.relative(startRec - 1);
+}
+long recActual = 0;
+if (startRec == 1)
+   rs.beforeFirst();
+else
+   rs.previous();
+while (rs.next() && recCount < stopRec) {
+	recCount++;
+	if (recCount >= startRec) {
+		recActual++;
+%>
+<%
+	String rowclass = "ewTableRow"; // Set row color
+%>
+<%
+	if (recCount%2 != 0) { // Display alternate color for rows
+		rowclass = "ewTableAltRow";
+	}
+%>
+<%
+	String x_id = "";
+	String x_name = "";
+	String x_icon = "";
+	String x_cost = "";
+	String x_areaid = "";
+	String x_areax = "";
+	String x_areay = "";
+	String x_x = "";
+	String x_y = "";
+	String x_arealock = "";
+	String x_questlock = "";
+	String x_url = "";
+	String x_direct = "";
+	String x_loop = "";
+	String x_hidemode = "";
+	String x_areaItemLevel = "";
+	String x_npcs = "";
+
+	// Load Key for record
+	String key = "";
+	key = String.valueOf(rs.getLong("id"));
+
+	// id
+	x_id = String.valueOf(rs.getLong("id"));
+
+	// name
+	if (rs.getString("name") != null){
+		x_name = rs.getString("name");
+	}else{
+		x_name = "";
+	}
+
+	// icon
+	if (rs.getString("icon") != null){
+		x_icon = rs.getString("icon");
+	}else{
+		x_icon = "";
+	}
+
+	// cost
+	x_cost = String.valueOf(rs.getLong("cost"));
+
+	// areaid
+	x_areaid = String.valueOf(rs.getLong("areaid"));
+
+	// areax
+	x_areax = String.valueOf(rs.getLong("areax"));
+
+	// areay
+	x_areay = String.valueOf(rs.getLong("areay"));
+
+	// x
+	x_x = String.valueOf(rs.getLong("x"));
+
+	// y
+	x_y = String.valueOf(rs.getLong("y"));
+
+	// arealock
+	if (rs.getString("arealock") != null){
+		x_arealock = rs.getString("arealock");
+	}else{
+		x_arealock = "";
+	}
+
+	// questlock
+	if (rs.getString("questlock") != null){
+		x_questlock = rs.getString("questlock");
+	}else{
+		x_questlock = "";
+	}
+
+	// url
+	if (rs.getString("url") != null){
+		x_url = rs.getString("url");
+	}else{
+		x_url = "";
+	}
+
+	// direct
+	x_direct = String.valueOf(rs.getLong("direct"));
+
+	// loop
+	x_loop = String.valueOf(rs.getLong("loop"));
+
+	// hidemode
+	x_hidemode = String.valueOf(rs.getLong("hidemode"));
+
+	// areaItemLevel
+	x_areaItemLevel = String.valueOf(rs.getLong("areaItemLevel"));
+
+	// npcs
+	if (rs.getString("npcs") != null){
+		x_npcs = rs.getString("npcs");
+	}else{
+		x_npcs = "";
+	}
+%>
+	<tr class="<%= rowclass %>">
+<td><span class="jspmaker"><a href="<% key =  rs.getString("id"); 
+if (key != null && key.length() > 0) { 
+	out.print("areaitemview.jsp?key=" + java.net.URLEncoder.encode(key,"UTF-8"));
+}else{
+	out.print("javascript:alert('Invalid Record! Key is null');");
+} %>">View</a></span></td>
+<td><span class="jspmaker"><a href="<% key =  rs.getString("id"); 
+if (key != null && key.length() > 0) { 
+	out.print("areaitemedit.jsp?key=" + java.net.URLEncoder.encode(key,"UTF-8"));
+}else{
+	out.print("javascript:alert('Invalid Record! Key is null');");
+} %>">Edit</a></span></td>
+<td><span class="jspmaker"><a href="<% key =  rs.getString("id"); 
+if (key != null && key.length() > 0) { 
+	out.print("areaitemadd.jsp?key=" + java.net.URLEncoder.encode(key,"UTF-8"));
+}else{
+	out.print("javascript:alert('Invalid Record! Key is null');");
+} %>">Copy</a></span></td>
+<td><span class="jspmaker"><input type="checkbox" name="key" value="<%=key %>" class="jspmaker">Delete</span></td>
+		<td><% out.print(x_id); %>&nbsp;</td>
+		<td><% out.print(x_name); %>&nbsp;</td>
+		<td><% out.print(x_icon); %>&nbsp;</td>
+		<td><% out.print(x_cost); %>&nbsp;</td>
+		<td><% out.print(x_areaid); %>&nbsp;</td>
+		<td><% out.print(x_areax); %>&nbsp;</td>
+		<td><% out.print(x_areay); %>&nbsp;</td>
+		<td><% out.print(x_x); %>&nbsp;</td>
+		<td><% out.print(x_y); %>&nbsp;</td>
+		<td><% out.print(x_arealock); %>&nbsp;</td>
+		<td><% out.print(x_questlock); %>&nbsp;</td>
+		<td><% out.print(x_url); %>&nbsp;</td>
+		<td><% out.print(x_direct); %>&nbsp;</td>
+		<td><% out.print(x_loop); %>&nbsp;</td>
+		<td><% out.print(x_hidemode); %>&nbsp;</td>
+		<td><% out.print(x_areaItemLevel); %>&nbsp;</td>
+		<td><% out.print(x_npcs); %>&nbsp;</td>
+	</tr>
+<%
+
+//	}
+}
+}
+%>
+</table>
+<% if (recActual > 0) { %>
+<p><input type="button" name="btndelete" value="DELETE SELECTED" onClick="this.form.action='areaitemdelete.jsp';this.form.submit();"></p>
+<% } %>
+</form>
+<%
+
+// Close recordset and connection
+rs.close();
+rs = null;
+stmt.close();
+stmt = null;
+conn.close();
+conn = null;
+}catch(SQLException ex){
+	out.println(ex.toString());
+}
+%>
 <%@ include file="footer.jsp" %>

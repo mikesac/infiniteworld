@@ -35,7 +35,7 @@
 		<th>Atk</th>
 		<tr>
 	<%
-	ArrayList<Npc> items= (ArrayList<Npc>)Manager.listByQery("from org.infinite.db.dao.Npc");
+	ArrayList<Npc> items= (ArrayList<Npc>)Manager.listByQuery("from org.infinite.db.dao.Npc");
 	for(int i=0;i<items.size();i++){
 		%><tr  class="<%=(i%2==0)?"ewTableAltRow":"ewTableRow" %>">
 		<td><a href="../itemedit.jsp?key=<%= items.get(i).getId() %>">Edit</a></td>

@@ -18,6 +18,7 @@ public class PagesCst {
 	public static final String PAGE_EQUIP = "/player/equip.jsp";
 	public static final String PAGE_SPELL = "/player/spell.jsp";
 	public static final String PAGE_SPELLBOOK = "/player/spellbook.jsp";
+	public static final String PAGE_STATUS = "/player/status.jsp";
 	public static final String PAGE_REGISTER = "/login/register.jsp";
 	public static final String PAGE_BATTLEPLAN= "/player/battleplan.jsp";
 	public static final String PAGE_NPCDIALOG= "/player/npcdialog.jsp";

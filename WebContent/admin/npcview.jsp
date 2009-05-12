@@ -37,11 +37,10 @@ String x_base_pc = "";
 String x_level = "";
 String x_px = "";
 String x_status = "";
-String x_area = "";
 String x_gold = "";
-String x_xml_dialog = "";
-String x_xml_items = "";
-String x_xml_behave = "";
+String x_dialog = "";
+String x_items = "";
+String x_behave = "";
 String x_ismonster = "";
 String x_nattack = "";
 String x_attack = "";
@@ -121,31 +120,28 @@ try{
 		// status
 		x_status = String.valueOf(rs.getLong("status"));
 
-		// area
-		x_area = String.valueOf(rs.getLong("area"));
-
 		// gold
 		x_gold = String.valueOf(rs.getDouble("gold"));
 
-		// xml_dialog
-		if (rs.getString("xml_dialog") != null){
-			x_xml_dialog = rs.getString("xml_dialog");
+		// dialog
+		if (rs.getString("dialog") != null){
+			x_dialog = rs.getString("dialog");
 		}else{
-			x_xml_dialog = "";
+			x_dialog = "";
 		}
 
-		// xml_items
-		if (rs.getString("xml_items") != null){
-			x_xml_items = rs.getString("xml_items");
+		// items
+		if (rs.getString("items") != null){
+			x_items = rs.getString("items");
 		}else{
-			x_xml_items = "";
+			x_items = "";
 		}
 
-		// xml_behave
-		if (rs.getString("xml_behave") != null){
-			x_xml_behave = rs.getString("xml_behave");
+		// behave
+		if (rs.getString("behave") != null){
+			x_behave = rs.getString("behave");
 		}else{
-			x_xml_behave = "";
+			x_behave = "";
 		}
 
 		// ismonster
@@ -228,24 +224,20 @@ try{
 		<td class="ewTableAltRow"><% out.print(x_status); %>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">area&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_area); %>&nbsp;</td>
-	</tr>
-	<tr>
 		<td class="ewTableHeader">gold&nbsp;</td>
 		<td class="ewTableAltRow"><% out.print(x_gold); %>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">xml dialog&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_xml_dialog); %>&nbsp;</td>
+		<td class="ewTableHeader">dialog&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_dialog); %>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">xml items&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_xml_items); %>&nbsp;</td>
+		<td class="ewTableHeader">items&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_items); %>&nbsp;</td>
 	</tr>
 	<tr>
-		<td class="ewTableHeader">xml behave&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_xml_behave); %>&nbsp;</td>
+		<td class="ewTableHeader">behave&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_behave); %>&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">ismonster&nbsp;</td>

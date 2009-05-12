@@ -38,7 +38,7 @@
 		<th>Duration</th>
 		<tr>
 	<%
-	ArrayList<Spell> items= (ArrayList<Spell>)Manager.listByQery("from org.infinite.db.dao.Spell");
+	ArrayList<Spell> items= (ArrayList<Spell>)Manager.listByQuery("from org.infinite.db.dao.Spell");
 	for(int i=0;i<items.size();i++){
 		%><tr  class="<%=(i%2==0)?"ewTableAltRow":"ewTableRow" %>">
 		<td><a href="../itemedit.jsp?key=<%= items.get(i).getId() %>">Edit</a></td>

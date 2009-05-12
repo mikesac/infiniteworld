@@ -76,14 +76,20 @@ try{
 		<td>id&nbsp;</td>
 		<td>name&nbsp;</td>
 		<td>icon&nbsp;</td>
+		<td>cost&nbsp;</td>
 		<td>areaid&nbsp;</td>
-		<td>ax&nbsp;</td>
-		<td>ay&nbsp;</td>
+		<td>areax&nbsp;</td>
+		<td>areay&nbsp;</td>
 		<td>x&nbsp;</td>
 		<td>y&nbsp;</td>
-		<td>lockid&nbsp;</td>
+		<td>arealock&nbsp;</td>
+		<td>questlock&nbsp;</td>
 		<td>url&nbsp;</td>
 		<td>direct&nbsp;</td>
+		<td>loop&nbsp;</td>
+		<td>hidemode&nbsp;</td>
+		<td>area Item Level&nbsp;</td>
+		<td>npcs&nbsp;</td>
 	</tr>
 <%
 int recCount = 0;
@@ -100,14 +106,20 @@ while (rs.next()){
 	String x_id = "";
 	String x_name = "";
 	String x_icon = "";
+	String x_cost = "";
 	String x_areaid = "";
-	String x_ax = "";
-	String x_ay = "";
+	String x_areax = "";
+	String x_areay = "";
 	String x_x = "";
 	String x_y = "";
-	String x_lockid = "";
+	String x_arealock = "";
+	String x_questlock = "";
 	String x_url = "";
 	String x_direct = "";
+	String x_loop = "";
+	String x_hidemode = "";
+	String x_areaItemLevel = "";
+	String x_npcs = "";
 
 	// id
 	x_id = String.valueOf(rs.getLong("id"));
@@ -128,14 +140,17 @@ while (rs.next()){
 		x_icon = "";
 	}
 
+	// cost
+	x_cost = String.valueOf(rs.getLong("cost"));
+
 	// areaid
 	x_areaid = String.valueOf(rs.getLong("areaid"));
 
-	// ax
-	x_ax = String.valueOf(rs.getLong("ax"));
+	// areax
+	x_areax = String.valueOf(rs.getLong("areax"));
 
-	// ay
-	x_ay = String.valueOf(rs.getLong("ay"));
+	// areay
+	x_areay = String.valueOf(rs.getLong("areay"));
 
 	// x
 	x_x = String.valueOf(rs.getLong("x"));
@@ -143,8 +158,21 @@ while (rs.next()){
 	// y
 	x_y = String.valueOf(rs.getLong("y"));
 
-	// lockid
-	x_lockid = String.valueOf(rs.getLong("lockid"));
+	// arealock
+	if (rs.getString("arealock") != null){
+		x_arealock = rs.getString("arealock");
+	}
+	else{
+		x_arealock = "";
+	}
+
+	// questlock
+	if (rs.getString("questlock") != null){
+		x_questlock = rs.getString("questlock");
+	}
+	else{
+		x_questlock = "";
+	}
 
 	// url
 	if (rs.getString("url") != null){
@@ -156,6 +184,23 @@ while (rs.next()){
 
 	// direct
 	x_direct = String.valueOf(rs.getLong("direct"));
+
+	// loop
+	x_loop = String.valueOf(rs.getLong("loop"));
+
+	// hidemode
+	x_hidemode = String.valueOf(rs.getLong("hidemode"));
+
+	// areaItemLevel
+	x_areaItemLevel = String.valueOf(rs.getLong("areaItemLevel"));
+
+	// npcs
+	if (rs.getString("npcs") != null){
+		x_npcs = rs.getString("npcs");
+	}
+	else{
+		x_npcs = "";
+	}
 %>
 	<tr class="<%= rowclass %>">
 	<% key =  arRecKey[recCount-1]; %>
@@ -163,14 +208,20 @@ while (rs.next()){
 		<td class="<%= rowclass %>"><% out.print(x_id); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_name); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_icon); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_cost); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_areaid); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_ax); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_ay); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_areax); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_areay); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_x); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_y); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_lockid); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_arealock); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_questlock); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_url); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_direct); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_loop); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_hidemode); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_areaItemLevel); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_npcs); %>&nbsp;</td>
   </tr>
 <%
 }
