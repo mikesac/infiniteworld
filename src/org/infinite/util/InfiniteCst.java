@@ -51,6 +51,17 @@ public class InfiniteCst {
 	public static final int ATTACK_TYPE_MAGIC = 1;
 	public static final int ATTACK_TYPE_ITEM = 2;
 
+	public static final int STATUS_TYPE_PL = 0;
+	public static final int STATUS_TYPE_PM = 1;
+	public static final int STATUS_TYPE_PA = 2;
+	public static final int STATUS_TYPE_PC = 3;
+	
+	public static final int STATUS_TYPE_STR = 4;
+	public static final int STATUS_TYPE_INT = 5;
+	public static final int STATUS_TYPE_DEX = 6;
+	public static final int STATUS_TYPE_CHA = 7;
+	
+	
 	/**
 	 * Amount of milliseconds for let regeneration occurs on Character stats
 	 */
@@ -62,6 +73,8 @@ public class InfiniteCst {
 	 */
 	public static final int CFG_MP_TO_SPELLS_SLOTS = 2;
 	public static final int CFG_LV_TO_BATTLE_PLAN_SLOTS = 5;
+
+	public static final short CFG_NEXTLEVELPOINTS = 3;
 	
 	
 }

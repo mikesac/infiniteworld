@@ -11,8 +11,9 @@
 	if (StartPlaying.redirectToCharSelect(session, request, response))
 		return;
 
-	Character c = (Character) session
-			.getAttribute(PagesCst.CONTEXT_CHARACTER);
+	Character c = (Character) session.getAttribute(PagesCst.CONTEXT_CHARACTER);
+	
+	boolean up = (c.getDao().getAssign()>0);
 %>
 
 
@@ -53,7 +54,11 @@
 				</td>
 				<td><%=c.getPointsLifeBase()%></td>
 				<td><%=c.getPointsLifeMax() - c.getPointsLifeBase()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_PL%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 				<td>
 				<div class="iconlarge"
 					style="background-image: url(../imgs/web/stats/str.png);">
@@ -64,7 +69,11 @@
 				</td>
 				<td><%=c.getDao().getBaseStr()%></td>
 				<td><%=c.getStrenght() - c.getDao().getBaseStr()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_STR%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 			</tr>
 			
 			
@@ -79,7 +88,11 @@
 				</td>
 				<td><%=c.getPointsMagicBase()%></td>
 				<td><%=c.getPointsMagicMax() - c.getPointsMagicBase()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_PM%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 				<td>
 				<div class="iconlarge"
 					style="background-image: url(../imgs/web/stats/int.png);">
@@ -90,7 +103,11 @@
 				</td>
 				<td><%=c.getDao().getBaseInt()%></td>
 				<td><%=c.getIntelligence() - c.getDao().getBaseInt()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_INT%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 			</tr>
 			
 			
@@ -105,7 +122,11 @@
 				</td>
 				<td><%=c.getPointsActionBase()%></td>
 				<td><%=c.getPointsActionMax() - c.getPointsActionBase()%></td>
-				<<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_PA%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 				<td>
 				<div class="iconlarge"
 					style="background-image: url(../imgs/web/stats/dex.png);">
@@ -116,7 +137,11 @@
 				</td>
 				<td><%=c.getDao().getBaseDex()%></td>
 				<td><%=c.getDexterity() - c.getDao().getBaseDex()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_DEX%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 			</tr>
 			
 			
@@ -131,7 +156,11 @@
 				</td>
 				<td><%=c.getPointsCharmBase()%></td>
 				<td><%=c.getPointsCharmMax() - c.getPointsCharmBase()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_PC%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 				<td>
 				<div class="iconlarge"
 					style="background-image: url(../imgs/web/stats/cha.png);">
@@ -142,7 +171,11 @@
 				</td>
 				<td><%=c.getDao().getBaseCha()%></td>
 				<td><%=c.getCharisma() - c.getDao().getBaseCha()%></td>
-				<td><img src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></td>
+				<td> 
+					<% if(up){%><a href="javascript:doUpgrade(<%=InfiniteCst.STATUS_TYPE_CHA%>)"><img border=0 src="../imgs/web/plus.png" alt="Increment this skill" title="Increment this skill"/></a><%}
+						else{%>&nbsp;<%}
+					%>
+				</td>
 			</tr>
 	
 	
@@ -166,7 +199,7 @@
 				</td>
 				<td></td>
 				<td></td>
-				<td></td>
+				<td>Points still to assign: <%= c.getDao().getAssign() %></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -175,6 +208,21 @@
 		</table>
 
 <%@ include file="../decorators/b1post.jsp"%></div>
+
+<%if(up){
+	%>
+<form name="upgrade" method="POST" action="<%=request.getContextPath()%>/statupgrade">
+	<input type="hidden" name="attType">
+</form>
+
+<script>
+function doUpgrade(type){
+	document.forms['upgrade'].attType.value=type;
+	document.forms['upgrade'].submit();
+}
+</script>	
+	<%	
+} %>
 
 </body>
 </html>

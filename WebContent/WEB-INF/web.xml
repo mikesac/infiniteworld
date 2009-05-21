@@ -196,6 +196,15 @@
     <url-pattern>/mapfight</url-pattern>
   </servlet-mapping>
   
+  <!-- Status Upgrade -->
+  <servlet>
+    <servlet-name>StatusUpgrade</servlet-name>
+    <servlet-class>org.infinite.web.UpgradeStats</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>StatusUpgrade</servlet-name>
+    <url-pattern>/statupgrade</url-pattern>
+  </servlet-mapping>
   
   <!--  monster XML -->
   <servlet>

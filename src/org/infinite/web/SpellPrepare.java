@@ -1,8 +1,6 @@
 package org.infinite.web;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,13 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.infinite.db.Manager;
 import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
-import org.infinite.engines.fight.FightEngine;
-import org.infinite.engines.fight.FightRound;
 import org.infinite.objects.Character;
 import org.infinite.util.InfiniteCst;
-import org.infinite.util.XmlUtil;
-
-import com.thoughtworks.xstream.XStream;
 
 public class SpellPrepare extends HttpServlet {
 

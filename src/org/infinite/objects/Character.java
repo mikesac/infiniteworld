@@ -13,6 +13,7 @@ import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
 import org.infinite.db.dao.SpellAffectPlayer;
+import org.infinite.engines.AI.newAIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.engines.items.ItemsEngine;
@@ -363,6 +364,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 		if(currPx<0) currPx=0;
 
 		getDao().setPx(currPx);
+		
+		int next = newAIEngine.getLevelPx( getLevel()+1 );
+		
+		if(currPx>=next){
+			getDao().setLevel( getLevel()+1 );
+			getDao().setAssign( InfiniteCst.CFG_NEXTLEVELPOINTS);
+		}
+		
 		saveDao();
 
 		return getExperience();
@@ -1091,6 +1100,45 @@ public class Character implements PlayerInterface, ItemsInterface {
 	
 	public ArrayList<SpellAffectPlayer> getSpellsAffecting() {
 		return spellsAffecting;
+	}
+
+
+
+	public void upgradeStatus(int type) throws Exception {
+		
+		switch (type) {
+		case InfiniteCst.STATUS_TYPE_PL:
+			getDao().setBasePl( getDao().getBasePl() + 1 );
+			break;
+		case InfiniteCst.STATUS_TYPE_PM:
+			getDao().setBasePm( getDao().getBasePm() + 1 );				
+			break;
+		case InfiniteCst.STATUS_TYPE_PA:
+			getDao().setBasePa( getDao().getBasePa() + 1 );				
+			break;
+		case InfiniteCst.STATUS_TYPE_PC:
+			getDao().setBasePc( getDao().getBasePc() + 1 );				
+			break;
+		case InfiniteCst.STATUS_TYPE_STR:
+			getDao().setBaseStr( getDao().getBaseStr() + 1 );				
+			break;
+		case InfiniteCst.STATUS_TYPE_INT:
+			getDao().setBaseInt( getDao().getBaseInt() + 1 );				
+			break;
+		case InfiniteCst.STATUS_TYPE_DEX:
+			getDao().setBaseDex( getDao().getBaseDex() + 1 );				
+			break;
+		case InfiniteCst.STATUS_TYPE_CHA:
+			getDao().setBaseCha( getDao().getBaseCha() + 1 );				
+			break;
+
+		default:
+			throw new Exception("Invalid type!");
+		}
+		
+		getDao().setAssign( (short) (getDao().getAssign() - 1) );
+		saveDao();
+		
 	}
 	
 
