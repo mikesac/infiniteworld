@@ -1,7 +1,11 @@
 package org.infinite.engines.AI;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import org.infinite.objects.Monster;
+import org.junit.Test;
 public class newAIEngineTest {
 
 	@Test
@@ -23,8 +27,36 @@ public class newAIEngineTest {
 		}
 		
 		System.out.print("END");
-		
-		
+			
 	}
 
+	@Test
+	public void testSpawning() {
+	
+		try {
+			
+			String name = "Goblin";
+			
+			for (int i = 0; i < 100; i++) {
+				
+			
+			Monster m = newAIEngine.spawn(name);
+			
+			assertNotNull(m);
+			assertEquals(name, m.getName());
+			
+			System.out.print( m.getHandRight()!=null?m.getHandRight().getName():"none" + "\t");
+			System.out.print( m.getHandLeft()!=null?m.getHandLeft().getName():"none" + "\t" );
+			System.out.println( m.getBody()!=null?m.getBody().getName():"none");
+		}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+	}
+	
+	
+	
 }

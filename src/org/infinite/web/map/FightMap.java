@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infinite.db.Manager;
-import org.infinite.db.dao.Npc;
-import org.infinite.engines.AI.AIEngine;
 import org.infinite.engines.AI.newAIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.FightRound;
@@ -79,9 +77,10 @@ public class FightMap  extends HttpServlet {
 			
 			//TODO get party2 randomly
 			try {
-				side2.add( AIEngine.spawn(list.get(index)) );
+				side2.add( newAIEngine.spawn(list.get(index)) );
 			} catch (Exception e1) {
 				log.error("Error Spawining Monster", e1);
+				e1.printStackTrace();
 				throw new Exception("Error Spawining Monster"); 
 			}
 			

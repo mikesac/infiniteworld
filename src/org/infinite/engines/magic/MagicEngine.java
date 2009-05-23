@@ -114,7 +114,7 @@ public class MagicEngine {
 	}
 
 	public static int getAvailableSpellSlots(PlayerInterface p) {
-		int slot = p.getPointsMagic()/InfiniteCst.CFG_MP_TO_SPELLS_SLOTS - p.getPreparedSpells().size();
+		int slot = p.getIntelligence()/InfiniteCst.CFG_MP_TO_SPELLS_SLOTS - p.getPreparedSpells().size();
 		return slot<0?0:slot;
 	}
 

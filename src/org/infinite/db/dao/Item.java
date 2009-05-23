@@ -1,6 +1,6 @@
 package org.infinite.db.dao;
 
-// Generated 20-mag-2009 21.48.17 by Hibernate Tools 3.2.4.CR1
+// Generated 23-mag-2009 22.20.43 by Hibernate Tools 3.2.4.CR1
 
 import java.util.HashSet;
 import java.util.Set;

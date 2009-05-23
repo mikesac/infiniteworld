@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.PlayerKnowSpell;
+import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
 import org.infinite.db.dao.SpellAffectPlayer;
 
@@ -131,6 +132,27 @@ public interface PlayerInterface{
 	public int addActionPoints(int points) throws Exception;
 
 	public int addCharmPoints(int points) throws Exception;
+
+	
+	////////////////////////////
+	
+	public void equipItem(PlayerOwnItem poi);
+	
+	public void addToInventory(PlayerOwnItem poi);
+
+	public PlayerOwnItem getBodyPoi();
+
+	public void setBody(PlayerOwnItem poi);
+
+	public ArrayList<PlayerOwnItem> getInventory();
+
+	public PlayerOwnItem getHandLeftPoi();
+
+	public void setHandLeft(PlayerOwnItem poi);
+
+	public PlayerOwnItem getHandRightPoi();
+
+	public void setHandRight(PlayerOwnItem poi);
 	
 
 }

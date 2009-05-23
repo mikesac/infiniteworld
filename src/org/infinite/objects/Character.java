@@ -1141,5 +1141,4 @@ public class Character implements PlayerInterface, ItemsInterface {
 		
 	}
 	
-
 }

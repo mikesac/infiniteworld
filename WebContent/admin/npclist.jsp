@@ -45,8 +45,6 @@ if (pSearch != null && pSearch.length() > 0) {
 			b_search = b_search + "`image` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`description` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`dialog` LIKE '%" + kw + "%' OR ";
-			b_search = b_search + "`items` LIKE '%" + kw + "%' OR ";
-			b_search = b_search + "`behave` LIKE '%" + kw + "%' OR ";
 			b_search = b_search + "`attack` LIKE '%" + kw + "%' OR ";
 			if (b_search.substring(b_search.length()-4,b_search.length()).equals(" OR ")) { b_search = b_search.substring(0,b_search.length()-4);}
 			b_search = b_search + ") " + pSearchType + " ";
@@ -56,8 +54,6 @@ if (pSearch != null && pSearch.length() > 0) {
 		b_search = b_search + "`image` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`description` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`dialog` LIKE '%" + pSearch + "%' OR ";
-		b_search = b_search + "`items` LIKE '%" + pSearch + "%' OR ";
-		b_search = b_search + "`behave` LIKE '%" + pSearch + "%' OR ";
 		b_search = b_search + "`attack` LIKE '%" + pSearch + "%' OR ";
 	}
 }
@@ -331,13 +327,19 @@ if (totalRecs > 0) {
 <a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("gold","UTF-8") %>">gold&nbsp;<% if (OrderBy != null && OrderBy.equals("gold")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("nitem","UTF-8") %>">nitem&nbsp;<% if (OrderBy != null && OrderBy.equals("nitem")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("useWpn","UTF-8") %>">use Wpn&nbsp;<% if (OrderBy != null && OrderBy.equals("useWpn")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("useShld","UTF-8") %>">use Shld&nbsp;<% if (OrderBy != null && OrderBy.equals("useShld")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
+<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("useArm","UTF-8") %>">use Arm&nbsp;<% if (OrderBy != null && OrderBy.equals("useArm")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
+		</td>
+		<td>
 <a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("dialog","UTF-8") %>">dialog&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("dialog")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("items","UTF-8") %>">items&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("items")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
-		</td>
-		<td>
-<a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("behave","UTF-8") %>">behave&nbsp;(*)<% if (OrderBy != null && OrderBy.equals("behave")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
 		</td>
 		<td>
 <a href="npclist.jsp?order=<%= java.net.URLEncoder.encode("ismonster","UTF-8") %>">ismonster&nbsp;<% if (OrderBy != null && OrderBy.equals("ismonster")) { %><span class="ewTableOrderIndicator"><% if (((String) session.getAttribute("NPC_OT")).equals("ASC")) { %>5<% }else if (((String) session.getAttribute("NPC_OT")).equals("DESC")) { %>6<% } %></span><% } %></a>
@@ -400,9 +402,11 @@ while (rs.next() && recCount < stopRec) {
 	String x_px = "";
 	String x_status = "";
 	String x_gold = "";
+	String x_nitem = "";
+	String x_useWpn = "";
+	String x_useShld = "";
+	String x_useArm = "";
 	String x_dialog = "";
-	String x_items = "";
-	String x_behave = "";
 	String x_ismonster = "";
 	String x_nattack = "";
 	String x_attack = "";
@@ -472,25 +476,23 @@ while (rs.next() && recCount < stopRec) {
 	// gold
 	x_gold = String.valueOf(rs.getDouble("gold"));
 
+	// nitem
+	x_nitem = String.valueOf(rs.getLong("nitem"));
+
+	// useWpn
+	x_useWpn = String.valueOf(rs.getLong("useWpn"));
+
+	// useShld
+	x_useShld = String.valueOf(rs.getLong("useShld"));
+
+	// useArm
+	x_useArm = String.valueOf(rs.getLong("useArm"));
+
 	// dialog
 	if (rs.getString("dialog") != null){
 		x_dialog = rs.getString("dialog");
 	}else{
 		x_dialog = "";
-	}
-
-	// items
-	if (rs.getString("items") != null){
-		x_items = rs.getString("items");
-	}else{
-		x_items = "";
-	}
-
-	// behave
-	if (rs.getString("behave") != null){
-		x_behave = rs.getString("behave");
-	}else{
-		x_behave = "";
 	}
 
 	// ismonster
@@ -541,9 +543,11 @@ if (key != null && key.length() > 0) {
 		<td><% out.print(x_px); %>&nbsp;</td>
 		<td><% out.print(x_status); %>&nbsp;</td>
 		<td><% out.print(x_gold); %>&nbsp;</td>
+		<td><% out.print(x_nitem); %>&nbsp;</td>
+		<td><% out.print(x_useWpn); %>&nbsp;</td>
+		<td><% out.print(x_useShld); %>&nbsp;</td>
+		<td><% out.print(x_useArm); %>&nbsp;</td>
 		<td><% out.print(x_dialog); %>&nbsp;</td>
-		<td><% out.print(x_items); %>&nbsp;</td>
-		<td><% out.print(x_behave); %>&nbsp;</td>
 		<td><% out.print(x_ismonster); %>&nbsp;</td>
 		<td><% out.print(x_nattack); %>&nbsp;</td>
 		<td><% out.print(x_attack); %>&nbsp;</td>

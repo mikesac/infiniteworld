@@ -38,9 +38,11 @@ String x_level = "";
 String x_px = "";
 String x_status = "";
 String x_gold = "";
+String x_nitem = "";
+String x_useWpn = "";
+String x_useShld = "";
+String x_useArm = "";
 String x_dialog = "";
-String x_items = "";
-String x_behave = "";
 String x_ismonster = "";
 String x_nattack = "";
 String x_attack = "";
@@ -123,25 +125,23 @@ try{
 		// gold
 		x_gold = String.valueOf(rs.getDouble("gold"));
 
+		// nitem
+		x_nitem = String.valueOf(rs.getLong("nitem"));
+
+		// useWpn
+		x_useWpn = String.valueOf(rs.getLong("useWpn"));
+
+		// useShld
+		x_useShld = String.valueOf(rs.getLong("useShld"));
+
+		// useArm
+		x_useArm = String.valueOf(rs.getLong("useArm"));
+
 		// dialog
 		if (rs.getString("dialog") != null){
 			x_dialog = rs.getString("dialog");
 		}else{
 			x_dialog = "";
-		}
-
-		// items
-		if (rs.getString("items") != null){
-			x_items = rs.getString("items");
-		}else{
-			x_items = "";
-		}
-
-		// behave
-		if (rs.getString("behave") != null){
-			x_behave = rs.getString("behave");
-		}else{
-			x_behave = "";
 		}
 
 		// ismonster
@@ -228,16 +228,24 @@ try{
 		<td class="ewTableAltRow"><% out.print(x_gold); %>&nbsp;</td>
 	</tr>
 	<tr>
+		<td class="ewTableHeader">nitem&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_nitem); %>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">use Wpn&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_useWpn); %>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">use Shld&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_useShld); %>&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">use Arm&nbsp;</td>
+		<td class="ewTableAltRow"><% out.print(x_useArm); %>&nbsp;</td>
+	</tr>
+	<tr>
 		<td class="ewTableHeader">dialog&nbsp;</td>
 		<td class="ewTableAltRow"><% out.print(x_dialog); %>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="ewTableHeader">items&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_items); %>&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="ewTableHeader">behave&nbsp;</td>
-		<td class="ewTableAltRow"><% out.print(x_behave); %>&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">ismonster&nbsp;</td>

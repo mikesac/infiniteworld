@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-mag-2009 21.48.17 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 23-mag-2009 22.20.43 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.Npc" table="NPC" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
@@ -81,19 +81,21 @@
                 <comment>money</comment>
             </column>
         </property>
+        <property name="nitem" type="short">
+            <column name="nitem" not-null="true" />
+        </property>
+        <property name="useWpn" type="boolean">
+            <column name="useWpn" not-null="true" />
+        </property>
+        <property name="useShld" type="boolean">
+            <column name="useShld" not-null="true" />
+        </property>
+        <property name="useArm" type="boolean">
+            <column name="useArm" not-null="true" />
+        </property>
         <property name="dialog" type="string">
             <column name="dialog" not-null="true">
                 <comment>xml for dialogs</comment>
-            </column>
-        </property>
-        <property name="items" type="string">
-            <column name="items" not-null="true">
-                <comment>xml for item probability</comment>
-            </column>
-        </property>
-        <property name="behave" type="string">
-            <column name="behave" not-null="true">
-                <comment>xml for behaviour</comment>
             </column>
         </property>
         <property name="ismonster" type="boolean">

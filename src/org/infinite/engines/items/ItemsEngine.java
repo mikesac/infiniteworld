@@ -4,6 +4,7 @@ import org.infinite.db.Manager;
 import org.infinite.db.dao.Item;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.objects.Character;
+import org.infinite.engines.fight.PlayerInterface;
 import org.infinite.util.InfiniteCst;
 
 public class ItemsEngine {
@@ -15,11 +16,11 @@ public class ItemsEngine {
 		Manager.update(poi);
 	}
 
-	public static void moveToInventory(Character player,PlayerOwnItem poi) {
+	public static void moveToInventory(PlayerInterface player,PlayerOwnItem poi) {
 		moveToInventory(player,poi,true);
 	}
 
-	public static void moveToInventory(Character player,PlayerOwnItem poi,boolean persist) {
+	public static void moveToInventory(PlayerInterface player,PlayerOwnItem poi,boolean persist) {
 
 		poi.setBodypart(InfiniteCst.EQUIP_STORE);
 
@@ -29,21 +30,27 @@ public class ItemsEngine {
 		}
 	}
 
-	public static void addToInventory(Character player,Item item){
+	public static void addToInventory(PlayerInterface player,Item item){
 		addToInventory(player,item, true);
 	}
 	
-	public static void addToInventory(Character player,Item item,boolean persist) {
+	public static void addToInventory(PlayerInterface player,Item item,boolean persist) {
 
-		PlayerOwnItem poi = new PlayerOwnItem(player.getDao(),item,0,InfiniteCst.EQUIP_STORE);
+		PlayerOwnItem poi = null;
+		if(player instanceof Character){			
+			poi = new PlayerOwnItem(((Character)player).getDao(),item,0,InfiniteCst.EQUIP_STORE);
+		}
+		else{
+			poi = new PlayerOwnItem( null,item,0,InfiniteCst.EQUIP_STORE);
+		}
 
 		player.addToInventory(poi);
-		if(persist){
+		if( poi.getPlayer()!=null && persist){
 			Manager.create(poi);
 		}
 	}
 
-	public static void removeFromInventory(Character player,int poiId) {
+	public static void removeFromInventory(PlayerInterface player,int poiId) {
 		
 		for (int i = 0; i < player.getInventory().size(); i++) {
 			
@@ -55,12 +62,12 @@ public class ItemsEngine {
 	}
 
 
-	public static void dropItem(Character player,PlayerOwnItem poi){
+	public static void dropItem(PlayerInterface player,PlayerOwnItem poi){
 		removeFromInventory(player,poi.getId());
 		Manager.delete(poi);
 	}
 
-	public static int equipItem(Character player,PlayerOwnItem poi){
+	public static int equipItem(PlayerInterface player,PlayerOwnItem poi){
 		
 		int previousId = -1;
 		switch ( poi.getBodypart() ) {
@@ -80,7 +87,7 @@ public class ItemsEngine {
 		return previousId;
 	}
 	
-	public static int wearItem(Character player,PlayerOwnItem poi) throws Exception {
+	public static int wearItem(PlayerInterface player,PlayerOwnItem poi) throws Exception {
 		
 		int previousId = -1; 
 		if(poi.getItem().getType() == InfiniteCst.ITEM_TYPE_WEAPON)
@@ -97,11 +104,11 @@ public class ItemsEngine {
 	}
 	
 
-	public static int equipHandRight(Character player,PlayerOwnItem poi) {	
+	public static int equipHandRight(PlayerInterface player,PlayerOwnItem poi) {	
 		return equipHandRight(player,poi,true);
 	}
 
-	public static int equipHandRight(Character player,PlayerOwnItem poi, boolean persist) {	
+	public static int equipHandRight(PlayerInterface player,PlayerOwnItem poi, boolean persist) {	
 
 		int previousId = -1;
 		//if another item is equipped put in inventory
@@ -121,11 +128,11 @@ public class ItemsEngine {
 	}
 
 
-	public static int equipHandLeft(Character player,PlayerOwnItem poi) {	
+	public static int equipHandLeft(PlayerInterface player,PlayerOwnItem poi) {	
 		return equipHandLeft(player,poi,true);
 	}
 
-	public static int equipHandLeft(Character player,PlayerOwnItem poi, boolean persist) {	
+	public static int equipHandLeft(PlayerInterface player,PlayerOwnItem poi, boolean persist) {	
 
 		int previousId = -1;
 		//if another item is equipped put in inventory
@@ -145,11 +152,11 @@ public class ItemsEngine {
 	}
 
 
-	public static int equipBody(Character player,PlayerOwnItem poi) {	
+	public static int equipBody(PlayerInterface player,PlayerOwnItem poi) {	
 		return equipBody(player,poi,true);
 	}
 
-	public static int equipBody(Character player,PlayerOwnItem poi, boolean persist) {	
+	public static int equipBody(PlayerInterface player,PlayerOwnItem poi, boolean persist) {	
 
 		int previousId = -1;
 		//if another item is equipped put in inventory

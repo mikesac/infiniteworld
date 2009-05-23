@@ -22,11 +22,12 @@ public class AIEngine {
 
 	private static final Log log = LogFactory.getLog(AIEngine.class);
 
+	@Deprecated
 	public static Monster spawn(String szName) throws Exception{
 		
 		Monster m = new Monster(szName);
 		//String szXML = XmlUtil.XMLPATH + "monster/" + m.getNpc().getXmlItems();
-		String szXML = "xml/monster/"+m.getDao().getItems();
+		String szXML = "xml/monster/baseitem.xml";
 		
 		Document doc = XmlUtil.name2Doc(szXML);
 		
@@ -35,6 +36,9 @@ public class AIEngine {
 		String szUrl = "//level"+m.getDao().getLevel();
 		
 		Node n = XPathAPI.selectSingleNode(doc.getFirstChild(), szUrl);
+		
+		if(n!=null){
+		
 		int a = GenericUtil.toInt( n.getAttributes().getNamedItem("a").getNodeValue() , 0 );
 		int h = GenericUtil.toInt(n.getAttributes().getNamedItem("h").getNodeValue() , 0 );
 		int p = GenericUtil.toInt(n.getAttributes().getNamedItem("p").getNodeValue() , 0 );
@@ -108,6 +112,8 @@ public class AIEngine {
 		if(spells.length()>1){
 			spells = spells.substring(1);
 			m.learnSpells( spells.split(",") );
+		}
+		
 		}
 		
 		return m;

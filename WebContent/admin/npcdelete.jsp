@@ -88,9 +88,11 @@ try{
 		<td>px&nbsp;</td>
 		<td>status&nbsp;</td>
 		<td>gold&nbsp;</td>
+		<td>nitem&nbsp;</td>
+		<td>use Wpn&nbsp;</td>
+		<td>use Shld&nbsp;</td>
+		<td>use Arm&nbsp;</td>
 		<td>dialog&nbsp;</td>
-		<td>items&nbsp;</td>
-		<td>behave&nbsp;</td>
 		<td>ismonster&nbsp;</td>
 		<td>nattack&nbsp;</td>
 		<td>attack&nbsp;</td>
@@ -123,9 +125,11 @@ while (rs.next()){
 	String x_px = "";
 	String x_status = "";
 	String x_gold = "";
+	String x_nitem = "";
+	String x_useWpn = "";
+	String x_useShld = "";
+	String x_useArm = "";
 	String x_dialog = "";
-	String x_items = "";
-	String x_behave = "";
 	String x_ismonster = "";
 	String x_nattack = "";
 	String x_attack = "";
@@ -193,28 +197,24 @@ while (rs.next()){
 	// gold
 	x_gold = String.valueOf(rs.getDouble("gold"));
 
+	// nitem
+	x_nitem = String.valueOf(rs.getLong("nitem"));
+
+	// useWpn
+	x_useWpn = String.valueOf(rs.getLong("useWpn"));
+
+	// useShld
+	x_useShld = String.valueOf(rs.getLong("useShld"));
+
+	// useArm
+	x_useArm = String.valueOf(rs.getLong("useArm"));
+
 	// dialog
 	if (rs.getString("dialog") != null){
 		x_dialog = rs.getString("dialog");
 	}
 	else{
 		x_dialog = "";
-	}
-
-	// items
-	if (rs.getString("items") != null){
-		x_items = rs.getString("items");
-	}
-	else{
-		x_items = "";
-	}
-
-	// behave
-	if (rs.getString("behave") != null){
-		x_behave = rs.getString("behave");
-	}
-	else{
-		x_behave = "";
 	}
 
 	// ismonster
@@ -249,9 +249,11 @@ while (rs.next()){
 		<td class="<%= rowclass %>"><% out.print(x_px); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_status); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_gold); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_nitem); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_useWpn); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_useShld); %>&nbsp;</td>
+		<td class="<%= rowclass %>"><% out.print(x_useArm); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_dialog); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_items); %>&nbsp;</td>
-		<td class="<%= rowclass %>"><% out.print(x_behave); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_ismonster); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_nattack); %>&nbsp;</td>
 		<td class="<%= rowclass %>"><% out.print(x_attack); %>&nbsp;</td>

@@ -45,9 +45,11 @@ Object x_level = null;
 Object x_px = null;
 Object x_status = null;
 Object x_gold = null;
+Object x_nitem = null;
+Object x_useWpn = null;
+Object x_useShld = null;
+Object x_useArm = null;
 Object x_dialog = null;
-Object x_items = null;
-Object x_behave = null;
 Object x_ismonster = null;
 Object x_nattack = null;
 Object x_attack = null;
@@ -104,20 +106,14 @@ try{
 	x_px = String.valueOf(rs.getLong("px"));
 	x_status = String.valueOf(rs.getLong("status"));
 	x_gold = String.valueOf(rs.getDouble("gold"));
+	x_nitem = String.valueOf(rs.getLong("nitem"));
+	x_useWpn = String.valueOf(rs.getLong("useWpn"));
+	x_useShld = String.valueOf(rs.getLong("useShld"));
+	x_useArm = String.valueOf(rs.getLong("useArm"));
 			if (rs.getString("dialog") != null){
 				x_dialog = rs.getString("dialog");
 			}else{
 				x_dialog = "";
-			}
-			if (rs.getString("items") != null){
-				x_items = rs.getString("items");
-			}else{
-				x_items = "";
-			}
-			if (rs.getString("behave") != null){
-				x_behave = rs.getString("behave");
-			}else{
-				x_behave = "";
 			}
 	x_ismonster = String.valueOf(rs.getLong("ismonster"));
 	x_nattack = String.valueOf(rs.getLong("nattack"));
@@ -206,20 +202,30 @@ try{
 		}else{
 			x_gold = "";
 		}
+		if (request.getParameter("x_nitem") != null){
+			x_nitem = (String) request.getParameter("x_nitem");
+		}else{
+			x_nitem = "";
+		}
+		if (request.getParameter("x_useWpn") != null){
+			x_useWpn = (String) request.getParameter("x_useWpn");
+		}else{
+			x_useWpn = "";
+		}
+		if (request.getParameter("x_useShld") != null){
+			x_useShld = (String) request.getParameter("x_useShld");
+		}else{
+			x_useShld = "";
+		}
+		if (request.getParameter("x_useArm") != null){
+			x_useArm = (String) request.getParameter("x_useArm");
+		}else{
+			x_useArm = "";
+		}
 		if (request.getParameter("x_dialog") != null){
 			x_dialog = (String) request.getParameter("x_dialog");
 		}else{
 			x_dialog = "";
-		}
-		if (request.getParameter("x_items") != null){
-			x_items = (String) request.getParameter("x_items");
-		}else{
-			x_items = "";
-		}
-		if (request.getParameter("x_behave") != null){
-			x_behave = (String) request.getParameter("x_behave");
-		}else{
-			x_behave = "";
 		}
 		if (request.getParameter("x_ismonster") != null){
 			x_ismonster = (String) request.getParameter("x_ismonster");
@@ -395,6 +401,42 @@ try{
 			rs.updateNull("gold");
 		}
 
+		// Field nitem
+		tmpfld = ((String) x_nitem).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("nitem");
+		} else {
+			rs.updateInt("nitem",Integer.parseInt(tmpfld));
+		}
+
+		// Field useWpn
+		tmpfld = ((String) x_useWpn).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("useWpn");
+		} else {
+			rs.updateInt("useWpn",Integer.parseInt(tmpfld));
+		}
+
+		// Field useShld
+		tmpfld = ((String) x_useShld).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("useShld");
+		} else {
+			rs.updateInt("useShld",Integer.parseInt(tmpfld));
+		}
+
+		// Field useArm
+		tmpfld = ((String) x_useArm).trim();
+		if (!IsNumeric(tmpfld)) { tmpfld = "0";}
+		if (tmpfld == null) {
+			rs.updateNull("useArm");
+		} else {
+			rs.updateInt("useArm",Integer.parseInt(tmpfld));
+		}
+
 		// Field dialog
 		tmpfld = ((String) x_dialog);
 		if (tmpfld == null || tmpfld.trim().length() == 0) {
@@ -404,28 +446,6 @@ try{
 			rs.updateNull("dialog");
 		}else{
 			rs.updateString("dialog", tmpfld);
-		}
-
-		// Field items
-		tmpfld = ((String) x_items);
-		if (tmpfld == null || tmpfld.trim().length() == 0) {
-			tmpfld = "";
-		}
-		if (tmpfld == null) {
-			rs.updateNull("items");
-		}else{
-			rs.updateString("items", tmpfld);
-		}
-
-		// Field behave
-		tmpfld = ((String) x_behave);
-		if (tmpfld == null || tmpfld.trim().length() == 0) {
-			tmpfld = "";
-		}
-		if (tmpfld == null) {
-			rs.updateNull("behave");
-		}else{
-			rs.updateString("behave", tmpfld);
 		}
 
 		// Field ismonster
@@ -585,16 +605,40 @@ if (EW_this.x_gold && !EW_checknumber(EW_this.x_gold.value)) {
         if (!EW_onError(EW_this, EW_this.x_gold, "TEXT", "Incorrect floating point number - gold"))
             return false; 
         }
+if (EW_this.x_nitem && !EW_hasValue(EW_this.x_nitem, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_nitem, "TEXT", "Incorrect integer - nitem"))
+                return false; 
+        }
+if (EW_this.x_nitem && !EW_checkinteger(EW_this.x_nitem.value)) {
+        if (!EW_onError(EW_this, EW_this.x_nitem, "TEXT", "Incorrect integer - nitem"))
+            return false; 
+        }
+if (EW_this.x_useWpn && !EW_hasValue(EW_this.x_useWpn, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_useWpn, "TEXT", "Incorrect integer - use Wpn"))
+                return false; 
+        }
+if (EW_this.x_useWpn && !EW_checkinteger(EW_this.x_useWpn.value)) {
+        if (!EW_onError(EW_this, EW_this.x_useWpn, "TEXT", "Incorrect integer - use Wpn"))
+            return false; 
+        }
+if (EW_this.x_useShld && !EW_hasValue(EW_this.x_useShld, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_useShld, "TEXT", "Incorrect integer - use Shld"))
+                return false; 
+        }
+if (EW_this.x_useShld && !EW_checkinteger(EW_this.x_useShld.value)) {
+        if (!EW_onError(EW_this, EW_this.x_useShld, "TEXT", "Incorrect integer - use Shld"))
+            return false; 
+        }
+if (EW_this.x_useArm && !EW_hasValue(EW_this.x_useArm, "TEXT" )) {
+            if (!EW_onError(EW_this, EW_this.x_useArm, "TEXT", "Incorrect integer - use Arm"))
+                return false; 
+        }
+if (EW_this.x_useArm && !EW_checkinteger(EW_this.x_useArm.value)) {
+        if (!EW_onError(EW_this, EW_this.x_useArm, "TEXT", "Incorrect integer - use Arm"))
+            return false; 
+        }
 if (EW_this.x_dialog && !EW_hasValue(EW_this.x_dialog, "TEXT" )) {
             if (!EW_onError(EW_this, EW_this.x_dialog, "TEXT", "Invalid Field - dialog"))
-                return false; 
-        }
-if (EW_this.x_items && !EW_hasValue(EW_this.x_items, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_items, "TEXT", "Invalid Field - items"))
-                return false; 
-        }
-if (EW_this.x_behave && !EW_hasValue(EW_this.x_behave, "TEXT" )) {
-            if (!EW_onError(EW_this, EW_this.x_behave, "TEXT", "Invalid Field - behave"))
                 return false; 
         }
 if (EW_this.x_ismonster && !EW_hasValue(EW_this.x_ismonster, "TEXT" )) {
@@ -692,16 +736,24 @@ return true;
 		<td class="ewTableAltRow"><input type="text" name="x_gold" size="30" value="<%= HTMLEncode((String)x_gold) %>">&nbsp;</td>
 	</tr>
 	<tr>
+		<td class="ewTableHeader">nitem&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_nitem" size="30" value="<%= HTMLEncode((String)x_nitem) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">use Wpn&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_useWpn" size="30" value="<%= HTMLEncode((String)x_useWpn) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">use Shld&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_useShld" size="30" value="<%= HTMLEncode((String)x_useShld) %>">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="ewTableHeader">use Arm&nbsp;</td>
+		<td class="ewTableAltRow"><input type="text" name="x_useArm" size="30" value="<%= HTMLEncode((String)x_useArm) %>">&nbsp;</td>
+	</tr>
+	<tr>
 		<td class="ewTableHeader">dialog&nbsp;</td>
 		<td class="ewTableAltRow"><input type="text" name="x_dialog" size="30" maxlength="255" value="<%= HTMLEncode((String)x_dialog) %>">&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="ewTableHeader">items&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_items" size="30" maxlength="255" value="<%= HTMLEncode((String)x_items) %>">&nbsp;</td>
-	</tr>
-	<tr>
-		<td class="ewTableHeader">behave&nbsp;</td>
-		<td class="ewTableAltRow"><input type="text" name="x_behave" size="30" maxlength="255" value="<%= HTMLEncode((String)x_behave) %>">&nbsp;</td>
 	</tr>
 	<tr>
 		<td class="ewTableHeader">ismonster&nbsp;</td>

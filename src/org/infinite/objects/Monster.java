@@ -11,9 +11,10 @@ import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.PlayerOwnItem;
 import org.infinite.db.dao.Spell;
 import org.infinite.db.dao.SpellAffectPlayer;
-import org.infinite.engines.AI.AIEngine;
+import org.infinite.engines.AI.newAIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.PlayerInterface;
+import org.infinite.engines.items.ItemsEngine;
 import org.infinite.engines.magic.MagicEngine;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
@@ -44,7 +45,7 @@ public class Monster implements PlayerInterface {
 	private PlayerOwnItem handLeft = null;	
 	private PlayerOwnItem body = null;
 
-	private ArrayList<PlayerKnowSpell> preparedSpell = null;
+	private ArrayList<PlayerKnowSpell> preparedSpell = new ArrayList<PlayerKnowSpell>();
 
 	/*
 	 * Backpack content
@@ -60,7 +61,7 @@ public class Monster implements PlayerInterface {
 
 
 	private ArrayList<SpellAffectPlayer> spellsAffecting = new ArrayList<SpellAffectPlayer>();
-	
+
 	private ArrayList<Object> battlePlan = new ArrayList<Object>();
 
 	/*
@@ -74,10 +75,10 @@ public class Monster implements PlayerInterface {
 
 	public Monster(String name){
 
-		
+
 		npc = (Npc)Manager.listByQuery("select npc from Npc as npc where name='"+name+"'").get(0);
-		
-		
+
+
 		iBehaveStatus= InfiniteCst.NPC_BEHAVE_FIGHT;
 
 		currLifePoint = getPointsLifeMax();
@@ -121,22 +122,31 @@ public class Monster implements PlayerInterface {
 	public int getAttackType(PlayerInterface defender){
 
 		//TODO invoke chooseBestAttack
-		AIEngine.chooseBestAttack(this);
+		//AIEngine.chooseBestAttack(this);
+
+
+		return iAttackKind;
+
+	}
+	
+	public int getInitiative( int round){
+		
+		
 
 		int iNumTypes = 0;
-
-		if(inventory.size()>0 ){
+/*
+		if(getInventory().size()>0 ){
 			//TODO AI must choose best weapon
 			int ichoose = (int)Math.round( Math.random() * (inventory.size()-1) ); 
 			handRight = getInventory().get(ichoose);
 		}
-
+*/
 		switch (iBehaveStatus) {
 		case InfiniteCst.NPC_BEHAVE_FIGHT:
-			if(spellBookFight.size()>0){
+			if(getSpellBookFight().size()>0){
 				//TODO AI must choose best spell
-				int ichoose = (int)Math.round( Math.random() * (spellBookFight.size()-1) ); 
-				addToPreparedSpells( spellBookFight.get(ichoose) );
+				int ichoose = newAIEngine.getRandomNumber(0, (getSpellBookFight().size()-1) ); 
+				addToPreparedSpells( getSpellBookFight().get(ichoose) );
 
 				//if cannot cast choosed spell revert to melee
 				if(getPointsMagic()>=getPreparedSpells().get(0).getSpell().getCostMp())
@@ -144,18 +154,18 @@ public class Monster implements PlayerInterface {
 			}
 			break;
 		case InfiniteCst.NPC_BEHAVE_HEAL:
-			if(spellBookHeal.size()>0){
+			if(getSpellBookHeal().size()>0){
 				//TODO AI must choose best spell
-				int ichoose = (int)Math.round( Math.random() * (spellBookHeal.size()-1) ); 
-				addToPreparedSpells( spellBookHeal.get(ichoose) );
+				int ichoose =  newAIEngine.getRandomNumber(0, (getSpellBookHeal().size()-1) ); 
+				addToPreparedSpells( getSpellBookHeal().get(ichoose) );
 				iNumTypes++;
 			}
 			break;
 		case InfiniteCst.NPC_BEHAVE_DEFEND:
-			if(spellBookProtect.size()>0 && getPointsMagic()>0 ){
+			if(getSpellBookProtect().size()>0 && getPointsMagic()>0 ){
 				//TODO AI must choose best spell
-				int ichoose = (int)Math.round( Math.random() * (spellBookProtect.size()-1) ); 
-				addToPreparedSpells( spellBookProtect.get(ichoose) );
+				int ichoose =  newAIEngine.getRandomNumber(0, (getSpellBookProtect().size()-1) ); 
+				addToPreparedSpells( getSpellBookProtect().get(ichoose) );
 				iNumTypes++;
 			}
 			break;
@@ -170,9 +180,25 @@ public class Monster implements PlayerInterface {
 		else if(iNumTypes==1 && getPointsAction()<=0)
 			iAttackKind = InfiniteCst.ATTACK_TYPE_MAGIC;
 		else
-			iAttackKind = (int)Math.round( Math.random()*iNumTypes  );
+			iAttackKind =  newAIEngine.getRandomNumber(0, iNumTypes  );
+		
+		
+		// 1d6 random
+		int init = GenericUtil.rollDice(1, 6, 0);
 
-		return iAttackKind;
+		//magic attack are based on intelligence, weapon and items on dexterity
+		if(iAttackKind==InfiniteCst.ATTACK_TYPE_MAGIC)
+		{
+			//add dexterity bonus
+			init -= (int)Math.floor( getIntelligence()/5);
+		}
+		else
+		{
+			//add dexterity bonus
+			init -= (int)Math.floor( getDexterity()/5 );			
+		}
+
+		return init;  
 
 	}
 
@@ -204,25 +230,7 @@ public class Monster implements PlayerInterface {
 	}
 
 
-	public int getInitiative( int round){
-		// 1d6 random
-		int init = GenericUtil.rollDice(1, 6, 0);
-
-		//magic attack are based on intelligence, weapon and items on dexterity
-		if(iAttackKind==InfiniteCst.ATTACK_TYPE_MAGIC)
-		{
-			//add dexterity bonus
-			init -= (int)Math.floor( getIntelligence()/5);
-		}
-		else
-		{
-			//add dexterity bonus
-			init -= (int)Math.floor( getDexterity()/5 );			
-		}
-
-		return init;  
-
-	}
+	
 
 	public int getRollToAttack(){
 
@@ -346,6 +354,14 @@ public class Monster implements PlayerInterface {
 		return (body!=null)?body.getItem():null;
 	}
 
+	public PlayerOwnItem getBodyPoi() {
+		return body;
+	}
+
+	public void setBody(PlayerOwnItem body) {
+		this.body = body;
+	}
+
 	public ArrayList<PlayerKnowSpell> getPreparedSpells(){
 		return preparedSpell;
 	}
@@ -353,7 +369,7 @@ public class Monster implements PlayerInterface {
 	public void addToPreparedSpells(PlayerKnowSpell s){
 		getPreparedSpells().add(s);
 	}
-	
+
 	public void addToAffectingSpells(Spell s){
 		SpellAffectPlayer sap = new SpellAffectPlayer();
 		sap.setSpell(s);
@@ -361,11 +377,11 @@ public class Monster implements PlayerInterface {
 		sap.setElapsing( (new Date()).getTime() + s.getDuration()  );
 		addToAffectingSpells(sap);
 	}
-	
+
 	public void addToAffectingSpells(SpellAffectPlayer sap ){
 		getSpellsAffecting().add(sap);
 	}
-	
+
 	public void removeSpellsAffecting( int sapId ) {
 		for (int i = 0; i < getSpellsAffecting().size(); i++) {
 			if(getSpellsAffecting().get(i).getId() == sapId){
@@ -389,7 +405,7 @@ public class Monster implements PlayerInterface {
 		String query = "select s from org.infinite.db.dao.Spell s where s.name in ("+
 		sb.toString().substring(1)	+ ")";
 
-		
+
 
 		//fighting spells
 		List<Spell> l = Manager.listByQuery( query+" and s.spelltype="+InfiniteCst.MAGIC_ATTACK );
@@ -409,7 +425,7 @@ public class Monster implements PlayerInterface {
 			spellBookProtect.add( new PlayerKnowSpell(null,l.get(i),0) );
 		}
 
-		
+
 
 
 
@@ -477,6 +493,21 @@ public class Monster implements PlayerInterface {
 		return inventory;
 	}
 
+	/**
+	 * A newly owned item is moved to inventory (used to loot/buy items)
+	 * NOTE: no persitence with this method 
+	 */
+	public void addToInventory(PlayerOwnItem poi){
+		getInventory().add(poi);
+	}
+
+	/**
+	 * A newly owned item is moved to inventory (used to loot/buy items)
+	 */ 
+	public void addToInventory(Item item){
+		ItemsEngine.addToInventory(this,item, true);
+	}
+
 
 	@Override
 	public ArrayList<PlayerKnowSpell> getSpellBookFight() {
@@ -487,19 +518,19 @@ public class Monster implements PlayerInterface {
 	public ArrayList<PlayerKnowSpell> getSpellBookHeal() {
 		return spellBookHeal;
 	}
-	
+
 	@Override
 	public ArrayList<PlayerKnowSpell> getSpellBookProtect() {
 		return spellBookProtect;
 	}
-	
+
 	public Npc getDao(){
 		return npc;
 	}
 
-	
 
-	
+
+
 	public int getDexterity(){
 
 		int mod = getDao().getBaseDex();
@@ -551,9 +582,9 @@ public class Monster implements PlayerInterface {
 		}
 		return mod;
 	}
-	
-	
-	
+
+
+
 
 
 
@@ -569,23 +600,23 @@ public class Monster implements PlayerInterface {
 
 		return s;
 	}
-	
-	
-	
+
+
+
 	public int getPointsLife() {
 		return currLifePoint;
 	}
 
-	
+
 	public int getPointsMagic() {
 		return currMagicPoint;
 	}
-	
+
 
 	public int getPointsAction() {
 		return currActionPoint;
 	}
-	
+
 	public int getPointsCharm() {
 		return currCharmPoint;
 	}	
@@ -601,13 +632,13 @@ public class Monster implements PlayerInterface {
 		mod += (getIntelligence()/5);
 		return mod;
 	}
-	
+
 	public int getPointsActionMax(){
 		int mod = getDao().getBasePa();		
 		mod += (getDexterity()/5);
 		return mod;
 	}
-	
+
 	public int getPointsCharmMax(){
 		int mod = getDao().getBasePc();		
 		mod += (getCharisma()/5);
@@ -659,7 +690,7 @@ public class Monster implements PlayerInterface {
 	@Override
 	public void learnSpell(Spell spell) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -667,7 +698,7 @@ public class Monster implements PlayerInterface {
 	@Override
 	public void prepareSpell(PlayerKnowSpell pks) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -675,18 +706,18 @@ public class Monster implements PlayerInterface {
 	@Override
 	public void unprepareSpell(int pksId) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void prepareForFight() {
-		
+
 		Item[] it = FightEngine.parseUnarmedAttack( getDao().getAttack() );
 		for (int i = 0; i < it.length; i++) {
 			PlayerOwnItem poi = new PlayerOwnItem(null,it[i],0, InfiniteCst.EQUIP_HAND_RIGHT );
 			getBattlePlan().add( poi );
 		}
-				
+
 	}
 
 
@@ -780,6 +811,29 @@ public class Monster implements PlayerInterface {
 
 	public int getCurrCharmPoint() {
 		return currCharmPoint;
+	}
+
+	public PlayerOwnItem getHandRightPoi() {
+		return handRight;
+	}
+
+
+	public PlayerOwnItem getHandLeftPoi() {
+		return handLeft;
+	}
+	
+	
+
+	public void setHandRight(PlayerOwnItem handRight) {
+		this.handRight = handRight;
+	}
+	public void setHandLeft(PlayerOwnItem handLeft) {
+		this.handLeft = handLeft;
+	}
+	
+
+	public void equipItem(PlayerOwnItem poi){
+		ItemsEngine.equipItem(this, poi);
 	}
 
 }
