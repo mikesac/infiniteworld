@@ -5,6 +5,7 @@
 <%@page import="org.infinite.db.dao.Item"%>
 <%@page import="org.infinite.db.Manager"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="org.infinite.web.PagesCst"%>
 
 
 <html>
@@ -43,7 +44,7 @@
 		<td><a href="../itemadd.jsp?key=<%= items.get(i).getId() %>">Copy</a></td>
 		<td><%= items.get(i).getName() %></td><%
 		%><td><%= items.get(i).getDescr() %></td><%
-		%><td><img src="<%=request.getContextPath() %>/imgs/item/<%= items.get(i).getImage() %>.png" /></td><%
+		%><td><img src="<%=PagesCst.IMG_ITEM_PATH + items.get(i).getImage() + PagesCst.IMG_ITEM_EXT%>" /></td><%
 		%><td><%= items.get(i).getReqStr() %></td><%
 		%><td><%= items.get(i).getReqInt() %></td><%
 		%><td><%= items.get(i).getReqDex() %></td><%

@@ -5,7 +5,7 @@
 <%@page import="org.infinite.db.dao.Spell"%>
 <%@page import="org.infinite.db.Manager"%>
 <%@page import="java.util.ArrayList"%>
-
+<%@page import="org.infinite.web.PagesCst"%>
 
 <html>
 <head>
@@ -45,7 +45,7 @@
 		<td><a href="../itemadd.jsp?key=<%= items.get(i).getId() %>">Copy</a></td>
 		<td><%= items.get(i).getName() %></td><%
 		%><td><%= items.get(i).getDesc() %></td><%
-		%><td><img src="<%=request.getContextPath() %>/imgs/spell/<%= items.get(i).getImage() %>.png" /></td><%
+		%><td><img src="<%= PagesCst.IMG_SPELL_PATH + items.get(i).getImage() +PagesCst.IMG_SPELL_EXT%>" /></td><%
 		%><td><%= items.get(i).getReqStr() %></td><%
 		%><td><%= items.get(i).getReqInt() %></td><%
 		%><td><%= items.get(i).getReqDex() %></td><%

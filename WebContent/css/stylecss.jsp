@@ -97,17 +97,6 @@ font-family: Verdana,Arial;
 	padding-left: 16px;
 }
 
-.shield {
-	background-image:
-		url('<%=request.getContextPath()%>/imgs/item/shield.png');
-	background-repeat: no-repeat;
-	width: 50px;
-	color: black;
-	font-size: 8pt;
-	font-weight: bold;
-	padding-top: 14px;
-	padding-left: 16px;
-}
 
 .rewards {
 	font-size: 6pt;

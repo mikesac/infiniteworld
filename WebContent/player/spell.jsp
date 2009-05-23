@@ -83,7 +83,7 @@
 						<table class="char">
 							<tr>
 								<td>
-									<div class="iconlarge" style="background-image: url(../imgs/spell/<%=pks.get(0).getSpell().getImage()%>.png);">
+									<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_SPELL_PATH +  pks.get(0).getSpell().getImage() + PagesCst.IMG_SPELL_EXT%>);">
 										<div class="tile"/>
 									</div>
 								</td>
@@ -154,7 +154,7 @@
 				%>
 			<tr>
 				<td><img width="50" height="50"
-					src="../imgs/spell/<%=c.getPreparedSpells().get(i).getSpell().getImage()%>.png" /></td>
+					src="<%= PagesCst.IMG_SPELL_PATH + c.getPreparedSpells().get(i).getSpell().getImage() +PagesCst.IMG_SPELL_EXT%>" /></td>
 				<td><%=c.getPreparedSpells().get(i).getSpell().getName()%></td>
 				<td>
 				<form action="<%=request.getContextPath()%>/prepare" method="POST">

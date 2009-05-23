@@ -369,7 +369,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 		
 		if(currPx>=next){
 			getDao().setLevel( getLevel()+1 );
-			getDao().setAssign( InfiniteCst.CFG_NEXTLEVELPOINTS);
+			getDao().setAssign( (short)(getDao().getAssign() + InfiniteCst.CFG_NEXTLEVELPOINTS) );
 		}
 		
 		saveDao();

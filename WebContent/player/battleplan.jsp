@@ -49,7 +49,7 @@
 					if (poi != null) {
 				%>
 				<div class="iconlarge"
-					style="background-image: url(<%=request.getContextPath()%>/imgs/item/<%=poi.getItem().getImage()%>.png);">
+					style="background-image: url(<%=PagesCst.IMG_ITEM_PATH +  poi.getItem().getImage() + PagesCst.IMG_ITEM_EXT%>);">
 				<div class="tile" /></div>
 				<%
 					}
@@ -88,7 +88,7 @@
 							
 							if(c.getPreparedSpells().size()!=0){
 								%>
-									<div id="spell_ico" class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/spell/<%=c.getPreparedSpells().get(0).getSpell().getImage()%>.png);">
+									<div id="spell_ico" class="iconlarge" style="background-image: url(<%= PagesCst.IMG_SPELL_PATH + c.getPreparedSpells().get(0).getSpell().getImage() +PagesCst.IMG_SPELL_EXT%>);">
 										<div class="tile"/>
 									</div>
 								<%
@@ -158,7 +158,7 @@
 					<td align="center"  width="50px"><%=i%></td>
 					<td width="200px"><%=o.getItem().getName() %></td>			
 					<td width="70px">
-						<div class="iconlarge" style="background-image: url(../imgs/item/<%=o.getItem().getImage()%>.png);">
+						<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + o.getItem().getImage() + PagesCst.IMG_ITEM_EXT %>);">
 							<div class="tile"/>
 						</div>
 					</td>
@@ -171,7 +171,7 @@
 					<td><%=i%></td>
 					<td width="200px"><%=o.getSpell().getName() %></td>			
 					<td>
-						<div class="iconlarge" style="background-image: url(../imgs/spell/<%=o.getSpell().getImage()%>.png);">
+						<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_SPELL_PATH +  o.getSpell().getImage() + PagesCst.IMG_SPELL_EXT%>);">
 							<div class="tile"/>
 						</div>
 					</td>
@@ -210,7 +210,7 @@
 
 function changeSpellImg(el){
 	var img = el.options[el.selectedIndex].getAttribute("img");
-	document.getElementById("spell_ico").style.backgroundImage = "url(../imgs/spell/"+img+".png)";	
+	document.getElementById("spell_ico").style.backgroundImage = "url(<%= PagesCst.IMG_SPELL_PATH%>"+img+"<%=PagesCst.IMG_SPELL_EXT%>)";	
 }
 
 function remPlan(el){
@@ -253,7 +253,19 @@ function addPlan(id,name,imag,type,path){
 	td2.innerHTML = name;
 	var td3 = document.createElement("td");
 	td3.style.width="70";
-	td3.innerHTML = "<div style=\"background-image: url(../imgs/"+path+"/"+imag+".png);\" class=\"iconlarge\"><div class=\"tile\"></div>";
+	
+	var inhtml = "<div style=\"background-image: url(";
+	
+	if(path=="item"){
+		inhtml += "<%= PagesCst.IMG_ITEM_PATH %>"+imag+"<%= PagesCst.IMG_ITEM_EXT %>";
+	}
+	else {
+		inhtml += "<%= PagesCst.IMG_SPELL_PATH %>"+imag+"<%= PagesCst.IMG_SPELL_EXT %>";
+	}
+	
+	inhtml += ");\" class=\"iconlarge\"><div class=\"tile\"></div>";
+	
+	td3.innerHTML = inhtml;
 	var td = document.createElement("td");
 	var inp = document.createElement("input");
 	inp.type = "hidden";

@@ -23,7 +23,7 @@
 		<td colspan="4"><%= s.getName() %></td>
 	</tr>
 	<tr>
-		<td><img src="../imgs/spell/<%= s.getImage() %>.png" /></td>
+		<td><img src="<%= PagesCst.IMG_SPELL_PATH +  s.getImage() + PagesCst.IMG_SPELL_EXT%>" /></td>
 		<td colspan="3"><%= s.getDesc() %></td>
 	</tr>
 	<tr>

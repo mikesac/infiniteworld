@@ -9,7 +9,9 @@ import org.infinite.objects.Character;
 
 public class PagesCst {
 
+	public static final String STATIC_BASEPATH = "/InfiniteWeb";
 	
+	//PAGES
 	public static final String PAGE_MAPFIGHT = "/player/mapFight.jsp";
 	public static final String PAGE_MAPFIGHTREPORT = "/player/mapFightReport.jsp";
 	public static final String PAGE_ROOT = "/";
@@ -23,7 +25,12 @@ public class PagesCst {
 	public static final String PAGE_BATTLEPLAN= "/player/battleplan.jsp";
 	public static final String PAGE_NPCDIALOG= "/player/npcdialog.jsp";
 	
+	//IMAGES
+	public static final String IMG_ITEM_EXT= ".jpg";
+	public static final String IMG_ITEM_PATH= STATIC_BASEPATH  + "/imgs/item/";
 	
+	public static final String IMG_SPELL_EXT= ".jpg";
+	public static final String IMG_SPELL_PATH= STATIC_BASEPATH  + "/imgs/spell/";
 	
 	public static final String CONTEXT_CHARACTER = "character";
 	public static final String CONTEXT_ERROR = "error";

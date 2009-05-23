@@ -40,7 +40,7 @@
 					Item it = c.getHandLeft();
 					if(it!=null){
 						%>
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
+							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 						<%
@@ -56,7 +56,7 @@
 					it = c.getHandRight();
 					if(it!=null){
 						%>
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
+							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 						<%
@@ -74,7 +74,7 @@
 					it = c.getBody();
 					if(it!=null){
 						%>
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= it.getImage() %>.png);">
+							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 						<%
@@ -125,7 +125,7 @@
 						
 						</td>
 						<td  style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;">
-							<div class="iconlarge" style="background-image: url(<%= request.getContextPath() %>/imgs/item/<%= pois.get(i).getItem().getImage() %>.png);">
+							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH +  pois.get(i).getItem().getImage() +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 							
