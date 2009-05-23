@@ -7,7 +7,8 @@
 <%@page import="java.util.ArrayList"%>
 
 
-<html>
+
+<%@page import="org.infinite.web.PagesCst"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Items list</title>
@@ -42,7 +43,7 @@
 		<td><a href="../itemadd.jsp?key=<%= items.get(i).getId() %>">Copy</a></td>
 		<td><%= items.get(i).getName() %></td><%
 		%><td><%= items.get(i).getDescription() %></td><%
-		%><td><img src="<%=request.getContextPath() %>/imgs/monster/<%= items.get(i).getImage() %>.png" /></td><%
+		%><td><img src="<%= PagesCst.IMG_MONST_PATH + items.get(i).getImage() + PagesCst.IMG_MONST_EXT%>" /></td><%
 		%><td><%= items.get(i).getBaseStr() %></td><%
 		%><td><%= items.get(i).getBaseInt() %></td><%
 		%><td><%= items.get(i).getBaseDex() %></td><%

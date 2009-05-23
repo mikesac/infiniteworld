@@ -66,7 +66,7 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			<%
 				for(int i=0;i<s2.size();i++){
 					%><td align="center">
-					<img style="border:1px outset gray;" width="100px" height="100px" src="<%= request.getContextPath()%>/imgs/monster/<%= s2.get(i).getPic() %>.png" alt="<%= s2.get(i).getPic() %>" />					
+					<img style="border:1px outset gray;" width="100px" height="100px" src="<%=PagesCst.IMG_MONST_PATH + s2.get(i).getPic() + PagesCst.IMG_MONST_EXT%>" alt="<%= s2.get(i).getPic() %>" />					
 					<br/><%= s2.get(i).getName() %>
 					</td><%
 				}
@@ -96,7 +96,7 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			<%
 			
 			String txt = "";
-			String img = "item"+"/"+r.getAttackImg();
+			String img = PagesCst.IMG_ITEM_PATH+r.getAttackImg()+PagesCst.IMG_ITEM_EXT;
 			String imgres = "ok";
 			
 			switch(r.getRoundType()){
@@ -124,7 +124,7 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 					txt = r.getAttacker() + " casts " +r.getAttackName();
 				}
 				
-				img = "spell" +"/"+r.getAttackImg();
+				img = PagesCst.IMG_SPELL_PATH+r.getAttackImg()+PagesCst.IMG_SPELL_EXT;
 				if(r.getAttackType()==InfiniteCst.MAGIC_UNCAST){
 					imgres = "error";
 					txt += " but doesn't have enough MP to complete the spell";
@@ -139,7 +139,7 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			case InfiniteCst.ATTACK_TYPE_ITEM:
 				break;
 			case InfiniteCst.ATTACK_TYPE_IDLE:
-				img = "web/rest";
+				img = request.getContextPath()+"/imgs/web/rest.png";
 				imgres = "error";
 				txt = r.getAttacker() + " needs to rest, regaining "+ r.getAttackDmg()+" AP/MP";
 				break;
@@ -148,7 +148,7 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			%>
 			<td>
 				<img width="30px" height="30px"
-					src="<%= request.getContextPath()+"/imgs/"+img%>.png" 
+					src="<%=img%>" 
 					alt="<%=r.getAttackName() %>" />
 			</td>
 			<td>

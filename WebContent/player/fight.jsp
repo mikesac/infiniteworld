@@ -4,6 +4,7 @@
 
 <%@page import="org.infinite.util.GenericUtil"%>
 <%@page import="org.infinite.objects.Monster"%><html>
+<%@page import="org.infinite.web.PagesCst"%>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -81,7 +82,7 @@ function addMonster(id){
 	else{
 		document.forms[0].elements["party"+id].value += ","+document.getElementById("monsters").value;
 	}
-	document.getElementById("p"+id).innerHTML += "<div><center><img src='<%=request.getContextPath()%>/imgs/monster/"+document.getElementById("monsters").value.toLowerCase() + ".png' title='"+document.getElementById("monsters").value + "'/><br/>"+document.getElementById("monsters").value + "</center></div>";
+	document.getElementById("p"+id).innerHTML += "<div><center><img src='<%= PagesCst.IMG_MONST_PATH %>"+document.getElementById("monsters").value.toLowerCase() + "<%= PagesCst.IMG_MONST_EXT %>' title='"+document.getElementById("monsters").value + "'/><br/>"+document.getElementById("monsters").value + "</center></div>";
 	
 }
 

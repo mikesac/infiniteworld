@@ -32,6 +32,9 @@ public class PagesCst {
 	public static final String IMG_SPELL_EXT= ".jpg";
 	public static final String IMG_SPELL_PATH= STATIC_BASEPATH  + "/imgs/spell/";
 	
+	public static final String IMG_MONST_EXT= ".jpg";
+	public static final String IMG_MONST_PATH= STATIC_BASEPATH  + "/imgs/monster/";
+	
 	public static final String CONTEXT_CHARACTER = "character";
 	public static final String CONTEXT_ERROR = "error";
 	public static final String CONTEXT_MAP = "map";
