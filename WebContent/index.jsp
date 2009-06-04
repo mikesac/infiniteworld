@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
+<%@page import="org.infinite.web.PagesCst"%>
+<%@page import="org.infinite.util.InfiniteCst"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Infinite World Test Server</title>
@@ -11,10 +13,13 @@
 
 <%
 	if(session.getAttribute("error")!=null){
-		%><%@ include file="../decorators/b2pre.jsp"%><%
-		out.print("<div align=\"center\"><div class=\"error\">"+session.getAttribute("error")+"</div></div>");
-		session.removeAttribute("error");
-		%><%@ include file="../decorators/b2post.jsp"%><br/><%
+		%>
+		<%@ include file="../decorators/b2pre.jsp"%>
+		<div align="center"><div class="error"><%=session.getAttribute(PagesCst.CONTEXT_ERROR) %></div></div>
+		<% session.removeAttribute(PagesCst.CONTEXT_ERROR);%>
+		<%@ include file="../decorators/b2post.jsp"%>
+		<br/>
+		<%
 	}
 %>
 
@@ -50,7 +55,10 @@
 				</td>
 			</tr>
 			<tr align="center">
-				<td><button onclick="document.location='<%=request.getContextPath()%>/player/character.jsp'">Play</button></td>
+				<td><button onclick="document.location='<%=request.getContextPath() + PagesCst.PAGE_CHARACTER%>'">Play</button></td>
+			</tr>
+			<tr align="center">
+				<td><button onclick="document.location='<%=request.getContextPath()+ PagesCst.ADMIN_HOME%>'">Expand World</button></td>
 			</tr>
 			<tr align="center">
 				<td><button onclick="document.location='<%=request.getContextPath()%>/login/register.jsp'">Register</button></td>

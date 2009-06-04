@@ -175,15 +175,7 @@
   </servlet-mapping>
   
   
-  <!-- map util -->
-  <servlet>
-		<servlet-name>maputil</servlet-name>
-		<servlet-class>org.infinite.web.utils.MapManager</servlet-class>
-	</servlet>
-	<servlet-mapping>
-    <servlet-name>maputil</servlet-name>
-    <url-pattern>/maputil</url-pattern>
-  </servlet-mapping>
+  
   
   
   <!-- Fight -->
@@ -205,6 +197,47 @@
     <servlet-name>StatusUpgrade</servlet-name>
     <url-pattern>/statupgrade</url-pattern>
   </servlet-mapping>
+  
+  
+  
+  
+  <!-- 
+  *** ADMIN SECTION ***
+   -->
+  
+  
+  
+  <!-- map util -->
+  <servlet>
+		<servlet-name>maputil</servlet-name>
+		<servlet-class>org.infinite.web.utils.MapManager</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    <servlet-name>maputil</servlet-name>
+    <url-pattern>/maputil</url-pattern>
+  </servlet-mapping>
+  
+  <!-- map util -->
+  <servlet>
+		<servlet-name>mapsave</servlet-name>
+		<servlet-class>org.infinite.web.utils.MapSave</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    <servlet-name>mapsave</servlet-name>
+    <url-pattern>/mapSave</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  
+  
+  
+  <!-- 
+  *** TEST SECTION ***
+   -->
+  
+  
   
   <!--  monster XML -->
   <servlet>

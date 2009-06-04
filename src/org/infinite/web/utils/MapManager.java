@@ -16,6 +16,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.ImageUtil;
+import org.infinite.web.PagesCst;
 
 public class MapManager extends HttpServlet {
 
@@ -37,7 +38,7 @@ public class MapManager extends HttpServlet {
 			InputStream is = null;
 
 			Iterator iter = items.iterator();			
-			String szFileName = "error.png";
+			String szFileName = "error.jpg";
 
 			int nx = 1,ny = 1;
 			
@@ -62,16 +63,13 @@ public class MapManager extends HttpServlet {
 
 				szPath = this.getServletContext().getRealPath("/imgs/maps/tmp");
 				ImageUtil.prepareMapStripes(is,nx,ny,szPath);
-//				File f = new File("/tmp/test.png");
-//				ImageIO.write(bi, "png", f);
-
 			}
 			
 			req.getSession().setAttribute("nx", nx);
 			req.getSession().setAttribute("ny", ny);
 			req.getSession().setAttribute("path", szPath);
 			
-			req.getRequestDispatcher("/admin/map/mapUtilPreview.jsp").forward(req,resp);
+			req.getRequestDispatcher(PagesCst.ADMIN_MAPPREVIEW).forward(req,resp);
 			
 
 		} catch (FileUploadException e) {

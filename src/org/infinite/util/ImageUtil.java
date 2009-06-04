@@ -38,8 +38,8 @@ public class ImageUtil {
 				int y = h*i;
 				BufferedImage crop = scaledImg.getSubimage(x, y, w, h);
 				
-				File f = new File(path+"/crop_"+i+j+".png");
-				ImageIO.write(crop, "png", f);
+				File f = new File(path+"/crop_"+i+j+".jpg");
+				ImageIO.write(crop, "jpg", f);
 			}
 		}
 		
@@ -58,7 +58,7 @@ public class ImageUtil {
 	        image = new ImageIcon(image).getImage();
    
 	        // Determine if the image has transparent pixels
-	        boolean hasAlpha = hasAlpha(image);
+	        boolean hasAlpha = false;//hasAlpha(image);
 
 	        // Create a buffered image with a format that's compatible with the screen
 	        BufferedImage bimage = null;
