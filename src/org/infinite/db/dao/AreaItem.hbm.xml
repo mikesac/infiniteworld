@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 23-mag-2009 22.20.43 by Hibernate Tools 3.2.4.CR1 -->
+<!-- Generated 6-giu-2009 15.13.25 by Hibernate Tools 3.2.4.CR1 -->
 <hibernate-mapping>
     <class name="org.infinite.db.dao.AreaItem" table="AreaItem" catalog="mikesac_mikesac">
         <id name="id" type="java.lang.Integer">
@@ -55,11 +55,8 @@
         <property name="url" type="string">
             <column name="url" not-null="true" />
         </property>
-        <property name="direct" type="boolean">
-            <column name="direct" not-null="true" />
-        </property>
-        <property name="loop" type="boolean">
-            <column name="loop" not-null="true" />
+        <property name="doublestep" type="boolean">
+            <column name="doublestep" not-null="true" />
         </property>
         <property name="hidemode" type="boolean">
             <column name="hidemode" not-null="true" />

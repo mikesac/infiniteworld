@@ -9,7 +9,7 @@
 		<pattern>/player/*</pattern>
 	</decorator>
 
-	<decorator name="Admin" page="admin.jsp">
+	<decorator name="Admin" page="admindec.jsp">
 		<pattern>/admin/*</pattern>
 	</decorator>
 

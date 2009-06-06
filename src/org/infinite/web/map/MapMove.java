@@ -87,7 +87,7 @@ public class MapMove extends HttpServlet {
 		}
 		
 		if(moved && nextArea.getUrl().length()!=0 & ff==null){
-			if(nextArea.isLoop()){
+			if(nextArea.isDoublestep()){
 				req.getSession().setAttribute(FORWARD, "1");
 			}
 			resp.sendRedirect( req.getContextPath() + nextArea.getUrl() );

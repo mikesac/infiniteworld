@@ -28,5 +28,6 @@ Choose the Area to edit:
 
 </select>
 <input type="submit" value="go">
+</form>
 </body>
 </html>

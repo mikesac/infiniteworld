@@ -50,8 +50,9 @@ public class PagesCst {
 
 	public static final String ADMIN_HOME = "/admin/adminHome.jsp";
 	public static final String ADMIN_MAPPREVIEW = "/admin/map/mapUtilPreview.jsp";
-
+	
 	public static final String ADMIN_MAPUTIL = 	"/admin/map/mapUtil.jsp";
+	public static final String ADMIN_MAPLIST = 	"/admin/map/listArea.jsp";
 	public static final String ADMIN_MAPITEMS = "/admin/map/mapItems.jsp";
 	
 	public static Character getCharacter(HttpServletRequest req, HttpServletResponse resp) throws IOException{

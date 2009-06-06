@@ -227,6 +227,15 @@
     <url-pattern>/mapSave</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+		<servlet-name>aisave</servlet-name>
+		<servlet-class>org.infinite.web.utils.AreaItemSave</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    <servlet-name>aisave</servlet-name>
+    <url-pattern>/saveAreaItem</url-pattern>
+  </servlet-mapping>
+  
   
   
   

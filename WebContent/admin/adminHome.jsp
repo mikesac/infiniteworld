@@ -9,10 +9,10 @@
 <body>
 <center>
 <table width="100%" align="center">
-	<tr width="100%" align="center">
+	<tr align="center">
 	<td colspan="15">Welcome to administrator interface!<br/>From this panel you can create new element to expand Infinite World game plot</td>
 	</tr>
-	<tr width="100%" align="center">
+	<tr align="center">
 		<td valign="middle">
 			<a href="/InfiniteWeb/admin/map/mapUtil.jsp">
 				<img width="36" src="/InfiniteWeb/imgs/maps/icons/map.png">
@@ -21,7 +21,7 @@
 		</td>
 	<td>&nbsp;</td>
 		<td valign="middle">
-			<a href="/InfiniteWeb/admin/map/listArea.jsp">
+			<a href="/InfiniteWeb/admin/map/mapItems.jsp">
 				<img width="36" src="/InfiniteWeb/imgs/maps/icons/step.png">
 				Create New Area Items
 			</a>

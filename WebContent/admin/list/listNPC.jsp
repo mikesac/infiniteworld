@@ -12,7 +12,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Items list</title>
-<link  type="text/css" rel="stylesheet" href="/InfiniteWeb/css/jspmaker.css">
+<link  type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/jspmaker.css">
 </head>
 <body>
 	<table class="ewTable">
