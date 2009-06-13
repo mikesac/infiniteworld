@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.infinite.db.Manager;
+import org.infinite.db.dao.Npc;
+import org.infinite.db.dao.Player;
 import org.infinite.engines.AI.newAIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.FightRound;
@@ -67,16 +69,27 @@ public class FightMap  extends HttpServlet {
 				throw new Exception("No monsters encounter this time!");
 			}
 			
-			ArrayList<String> list = (ArrayList<String>)Manager.listByQuery("select n.name from org.infinite.db.dao.Npc n where n.level="+level+" and n.ismonster=1");
+			ArrayList<String> listNPC = (ArrayList<String>)Manager.listByQuery("select n.name from "+Npc.class.getName()+" n where n.level="+level+" and n.ismonster=1");
+			ArrayList<Player> listPC = (ArrayList<Player>)Manager.listByQuery("from "+Player.class.getName()+" p where p.level <= '"+(level+3)+"' and p.level>='"+(level-3)+"' and p.id!='"+c.getDao().getId()+"' and p.areaItem.id='"+c.getDao().getAreaItem().getId()+"'");
 			
-			if(list.size()==0){
+			if((listNPC.size()+listPC.size())==0){
 				throw new Exception("No monsters matching your level ("+level+")");
 			}
 			
-			int index = newAIEngine.getRandomNumber(0, list.size());
+			int index = newAIEngine.getRandomNumber(0, listNPC.size() + listPC.size());
 			
 			try {
-				side2.add( newAIEngine.spawn("Goblin"));//list.get(index)) );
+				
+				if(index<listNPC.size()){
+					side2.add( newAIEngine.spawn(listNPC.get(index)) );
+				}
+				else{
+					Player p = listPC.get( index-listNPC.size() );
+					side2.add(  new Character( p.getName(),p.getTomcatUsers().getUser()) );
+				}
+				
+				
+				
 			} catch (Exception e1) {
 				log.error("Error Spawining Monster", e1);
 				e1.printStackTrace();
