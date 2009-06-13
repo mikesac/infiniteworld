@@ -41,7 +41,7 @@ public interface PlayerInterface{
 
 	public float getRewardGold();
 
-	public Item[] getRewardItems();
+	public ArrayList<Item> getRewardItems();
 
 	public void prepareForFight();
 	
@@ -51,7 +51,7 @@ public interface PlayerInterface{
 
 	public int addExperience(int rewardPX);
 
-	public void lootItems(Item[] rewardItems);
+	public void lootItems(ArrayList<Item> rewardItems);
 	
 	public ArrayList<SpellAffectPlayer> getSpellsAffecting();
 	

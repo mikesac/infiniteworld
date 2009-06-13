@@ -83,16 +83,10 @@ public class FightEngine {
 
 				//if defender dies
 				if( ! defender.isAlive() ){
-					
-					loot(attacker,defender);
-					
-					r.setEndRound(true);
-					r.setGold(defender.getRewardGold());
-					r.setPx(defender.getRewardPX());
-					r.addItems(null);
 
-					
-					
+					r.setEndRound(true);
+					loot(attacker,defender,r);
+										
 					if( firstSide.remove(defender) ){
 						log.debug(defender.getName()+" removed from firstSide "+firstSide.size()+" remains");
 					}
@@ -176,10 +170,17 @@ public class FightEngine {
 		
 	}
 
-	private static void loot(PlayerInterface attacker, PlayerInterface defender) {	
+	private static void loot(PlayerInterface attacker, PlayerInterface defender, FightRound r) {	
+		
 		attacker.addGold( defender.getRewardGold() );
+		r.setGold(defender.getRewardGold());
+		
 		attacker.addExperience( defender.getRewardPX() );
-		attacker.lootItems( defender.getRewardItems() );
+		r.setPx(defender.getRewardPX());
+		
+		ArrayList<Item> items = defender.getRewardItems();
+		attacker.lootItems( items );
+		r.addItems(items);
 	}
 
 	
@@ -250,7 +251,6 @@ public class FightEngine {
 			break;
 		}
 
-		//TODO stack effects
 		if(spell.getDuration()>0){
 			//attack spells last on target, protection & heal last on caster
 			if( spell.getSpelltype()== InfiniteCst.MAGIC_ATTACK )

@@ -397,8 +397,8 @@ public class Character implements PlayerInterface, ItemsInterface {
 	}
 
 
-	public Item[] getRewardItems(){
-		return new Item[0];
+	public ArrayList<Item> getRewardItems(){
+		return null;
 	}
 
 
@@ -1075,12 +1075,12 @@ public class Character implements PlayerInterface, ItemsInterface {
 	 * add all looted items to inventory
 	 * @see org.infinite.engines.fight.PlayerInterface#lootItems(org.infinite.db.dao.Item[])
 	 */
-	public void lootItems(Item[] rewardItems){
+	public void lootItems(ArrayList<Item> rewardItems){
 
-		if( rewardItems!=null && rewardItems.length>0){
+		if( rewardItems!=null && rewardItems.size()>0){
 
-			for (int i = 0; i < rewardItems.length; i++) {
-				this.addToInventory(rewardItems[i]);
+			for (int i = 0; i < rewardItems.size(); i++) {
+				this.addToInventory(rewardItems.get(i) );
 			}
 		}
 

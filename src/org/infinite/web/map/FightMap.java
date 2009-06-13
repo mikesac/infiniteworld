@@ -75,9 +75,8 @@ public class FightMap  extends HttpServlet {
 			
 			int index = newAIEngine.getRandomNumber(0, list.size());
 			
-			//TODO get party2 randomly
 			try {
-				side2.add( newAIEngine.spawn(list.get(index)) );
+				side2.add( newAIEngine.spawn("Goblin"));//list.get(index)) );
 			} catch (Exception e1) {
 				log.error("Error Spawining Monster", e1);
 				e1.printStackTrace();

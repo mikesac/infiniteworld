@@ -169,8 +169,21 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 					<img width="30px" height="30px"	src="<%= request.getContextPath()%>/imgs/web/die.png" alt="death" title="death" />
 				</td>
 				<td colspan="2">
-					<%=r.getDefender() %> dies dropping <%=r.getGold() %> GP and <%=r.getItems().size() %> items!
-					<%=r.getAttacker() %> gains <%=r.getPx() %> experience points.
+					<%=r.getDefender() %> dies, <%=r.getAttacker() %> gains
+					<%=r.getGold() %> GP,
+					<%=r.getItems().size() %> items 
+					<%
+						if( r.getItems().size()>0){
+							%>[<%
+							for(int k=0;k<r.getItems().size();k++){
+								%>
+									<img width="20" title="<%=r.getItems().get(k).getName()%>" alt="<%=r.getItems().get(k).getName()%>" src="<%= PagesCst.IMG_ITEM_PATH + r.getItems().get(k).getImage() + PagesCst.IMG_ITEM_EXT%>"/>&nbsp;
+								<%
+							}
+							 %>]<%
+						}
+					%>					
+					and <%=r.getPx() %> PX.
 				</td>
 			</tr>
 			<%
@@ -179,6 +192,16 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 		
 	}
 	%>
+		<tr>
+			<td>
+				<div class="iconmedium"
+					style="background-image: url(<%=request.getContextPath()%>/imgs/web/menu_map.png);">
+				<div class="tile"><a
+					href="<%=request.getContextPath()%><%=PagesCst.PAGE_MAP%>" ></a></div>
+				</div>
+			</td>
+			<td colspan="2" align="left">Back To Map</td>
+		</tr>
 	</table>
 	
 	

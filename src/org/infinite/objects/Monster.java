@@ -324,8 +324,28 @@ public class Monster implements PlayerInterface {
 		return getDao().getGold();
 	}
 
-	public Item[] getRewardItems(){
-		return new Item[0];
+	public ArrayList<Item> getRewardItems(){
+		
+		ArrayList<Item> items = new ArrayList<Item>();
+		
+		//move all equipped to inventory to do just one loop
+		if(getHandLeftPoi()!=null)
+			getInventory().add(getHandLeftPoi());
+		
+		if(getHandRightPoi()!=null)
+			getInventory().add(getHandRightPoi());
+		
+		if(getBodyPoi()!=null)
+			getInventory().add(getBodyPoi());
+		
+		//50% to drop inventory items
+		for(int i=0;i<getInventory().size();i++){			
+			if(GenericUtil.checkProbability(50)){
+				items.add( getInventory().get(i).getItem() );
+			}			
+		}		
+		
+		return items;
 	}
 
 
@@ -761,7 +781,7 @@ public class Monster implements PlayerInterface {
 	 * Unimplemented method - useless for spawned monster
 	 * @see org.infinite.engines.fight.PlayerInterface#lootItems(org.infinite.db.dao.Item[])
 	 */
-	public void lootItems(Item[] rewardItems) {
+	public void lootItems(ArrayList<Item> rewardItems) {
 		return;		
 	}
 

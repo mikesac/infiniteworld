@@ -73,11 +73,11 @@ public class FightRound {
 		return items;
 	}
 	
-	public void addItems(Item[] items) {
+	public void addItems(ArrayList<Item> items) {
 		
 		if(items!=null){
-			for (int i = 0; i < items.length; i++) {
-				this.items.add(items[i]);
+			for (int i = 0; i < items.size(); i++) {
+				this.items.add( items.get(i) );
 			}
 		}
 	}

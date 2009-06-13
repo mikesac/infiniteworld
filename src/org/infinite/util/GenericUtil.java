@@ -7,6 +7,39 @@ public class GenericUtil {
 
 	private static final Log log = LogFactory.getLog(GenericUtil.class);
 
+	/**
+	 * roll a percenteage probability dice
+	 * @param threshold
+	 * @return true if rolled 1d100  is LOWER than threshold
+	 */
+	public static boolean checkProbability(int threshold){
+		return checkProbability(threshold, 100);
+	}
+	
+	/**
+	 * roll a probability dice
+	 * e.g. 25% probability is evaulated using threshold=25 and maxValue=100
+	 * @param threshold probability threasure
+	 * @param maxValue probability max value
+	 * @return true if rolled dice over maxValue is LOWER than threshold
+	 */
+	public static boolean checkProbability(int threshold,int maxValue){
+		
+		boolean out = false;
+		
+		int roll;
+		try {
+			roll = rollDice("1d"+maxValue);
+		} catch (Exception e) {
+			roll = maxValue;
+		}
+		if(roll<threshold)
+			out = true;
+		
+		return out;
+	}
+	
+	
 	public static int rollDice(String szDiceType) throws Exception{
 
 		szDiceType = szDiceType.toLowerCase().trim();
