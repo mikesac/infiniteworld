@@ -3,18 +3,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@page import="org.infinite.objects.Map"%>
-<%
-	if(StartPlaying.redirectToCharSelect(session,request,response))
-		return;
-%>
-
+<%@page import="org.infinite.web.account.StartPlaying"%>
 <%@page import="org.infinite.web.PagesCst"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="org.infinite.engines.fight.FightRound"%>
 <%@page import="org.infinite.objects.Character"%>
 
 <%@page import="org.infinite.util.InfiniteCst"%>
-<%@page import="org.infinite.engines.fight.PlayerInterface"%><html>
+<%@page import="org.infinite.engines.fight.PlayerInterface"%>
+
+<%
+	if(StartPlaying.redirectToCharSelect(session,request,response))
+		return;
+%>
+
+
+
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Fight Report</title>
@@ -226,4 +231,4 @@ else{
 
 </body>
 
-<%@page import="org.infinite.web.account.StartPlaying"%></html>
+</html>

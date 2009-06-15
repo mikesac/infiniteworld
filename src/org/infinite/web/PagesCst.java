@@ -24,6 +24,9 @@ public class PagesCst {
 	public static final String PAGE_REGISTER = "/login/register.jsp";
 	public static final String PAGE_BATTLEPLAN= "/player/battleplan.jsp";
 	public static final String PAGE_NPCDIALOG= "/player/npcdialog.jsp";
+	public static final String PAGE_SHOP= "/player/shop.jsp";
+	
+	
 	
 	//IMAGES
 	public static final String IMG_ITEM_EXT= ".jpg";

@@ -15,9 +15,9 @@
 %>
 
 <%@page import="org.infinite.web.PagesCst"%>
-<%@page import="org.infinite.db.dao.Item"%>
 <%@page import="org.infinite.util.InfiniteCst"%>
-<%@page import="org.infinite.db.dao.PlayerOwnItem"%><html>
+<%@page import="org.infinite.db.dao.PlayerOwnItem"%>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Character Equipment</title>
