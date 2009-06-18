@@ -1140,5 +1140,14 @@ public class Character implements PlayerInterface, ItemsInterface {
 		saveDao();
 		
 	}
+
+
+
+	public void payGold(float price) {
+		
+		float gold = getDao().getGold() - price;
+		getDao().setGold(gold);
+		saveDao();		
+	}
 	
 }

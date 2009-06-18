@@ -153,6 +153,7 @@
     <url-pattern>/equip</url-pattern>
   </servlet-mapping>
   
+  
   <!-- Prepare Spells -->
   <servlet>
     <servlet-name>SpellPrepare</servlet-name>
@@ -174,10 +175,7 @@
     <url-pattern>/battlePlan</url-pattern>
   </servlet-mapping>
   
-  
-  
-  
-  
+    
   <!-- Fight -->
   <servlet>
     <servlet-name>FightMap</servlet-name>
@@ -188,6 +186,7 @@
     <url-pattern>/mapfight</url-pattern>
   </servlet-mapping>
   
+  
   <!-- Status Upgrade -->
   <servlet>
     <servlet-name>StatusUpgrade</servlet-name>
@@ -196,6 +195,17 @@
   <servlet-mapping>
     <servlet-name>StatusUpgrade</servlet-name>
     <url-pattern>/statupgrade</url-pattern>
+  </servlet-mapping>
+  
+  
+  <!-- Shop -->
+  <servlet>
+    <servlet-name>shop</servlet-name>
+    <servlet-class>org.infinite.web.map.Shop</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>shop</servlet-name>
+    <url-pattern>/shop</url-pattern>
   </servlet-mapping>
   
   

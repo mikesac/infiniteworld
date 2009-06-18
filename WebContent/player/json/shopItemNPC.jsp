@@ -8,6 +8,7 @@
 <%@page import="org.infinite.util.InfiniteCst"%>
 <%@page import="org.infinite.db.dao.Npc"%>
 <%@page import="org.infinite.db.Manager"%>
+<%@page import="org.infinite.engines.items.ItemsEngine"%>
 <%
 
 	Character c = (Character) session.getAttribute(PagesCst.CONTEXT_CHARACTER);
@@ -16,13 +17,13 @@
 
 	if(NpcId==-1){
 		session.setAttribute(PagesCst.CONTEXT_ERROR, "Cannot find NPC id:"+c.getAreaItem().getNpcs() );
-		response.sendRedirect( request.getContextPath() + PagesCst.PAGE_MAP );
+		response.sendRedirect( request.getContextPath() + PagesCst.PAGE_SHOP );
 		return;
 	}
 
 	Npc npc = (Npc)Manager.findById(Npc.class.getName(), NpcId);
 	
-	float priceAdj = (1.0f * npc.getBaseCha())/c.getCharisma();
+	float priceAdj = (1.0f * npc.getBaseCha())/c.getDao().getBaseCha();
 	
 	ArrayList<Item> list = 	(ArrayList<Item>)Manager.listByQuery("from "+Item.class.getName() + " i where i.lev > '0' and i.lev >= '"+ (npc.getLevel()-1) + "' and i.lev <= '"+ (npc.getLevel()+1)+ "'");
 	
@@ -31,14 +32,7 @@
     "rows":[
     	<% for(int i=0;i<list.size();i++){
     		
-    		boolean canBuy=( 
-    				(c.getGold()>=( priceAdj * list.get(i).getPrice()) ) && 
-    				(list.get(i).getReqStr()<=c.getStrenght()) &&
-    				(list.get(i).getReqInt()<=c.getIntelligence()) &&
-    				(list.get(i).getReqDex()<=c.getDexterity()) &&
-    				(list.get(i).getReqCha()<=c.getCharisma()) &&
-    				(list.get(i).getLev()<=c.getLevel()) 
-    				);
+    		boolean canBuy=( (c.getGold()>=( priceAdj * list.get(i).getPrice()) ) && ItemsEngine.canUseItem(c,list.get(i))	);
     		%>
     		{
     		"id":<%= list.get(i).getId()%>,
@@ -51,16 +45,16 @@
         		<%= Math.round(priceAdj * list.get(i).getPrice())%><img width='12' title='Gold' alt='Gold' src='/InfiniteWeb/imgs/web/gp.png'/>"
         		,
         		"<div style='font-size:xx-small;'>\
-        		<%=(list.get(i).getReqStr()>c.getStrenght())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getReqStr()>c.getDao().getBaseStr())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getReqStr()!=0)?("Str:"+list.get(i).getReqStr())+"<br/>":""%>\
         		</span>\
-        		<%=(list.get(i).getReqInt()>c.getIntelligence())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getReqInt()>c.getDao().getBaseInt())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getReqInt()!=0)?("Int:"+list.get(i).getReqInt()+"<br/>"):""%>\
         		</span>\
-        		<%=(list.get(i).getReqDex()>c.getDexterity())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getReqDex()>c.getDao().getBaseDex())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getReqDex()!=0)?("Dex:"+list.get(i).getReqDex()+"<br/>"):""%>\
         		</span>\
-        		<%=(list.get(i).getReqCha()>c.getCharisma())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getReqCha()>c.getDao().getBaseCha())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getReqCha()!=0)?("Cha:"+list.get(i).getReqCha()+"<br/>"):""%>\
         		</span>\
         		<%=(list.get(i).getLev()>c.getLevel())?"<span style='color:red'>":"<span style='color:green'>"%>\

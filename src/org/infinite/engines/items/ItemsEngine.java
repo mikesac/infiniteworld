@@ -9,7 +9,7 @@ import org.infinite.util.InfiniteCst;
 
 public class ItemsEngine {
 
-	
+
 	public static void persistOwnItem(PlayerOwnItem poi,int bodypart, int status){
 		poi.setBodypart(bodypart);
 		poi.setStatus(status);
@@ -33,7 +33,7 @@ public class ItemsEngine {
 	public static void addToInventory(PlayerInterface player,Item item){
 		addToInventory(player,item, true);
 	}
-	
+
 	public static void addToInventory(PlayerInterface player,Item item,boolean persist) {
 
 		PlayerOwnItem poi = null;
@@ -51,9 +51,9 @@ public class ItemsEngine {
 	}
 
 	public static void removeFromInventory(PlayerInterface player,int poiId) {
-		
+
 		for (int i = 0; i < player.getInventory().size(); i++) {
-			
+
 			if( player.getInventory().get(i).getId() == poiId){
 				player.getInventory().remove(i);
 				break;
@@ -68,7 +68,7 @@ public class ItemsEngine {
 	}
 
 	public static int equipItem(PlayerInterface player,PlayerOwnItem poi){
-		
+
 		int previousId = -1;
 		switch ( poi.getBodypart() ) {
 		case InfiniteCst.EQUIP_BODY:
@@ -86,9 +86,9 @@ public class ItemsEngine {
 		}
 		return previousId;
 	}
-	
+
 	public static int wearItem(PlayerInterface player,PlayerOwnItem poi) throws Exception {
-		
+
 		int previousId = -1; 
 		if(poi.getItem().getType() == InfiniteCst.ITEM_TYPE_WEAPON)
 			previousId = equipHandRight(player,poi);
@@ -102,7 +102,7 @@ public class ItemsEngine {
 		}
 		return previousId;
 	}
-	
+
 
 	public static int equipHandRight(PlayerInterface player,PlayerOwnItem poi) {	
 		return equipHandRight(player,poi,true);
@@ -123,7 +123,7 @@ public class ItemsEngine {
 		if(persist){
 			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_RIGHT, 0);
 		}
-		
+
 		return previousId;
 	}
 
@@ -147,7 +147,7 @@ public class ItemsEngine {
 			persistOwnItem(poi, InfiniteCst.EQUIP_HAND_LEFT, 0);
 		}
 		removeFromInventory(player,poi.getId());
-		
+
 		return previousId;
 	}
 
@@ -173,8 +173,46 @@ public class ItemsEngine {
 		removeFromInventory(player,poi.getId());
 		return previousId;
 	}
+
+
+	public static boolean canUseItem(Character c, Item i){
+
+		boolean canUse=( 
+				(i.getReqStr()<=c.getDao().getBaseStr()) &&
+				(i.getReqInt()<=c.getDao().getBaseInt()) &&
+				(i.getReqDex()<=c.getDao().getBaseDex()) &&
+				(i.getReqCha()<=c.getDao().getBaseCha()) &&
+				(i.getLev()<=c.getLevel()) 
+		);
+
+		return canUse;
+	}
+
+	public static void buyItem(Character c, Item item, float priceAdj) throws Exception{	
+		
+		boolean canBuy=( (c.getGold()>=( item.getPrice()/priceAdj) ) && ItemsEngine.canUseItem(c,item)	);
+		if(canBuy){		
+			try {
+				c.addToInventory(item);
+				c.payGold( item.getPrice() * priceAdj );
+			} catch (Throwable e) {
+				throw new Exception(e);
+			}
+		}
+		else
+			throw new Exception("Character does not met item requirements or price");
+	}
 	
-	
-	
-	
+	public static void sellItem(Character c, PlayerOwnItem poi, float priceAdj) throws Exception{	
+
+		float price = -1.0f * poi.getItem().getPrice() * priceAdj;
+			try {
+			c.dropItem(poi);
+			c.payGold( price );
+			} catch (Throwable e) {
+				throw new Exception(e);
+			}
+		
+	}
+
 }

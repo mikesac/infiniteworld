@@ -61,6 +61,8 @@ public class InfiniteCst {
 	public static final int STATUS_TYPE_DEX = 6;
 	public static final int STATUS_TYPE_CHA = 7;
 	
+	public static final int SHOP_SELL=0;
+	public static final int SHOP_BUY=1;
 	
 	/**
 	 * Amount of milliseconds for let regeneration occurs on Character stats

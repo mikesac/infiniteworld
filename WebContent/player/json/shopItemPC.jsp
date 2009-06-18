@@ -16,7 +16,7 @@ int NpcId = GenericUtil.toInt( c.getAreaItem().getNpcs(),-1);
 
 if(NpcId==-1){
 	session.setAttribute(PagesCst.CONTEXT_ERROR, "Cannot find NPC id:"+c.getAreaItem().getNpcs() );
-	response.sendRedirect( request.getContextPath() + PagesCst.PAGE_MAP );
+	response.sendRedirect( request.getContextPath() + PagesCst.PAGE_SHOP );
 	return;
 }
 
@@ -40,16 +40,16 @@ float priceAdj = (1.0f * c.getCharisma())/npc.getBaseCha();
         		<%= Math.round(priceAdj*0.5f*list.get(i).getItem().getPrice())%><img width='12' title='Gold' alt='Gold' src='/InfiniteWeb/imgs/web/gp.png'/>"
         		,
         		"<div style='font-size:xx-small;'>\
-        		<%=(list.get(i).getItem().getReqStr()>c.getStrenght())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getItem().getReqStr()>c.getDao().getBaseStr())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getItem().getReqStr()!=0)?("Str:"+list.get(i).getItem().getReqStr())+"<br/>":""%>\
         		</span>\
-        		<%=(list.get(i).getItem().getReqInt()>c.getIntelligence())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getItem().getReqInt()>c.getDao().getBaseInt())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getItem().getReqInt()!=0)?("Int:"+list.get(i).getItem().getReqInt()+"<br/>"):""%>\
         		</span>\
-        		<%=(list.get(i).getItem().getReqDex()>c.getDexterity())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getItem().getReqDex()>c.getDao().getBaseDex())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getItem().getReqDex()!=0)?("Dex:"+list.get(i).getItem().getReqDex()+"<br/>"):""%>\
         		</span>\
-        		<%=(list.get(i).getItem().getReqCha()>c.getCharisma())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        		<%=(list.get(i).getItem().getReqCha()>c.getDao().getBaseCha())?"<span style='color:red'>":"<span style='color:green'>"%>\
         		<%=(list.get(i).getItem().getReqCha()!=0)?("Cha:"+list.get(i).getItem().getReqCha()):""%>\
         		</span>\
         		</div>"

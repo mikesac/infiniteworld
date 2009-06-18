@@ -26,7 +26,8 @@
 %>
 
 
-<html>
+
+<%@page import="org.infinite.util.InfiniteCst"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Shop</title>
@@ -45,15 +46,16 @@ div.gridbox table.hdr td {background-color:#684331;color:white;}
 <table border=0 width="100%">
 	<tr>
 		<td height="80px" colspan=2>
-			<table>
-				<td><img width="80" src="<%=request.getContextPath()%>/imgs/npc/<%= npc.getImage() %>.png" /></td>
+			<table width="100%">
+				<td style="border:3px double #684331;width: 82px;" align="center"><img width="80" src="<%=request.getContextPath()%>/imgs/npc/<%= npc.getImage() %>.png" /></td>
 				<td>
 					Welcome to my shop!<br />
-					Remember that your charisma will influence the prices!<br />
-					Player's Charisma: <span style="color:#9800F0;font-weight: bold;"><%=c.getCharisma() %></span><br/>
+					Remember that your charisma will influence the prices and that all requirements are evaluated on your <b>base</b> attributes.<br />
+					Player's Charisma: <span style="color:#9800F0;font-weight: bold;"><%=c.getCharisma() %></span> VS 
 					Merchant's Charisma: <span style="color:red;font-weight: bold;"><%=npc.getBaseCha() %></span><br/>
 					Price adjustment: <%=  Math.round((100.0f * npc.getBaseCha())/c.getCharisma()) %>%
-			</td>
+				</td>
+				<td align="right"><img src="<%=request.getContextPath()%>/imgs/web/shop.gif" /></td>
 		</table>
 		
 		</td>
@@ -70,6 +72,13 @@ div.gridbox table.hdr td {background-color:#684331;color:white;}
 
 </div>
 <%@ include file="../decorators/b1post.jsp"%>
+
+
+<form name="shop" method="post" action="<%=request.getContextPath()%>/shop">
+<input type="hidden" name=act value="-1"/>
+<input type="hidden" name="it" value="-1"/>
+</form>
+
 
 
 <script src="../js/dhtmlxGrid/dhtmlxcommon.js"></script>
@@ -98,6 +107,18 @@ function onload(){
 	playgrid.setColSorting("str,str,str,str,na");
 	playgrid.init();
 	playgrid.load("./json/shopItemPC.jsp","json");
+}
+
+function buy(id){
+	document.forms['shop'].elements['act'].value="<%=InfiniteCst.SHOP_BUY%>";
+	document.forms['shop'].elements['it'].value=id;
+	document.forms['shop'].submit();
+}
+
+function sell(id){
+	document.forms['shop'].elements['act'].value="<%=InfiniteCst.SHOP_SELL%>";
+	document.forms['shop'].elements['it'].value=id;
+	document.forms['shop'].submit();
 }
 
 </script>
