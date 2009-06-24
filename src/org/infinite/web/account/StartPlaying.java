@@ -37,9 +37,10 @@ public class StartPlaying extends HttpServlet {
 			return;
 		}		
 		Map m = new Map( MapEngine.getAreaFromAreaItem( c.getAreaItem() ),c);
+				
 		
-		//TODO before saving into context check if some regeneration or effect occurred 
-		
+		//before saving into context check if some regeneration or effect occurred 
+		c = Character.checkForRegeneration(c);
 		
 		req.getSession().setAttribute(PagesCst.CONTEXT_CHARACTER, c);
 		req.getSession().setAttribute(PagesCst.CONTEXT_MAP, m);

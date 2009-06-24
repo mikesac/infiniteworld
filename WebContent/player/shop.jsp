@@ -91,7 +91,7 @@ function onload(){
 	shopgrid = new dhtmlXGridObject('shopgrid');
 	shopgrid.setImagePath("../js/dhtmlxGrid/imgs/"); 
 	shopgrid.setHeader("Image,Name,Require,Provide,&nbsp;");
-	shopgrid.setInitWidths("58,195,70,70,60");
+	shopgrid.setInitWidths("58,175,90,90,55");
 	shopgrid.setColAlign("center,left,left,left,center"); 
 	shopgrid.setColTypes("img,ro,ro,ro,ro");
 	shopgrid.setColSorting("str,str,str,str,str");
@@ -101,7 +101,7 @@ function onload(){
 	playgrid = new dhtmlXGridObject('playgrid');
 	playgrid.setImagePath("../js/dhtmlxGrid/imgs/"); 
 	playgrid.setHeader("Image,Name,Require,Provide,&nbsp;");
-	playgrid.setInitWidths("58,195,70,70,60");
+	playgrid.setInitWidths("58,175,90,90,55");
 	playgrid.setColAlign("center,left,left,left,center"); 
 	playgrid.setColTypes("img,ro,ro,ro,ro");
 	playgrid.setColSorting("str,str,str,str,na");

@@ -62,7 +62,13 @@ public class FightMap  extends HttpServlet {
 			side1.add(c);
 			
 			//get monster based on player level
-			int level = c.getLevel();
+			//int level = c.getLevel();
+			
+			//get monster based on areaItem level
+			int level = c.getAreaItem().getAreaItemLevel();
+			
+			
+			
 			level = newAIEngine.getMatchingLevel(level);
 			
 			if(level==0){

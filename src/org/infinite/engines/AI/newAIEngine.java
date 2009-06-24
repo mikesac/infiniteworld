@@ -15,9 +15,9 @@ import org.infinite.util.InfiniteCst;
 
 public class newAIEngine {
 
-	private static final Log log = LogFactory.getLog(AIEngine.class);
+	private static final Log log = LogFactory.getLog(newAIEngine.class);
 
-	private static int LEVEL_PX = 100;
+	
 
 	private static int LEVEL_RNDM_NOT = 8;
 	private static int LEVEL_RNDM_DWN = LEVEL_RNDM_NOT + 40;
@@ -29,10 +29,22 @@ public class newAIEngine {
 
 		int px = 0;
 		for (int i = 0; i <= level; i++) {
-			px += i * LEVEL_PX;
+			px += i * InfiniteCst.CFG_LEVEL_PX;
 		}
 
 		return px;
+	}
+	
+	public static int getLevelByPx(int Px){
+
+		int level = 0;
+		int loop = Px;
+		while( loop>=0 ){
+			level++;
+			loop = Px - getLevelPx(level);
+		}
+
+		return level;
 	}
 
 
@@ -66,6 +78,7 @@ public class newAIEngine {
 
 
 
+	@SuppressWarnings("unchecked")
 	public static Monster spawn(String szName) throws Exception{
 
 		log.debug("Starting to spaw "+szName);
@@ -97,7 +110,7 @@ public class newAIEngine {
 		}
 
 		
-		//check if monste can cast spell
+		//check if monster can cast spell
 		int nSpellSlots = MagicEngine.getAvailableSpellSlots(m);
 		for (int i = 0; i < nSpellSlots; i++) {
 			

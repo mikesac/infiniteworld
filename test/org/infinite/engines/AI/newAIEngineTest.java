@@ -15,6 +15,19 @@ public class newAIEngineTest {
 			System.out.println(i + " - "+ newAIEngine.getLevelPx(i));
 		}
 	}
+	
+	@Test
+	public void testGetLevelByPx() {
+		
+		int level = newAIEngine.getLevelByPx(0);
+		for (int i = 0; i < 50000; i+=50) {
+			int tmp = newAIEngine.getLevelByPx(i);
+			if(level!=tmp){
+				System.out.println(i + " - "+ tmp);
+				level=tmp;
+			}
+		}
+	}
 
 	@Test
 	public void testGetMatchingLevel() {

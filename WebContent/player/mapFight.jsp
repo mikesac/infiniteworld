@@ -101,12 +101,25 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			<%
 			
 			String txt = "";
-			String img = PagesCst.IMG_ITEM_PATH+r.getAttackImg()+PagesCst.IMG_ITEM_EXT;
+			
+			String img = r.getAttackImg();
+			if(img.indexOf(",")!=-1){
+				String[] imgs = img.split(",");
+				img = "";
+				for(int imgi=0;imgi<imgs.length;imgi++){
+					img += "," + PagesCst.IMG_ITEM_PATH + imgs[imgi] + PagesCst.IMG_ITEM_EXT;
+				}
+				img = img.substring(1);
+			}
+			else{
+				img = PagesCst.IMG_ITEM_PATH + img + PagesCst.IMG_ITEM_EXT;
+			}
+				
 			String imgres = "ok";
 			
 			switch(r.getRoundType()){
 			case InfiniteCst.ATTACK_TYPE_WEAPON:
-				txt = r.getAttacker() + " attacks "+ r.getDefender() +" with " +r.getAttackName(); 
+				txt = r.getAttacker() + " attacks "+ r.getDefender() +" with " +r.getAttackName().replaceAll(","," & "); 
 				txt += ",he rolls "+r.getAttackRoll()+ " against a CA of " +r.getDefenderCA();
 				
 				if(r.isHit()){
@@ -151,10 +164,18 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			}
 			
 			%>
-			<td>
-				<img width="30px" height="30px"
-					src="<%=img%>" 
-					alt="<%=r.getAttackName() %>" />
+			<td nowrap="nowrap">
+				<%
+				String[] imgs = img.split(",");
+				for(int ii=0;ii<imgs.length;ii++){
+					%>
+						<img width="30px" height="30px" src="<%=imgs[ii]%>"	alt="<%=r.getAttackName()%>" />
+					<%
+				}
+				
+				%>
+			
+				
 			</td>
 			<td>
 				<img width="30px" height="30px"

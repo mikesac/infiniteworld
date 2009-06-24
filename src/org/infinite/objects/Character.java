@@ -84,6 +84,16 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 		//get character Dao
 		player = (Player)Manager.listByQuery("from org.infinite.db.dao.Player p join fetch p.areaItem a where p.tomcatUsers.user='"+accountName+"' and p.name='"+name+"'").get(0);
+		
+		//this one is useful if you change XP per level when already online, it will re align players level 
+		int level_now = player.getLevel();
+		int level_new = newAIEngine.getLevelByPx( player.getPx() );
+		if(level_now != level_new){
+			player.setLevel(level_new);
+			GenericUtil.err("WARNING PX/Level disalignement: before:("+player.getPx()+"/"+level_now+") , now("+player.getPx()+"/"+level_new+")",null);
+		}
+			
+		
 		String battle = getDao().getBattle();
 
 		//get inventory and assign
@@ -871,7 +881,7 @@ public class Character implements PlayerInterface, ItemsInterface {
 
 				if(getHandRightPoi()!=null && getHandRightPoi().getId() == num)
 					out.add(getHandRightPoi());
-				else if(getHandLeftPoi()!=null && getHandLeftPoi().getId() == num)
+				else if(getHandLeftPoi()!=null && getHandLeftPoi().getId() == num && getHandLeft().getType()==InfiniteCst.ITEM_TYPE_WEAPON)
 					out.add(getHandLeftPoi());
 			}
 			else if( type.equalsIgnoreCase("S") ){ //Spells come from prepared spells 

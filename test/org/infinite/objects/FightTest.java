@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.infinite.engines.AI.AIEngine;
+import org.infinite.engines.AI.newAIEngine;
 import org.infinite.engines.fight.FightEngine;
 import org.infinite.engines.fight.FightRound;
 import org.infinite.engines.fight.PlayerInterface;
@@ -21,11 +21,10 @@ public class FightTest {
 
 		try {
 			
-			side1.add( AIEngine.spawn("Hobgoblin") );
-			side1.add( AIEngine.spawn("Hobgoblin") );
+			side1.add( newAIEngine.spawn("Hobgoblin") );
+			side1.add( newAIEngine.spawn("Hobgoblin") );
 
-			side2.add( AIEngine.spawn("Goblin") );
-			side2.add( AIEngine.spawn("Goblin") );
+			side2.add( newAIEngine.spawn("Polar bear") );
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -58,7 +57,7 @@ public class FightTest {
 			System.out.print("Fight stress test:");
 			for (int i = 0; i < 100; i++) {
 				System.out.print(".");
-				Monster m = AIEngine.spawn("Hobgoblin");
+				Monster m = newAIEngine.spawn("Hobgoblin");
 				assertNotNull(m);
 			}
 		}catch (Exception e) {

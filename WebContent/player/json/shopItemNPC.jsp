@@ -42,40 +42,74 @@
         		"<b><%= list.get(i).getName()%></b><br/>\
         		<i style='font-size:xx-small;'><%=list.get(i).getDescr()%></i><br/>\
         		<%= (list.get(i).getType()==InfiniteCst.ITEM_TYPE_WEAPON)?"Damage":"Armor Class"%> : <%= list.get(i).getDamage()%><br/>\
-        		<%= Math.round(priceAdj * list.get(i).getPrice())%><img width='12' title='Gold' alt='Gold' src='/InfiniteWeb/imgs/web/gp.png'/>"
-        		,
-        		"<div style='font-size:xx-small;'>\
-        		<%=(list.get(i).getReqStr()>c.getDao().getBaseStr())?"<span style='color:red'>":"<span style='color:green'>"%>\
-        		<%=(list.get(i).getReqStr()!=0)?("Str:"+list.get(i).getReqStr())+"<br/>":""%>\
-        		</span>\
-        		<%=(list.get(i).getReqInt()>c.getDao().getBaseInt())?"<span style='color:red'>":"<span style='color:green'>"%>\
-        		<%=(list.get(i).getReqInt()!=0)?("Int:"+list.get(i).getReqInt()+"<br/>"):""%>\
-        		</span>\
-        		<%=(list.get(i).getReqDex()>c.getDao().getBaseDex())?"<span style='color:red'>":"<span style='color:green'>"%>\
-        		<%=(list.get(i).getReqDex()!=0)?("Dex:"+list.get(i).getReqDex()+"<br/>"):""%>\
-        		</span>\
-        		<%=(list.get(i).getReqCha()>c.getDao().getBaseCha())?"<span style='color:red'>":"<span style='color:green'>"%>\
-        		<%=(list.get(i).getReqCha()!=0)?("Cha:"+list.get(i).getReqCha()+"<br/>"):""%>\
-        		</span>\
+        		<%= Math.round(priceAdj * list.get(i).getPrice())%><img width='12' title='Gold' alt='Gold' src='/InfiniteWeb/imgs/web/gp.png'/>\
+        		&nbsp;&nbsp;Level:\
         		<%=(list.get(i).getLev()>c.getLevel())?"<span style='color:red'>":"<span style='color:green'>"%>\
-        		<%=(list.get(i).getLev()!=0)?("Lev:"+list.get(i).getLev()):""%>\
+        		<%=list.get(i).getLev()%>\
         		</span>\
-        		</div>"
+        		"
         		,
-        		"<div style='font-size:xx-small;'>\
-        		<%=(list.get(i).getModStr()<0)?"<span style='color:red'>":""%>\
-        		<%=(list.get(i).getModStr()!=0)?("Str:"+list.get(i).getModStr())+"<br/>":""%>\
-        		<%=(list.get(i).getModStr()<0)?"</span>":""%>\
-        		<%=(list.get(i).getModInt()<0)?"<span style='color:red'>":""%>\
-        		<%=(list.get(i).getModInt()!=0)?("Int:"+list.get(i).getModInt()+"<br/>"):""%>\
-        		<%=(list.get(i).getModInt()<0)?"</span>":""%>\
-        		<%=(list.get(i).getModDex()<0)?"<span style='color:red'>":""%>\
-        		<%=(list.get(i).getModDex()!=0)?("Dex:"+list.get(i).getModDex()+"<br/>"):""%>\
-        		<%=(list.get(i).getModDex()<0)?"</span>":""%>\
-        		<%=(list.get(i).getModCha()<0)?"<span style='color:red'>":""%>\
-        		<%=(list.get(i).getModCha()!=0)?("Cha:"+list.get(i).getModCha()):""%>\
-        		<%=(list.get(i).getModCha()<0)?"</span>":""%>\
-        		</div>"
+        		"<table border='0'>\
+        			<tr>\
+        				<td style='border:0px;'><img title='Strenght' alt='Strenght' src='/InfiniteWeb/imgs/web/str.png'/></td>\
+        				<td style='border:0px;' width='21px'>\
+        					<%=(list.get(i).getReqStr()>c.getDao().getBaseStr())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        					<%=list.get(i).getReqStr()%>\
+        					</span>\
+        				</td>\
+        				<td style='border:0px;' ><img title='Intelligence' alt='Intelligence' src='/InfiniteWeb/imgs/web/int.png'/></td>\
+        				<td style='border:0px;' width='21px'>\
+        					<%=(list.get(i).getReqInt()>c.getDao().getBaseInt())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        					<%=list.get(i).getReqInt()%>\
+        					</span>\
+        				</td>\
+        			</tr>\
+        			<tr>\
+        				<td style='border:0px;'><img title='Dexterity' alt='Dexterity' src='/InfiniteWeb/imgs/web/dex.png'/></td>\
+        				<td style='border:0px;'>\
+        					<%=(list.get(i).getReqDex()>c.getDao().getBaseDex())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        					<%=list.get(i).getReqDex()%>\
+        					</span>\
+        				</td>\
+        				<td style='border:0px;'><img title='Charisma' alt='Charisma' src='/InfiniteWeb/imgs/web/cha.png'/></td>\
+        				<td style='border:0px;'>\
+        					<%=(list.get(i).getReqCha()>c.getDao().getBaseCha())?"<span style='color:red'>":"<span style='color:green'>"%>\
+        					<%=list.get(i).getReqCha()%>\
+        					</span>\
+        				</td>\
+        			</tr>\
+        		</table>"
+        		,
+        		"<table border='0'>\
+        			<tr>\
+        				<td style='border:0px;'><img title='Strenght' alt='Strenght' src='/InfiniteWeb/imgs/web/str.png'/></td>\
+        				<td style='border:0px;' width='21px'>\
+        					<%=(list.get(i).getModStr()<0)?"<span style='color:red'>":""%>\
+        					<%=list.get(i).getModStr()%>\
+        					<%=(list.get(i).getModStr()<0)?"</span>":""%>\
+        				</td>\
+        				<td style='border:0px;' ><img title='Intelligence' alt='Intelligence' src='/InfiniteWeb/imgs/web/int.png'/></td>\
+        				<td style='border:0px;' width='21px'>\
+        					<%=(list.get(i).getModInt()<0)?"<span style='color:red'>":""%>\
+        					<%=list.get(i).getModInt()%>\
+        					<%=(list.get(i).getModInt()<0)?"</span>":""%>\
+        				</td>\
+        			</tr>\
+        			<tr>\
+        				<td style='border:0px;'><img title='Dexterity' alt='Dexterity' src='/InfiniteWeb/imgs/web/dex.png'/></td>\
+        				<td style='border:0px;'>\
+        					<%=(list.get(i).getModDex()<0)?"<span style='color:red'>":""%>\
+        					<%=list.get(i).getModDex()%>\
+        					<%=(list.get(i).getModDex()<0)?"</span>":""%>\
+        				</td>\
+        				<td style='border:0px;'><img title='Charisma' alt='Charisma' src='/InfiniteWeb/imgs/web/cha.png'/></td>\
+        				<td style='border:0px;'>\
+        					<%=(list.get(i).getModCha()<0)?"<span style='color:red'>":""%>\
+        					<%=list.get(i).getModCha()%>\
+        					<%=(list.get(i).getModCha()<0)?"</span>":""%>\
+        				</td>\
+        			</tr>\
+        		</table>"
         		,
         		"<button onclick='buy(<%= list.get(i).getId()%>)' <%=(canBuy)?"":"disabled='disabled'"%>  >Buy</button>"
         		]

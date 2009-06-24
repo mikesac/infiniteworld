@@ -78,5 +78,5 @@ public class InfiniteCst {
 
 	public static final short CFG_NEXTLEVELPOINTS = 3;
 	
-	
+	public static int CFG_LEVEL_PX = 1000;
 }

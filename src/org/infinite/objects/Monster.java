@@ -209,7 +209,7 @@ public class Monster implements PlayerInterface {
 
 			if(getHandRight()==null){
 				String ret = "";
-				String[] szNames = getDao().getAttack().split(";");
+				String[] szNames = getDao().getAttack().split("/");
 				for (int i = 0; i < szNames.length; i++) {
 					ret += ","+szNames[i].substring(0, szNames[i].indexOf(","));
 
@@ -275,7 +275,7 @@ public class Monster implements PlayerInterface {
 
 			if(getHandRight()==null){
 
-				String[] szNames = getDao().getAttack().split(";");
+				String[] szNames = getDao().getAttack().split("/");
 				for (int i = 0; i < szNames.length; i++) {
 					String szDice = "";
 					try {

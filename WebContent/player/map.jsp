@@ -63,14 +63,23 @@ for(int y=0;y<m.getNy();y++){
 				case MapEngine.AREA_STATUS_HIDDEN:
 					break;
 				case MapEngine.AREA_STATUS_LOCKED:
-					%><img style="margin-top:5px;margin-left:5px;" src="<%=request.getContextPath()%>/imgs/maps/icons/lock.png" width="34" /><%					break;
+					%><img style="margin-top:5px;margin-left:5px;" src="<%=request.getContextPath()%>/imgs/maps/icons/lock.png" width="34" /><%
+					break;
 				}
 				 
 				
 				%>
-			<!--	<a href="<%= request.getContextPath()%><%=areaItem.getUrl()%>" ></a>  -->
+			
 			<a href="<%= request.getContextPath()%>/map?m=<%= areaItem.getId() %>" ></a>
+			
 				</div>
+				<%
+				if( areaItem.getIcon().equals("fight") && (status==MapEngine.AREA_STATUS_HERE || status==MapEngine.AREA_STATUS_ACCESSIBLE  || status==MapEngine.AREA_STATUS_BANNED ) ){
+					%>
+					<span style="position:relative;color:white;background-color:black;top:-18;left:30;"><%= areaItem.getAreaItemLevel() %></span>
+					<%
+				}
+				 %>
 				</div>
 			<%
 			
