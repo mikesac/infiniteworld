@@ -54,6 +54,9 @@ public class ItemEquip extends HttpServlet {
 			case InfiniteCst.POI_DROP:
 				c.dropItem(poi);
 				break;
+			case InfiniteCst.POI_UNEQUIP:
+				c.moveToInventory(poi);
+				break;
 
 			default:
 				req.getSession().setAttribute(PagesCst.CONTEXT_ERROR, "Item ("+poiId+") not found");

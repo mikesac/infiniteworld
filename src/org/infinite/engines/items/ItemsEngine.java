@@ -22,9 +22,24 @@ public class ItemsEngine {
 
 	public static void moveToInventory(PlayerInterface player,PlayerOwnItem poi,boolean persist) {
 
-		poi.setBodypart(InfiniteCst.EQUIP_STORE);
+		switch (poi.getBodypart()) {
+		case InfiniteCst.EQUIP_BODY:
+			player.setBody(null);
+			break;
+		case InfiniteCst.EQUIP_HAND_LEFT:
+			player.setHandLeft(null);
+			break;
+		case InfiniteCst.EQUIP_HAND_RIGHT:
+			player.setHandRight(null);
+			break;
 
+		default:
+			break;
+		}
+				
+		poi.setBodypart(InfiniteCst.EQUIP_STORE);
 		player.addToInventory(poi);
+		
 		if(persist){
 			Manager.update(poi);
 		}

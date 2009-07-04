@@ -87,7 +87,7 @@ public class MapSave extends HttpServlet {
 				throw new Exception("Could not save Area "+areaName + " please contact admin");
 			}
 
-
+			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR,"Area Created");
 
 		} catch (Exception e) {
 			req.getSession().setAttribute(PagesCst.CONTEXT_ERROR,e.getMessage());
@@ -95,7 +95,6 @@ public class MapSave extends HttpServlet {
 			req.getRequestDispatcher(PagesCst.ADMIN_MAPPREVIEW).forward(req,resp);
 		}
 
-		req.getSession().setAttribute(PagesCst.CONTEXT_ERROR,"Area Created");
 		req.getRequestDispatcher(PagesCst.ADMIN_MAPUTIL).forward(req,resp);
 
 	}

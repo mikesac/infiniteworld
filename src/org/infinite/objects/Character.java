@@ -773,6 +773,30 @@ public class Character implements PlayerInterface, ItemsInterface {
 		return iAttackKind;
 	}
 
+public String[] getMeleeAttacks( int round){
+		
+		String out="";
+		
+		if(getHandRightPoi()==null){
+			out = getDao().getAttack();
+		}
+		else{
+			out = getHandRight().getName() + InfiniteCst.ATTACK_INNERSEPARATOR + 
+				getHandRight().getImage() + InfiniteCst.ATTACK_INNERSEPARATOR +
+				getHandRight().getDamage();
+			
+			if(getHandLeftPoi()!=null && getHandLeft().getType()==InfiniteCst.ITEM_TYPE_WEAPON){
+				out += InfiniteCst.ATTACKS_SEPARATOR;
+				out += getHandLeft().getName() + InfiniteCst.ATTACK_INNERSEPARATOR +
+					getHandLeft().getImage() + InfiniteCst.ATTACK_INNERSEPARATOR +
+					getHandLeft().getDamage();
+			}
+			
+		}		
+		
+		return out.split(InfiniteCst.ATTACKS_SEPARATOR);
+	}
+	
 	public String[] getAttackName( int round){
 
 		String szName = "";

@@ -153,6 +153,8 @@ public interface PlayerInterface{
 	public PlayerOwnItem getHandRightPoi();
 
 	public void setHandRight(PlayerOwnItem poi);
+
+	public String[] getMeleeAttacks(int round);
 	
 
 }

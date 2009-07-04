@@ -120,7 +120,13 @@ if(session.getAttribute(PagesCst.CONTEXT_FIGHT_REPORT)!=null){
 			switch(r.getRoundType()){
 			case InfiniteCst.ATTACK_TYPE_WEAPON:
 				txt = r.getAttacker() + " attacks "+ r.getDefender() +" with " +r.getAttackName().replaceAll(","," & "); 
-				txt += ",he rolls "+r.getAttackRoll()+ " against a CA of " +r.getDefenderCA();
+				txt += ",he rolls ";
+				int[] rolls = r.getAttackRoll();
+				for(int rs=0;rs<rolls.length;rs++){
+					txt += rolls[rs];
+					txt += (rs<rolls.length-1)?",":"";
+				}
+				txt += " against a CA of " +r.getDefenderCA();
 				
 				if(r.isHit()){
 					txt += " causing "+r.getAttackDmg()+"Hp of damage";

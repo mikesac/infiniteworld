@@ -264,17 +264,55 @@ public class FightEngine {
 	
 	private static void meleeFight(int round, PlayerInterface attacker, PlayerInterface defender, FightRound r ) {
 
-		int atkRoll = attacker.getRollToAttack();
+		//int atkRoll = attacker.getRollToAttack();
 		int defCA = defender.getTotalCA();
 
-		String[] szAtkData = attacker.getAttackName(round);
+		//String[] szAtkData = attacker.getAttackName(round);
+		String[] szAtkData = attacker.getMeleeAttacks(round);
+		
+		String attacksName = "";
+		String attacksImg = "";
+		int[] attackRolls = new int[szAtkData.length];
+		int dmg = 0;
+		
+		for (int i = 0; i < szAtkData.length; i++) {
+			
+			//System.out.println(szAtkData[i]);
+			
+			String[] szTmp = szAtkData[i].split(InfiniteCst.ATTACK_INNERSEPARATOR);
+			attacksName += "," + szTmp[0];
+			attacksImg  += "," + (( szTmp.length == 3 )?szTmp[1]:szTmp[0]);
+			String roll = (( szTmp.length == 3 )?szTmp[2]:szTmp[1]);
+			attackRolls[i] = attacker.getRollToAttack();
+			
+			if( attackRolls[i] >= defCA ){
+				try {
+					dmg += GenericUtil.rollDice(roll);
+				} catch (Exception e) {
+					GenericUtil.err("meleeFight - rolldice:"+roll, e);
+					e.printStackTrace();
+				}
+			}
+			
+		}
 		
 		r.setRoundType(InfiniteCst.ATTACK_TYPE_WEAPON);
-		r.setAttackName(szAtkData[0]);
-		r.setAttackImg(szAtkData[1]);
-		r.setAttackRoll(atkRoll);
+		r.setAttackName(attacksName.substring(1) ); //r.setAttackName(szAtkData[0]);
+		r.setAttackImg(attacksImg.substring(1) ); //r.setAttackImg(szAtkData[1]);
+		r.setAttackRoll(attackRolls); //r.setAttackRoll(atkRoll);
 		r.setDefenderCA(defCA);
 
+		if( dmg>0 ){
+			int remain = defender.inflictDamage(dmg);
+			r.setHit(true);
+			r.setAttackDmg(dmg);
+			r.setRemainHp(remain);
+		}
+		else{
+			r.setHit(false);
+		}
+		
+		/*
 		if(atkRoll>= defCA){
 			int inflict = attacker.getAttackDamage(round);
 			int remain = defender.inflictDamage(inflict);
@@ -285,6 +323,7 @@ public class FightEngine {
 		else{
 			r.setHit(false);
 		}
+		*/
 
 	}
 	

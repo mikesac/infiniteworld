@@ -18,6 +18,7 @@ public class InfiniteCst {
 	
 	public static final int POI_EQUIP = 0;
 	public static final int POI_DROP = 1;
+	public static final int POI_UNEQUIP = 2;
 	
 	public static final int ITEM_TYPE_EMPTY = 0;
 	public static final int ITEM_TYPE_WEAPON = 1;
@@ -77,6 +78,9 @@ public class InfiniteCst {
 	public static final int CFG_LV_TO_BATTLE_PLAN_SLOTS = 5;
 
 	public static final short CFG_NEXTLEVELPOINTS = 3;
+
+	public static final String ATTACK_INNERSEPARATOR = ",";
+	public static final String ATTACKS_SEPARATOR = "/";
 	
 	public static int CFG_LEVEL_PX = 1000;
 }

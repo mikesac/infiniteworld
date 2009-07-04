@@ -15,7 +15,7 @@ public class FightRound {
 	private int attackType;
 	private String defender ="";
 	
-	private int attackRoll;
+	private int[] attackRoll;
 	private int defenderCA;
 	private int attackDmg;
 	private int remainHp;
@@ -107,11 +107,11 @@ public class FightRound {
 		return attackImg;
 	}
 
-	public int getAttackRoll() {
+	public int[] getAttackRoll() {
 		return attackRoll;
 	}
 
-	public void setAttackRoll(int attackRoll) {
+	public void setAttackRoll(int[] attackRoll) {
 		this.attackRoll = attackRoll;
 	}
 

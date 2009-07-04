@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -14,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.octo.captcha.service.CaptchaServiceException;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 
 public class ImageCaptchaServlet extends HttpServlet {
@@ -54,10 +53,15 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                     CaptchaServiceSingleton.getInstance().getImageChallengeForID(captchaId,
                             httpServletRequest.getLocale());
 
+            ImageIO.write(challenge, "jpeg", jpegOutputStream);
+
+            
             // a jpeg encoder
-            JPEGImageEncoder jpegEncoder =
-                    JPEGCodec.createJPEGEncoder(jpegOutputStream);
-            jpegEncoder.encode(challenge);
+//            JPEGImageEncoder jpegEncoder =
+//                    JPEGCodec.createJPEGEncoder(jpegOutputStream);
+//            jpegEncoder.encode(challenge);
+
+            
         } catch (IllegalArgumentException e) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;

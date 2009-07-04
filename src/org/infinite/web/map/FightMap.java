@@ -88,6 +88,7 @@ public class FightMap  extends HttpServlet {
 				
 				if(index<listNPC.size()){
 					side2.add( newAIEngine.spawn(listNPC.get(index)) );
+					//side2.add( newAIEngine.spawn("Black bear") );
 				}
 				else{
 					Player p = listPC.get( index-listNPC.size() );

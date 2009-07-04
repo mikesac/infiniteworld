@@ -40,7 +40,7 @@
 					Item it = c.getHandLeft();
 					if(it!=null){
 						%>
-							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
+							<div onclick="unequip(<%= c.getHandLeftPoi().getId() %>)" class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 						<%
@@ -56,7 +56,7 @@
 					it = c.getHandRight();
 					if(it!=null){
 						%>
-							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
+							<div onclick="unequip(<%= c.getHandRightPoi().getId() %>)" class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 						<%
@@ -74,7 +74,7 @@
 					it = c.getBody();
 					if(it!=null){
 						%>
-							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
+							<div onclick="unequip(<%= c.getBodyPoi().getId() %>)" class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH + it.getImage()  +PagesCst.IMG_ITEM_EXT%>);">
 								<div class="tile"/>
 							</div>
 						<%
@@ -110,19 +110,8 @@
 				for (int i = 0; i < pois.size(); i++) {
 					%><tr>
 						<td style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;" valign="middle">
-						
-							<form action="<%=request.getContextPath()%>/equip" method="POST">
-							<input type="hidden" name="itemid" value="<%=pois.get(i).getId()%>"/>
-							<input type="hidden" name="mode" value="<%=InfiniteCst.POI_EQUIP%>"/>
-							<input type="submit" value="Equip" class="buttonstyle" />
-							</form>
-						
-							<form action="<%=request.getContextPath()%>/equip" method="POST" onsubmit="return confirmDrop();">
-							<input type="hidden" name="itemid" value="<%=pois.get(i).getId()%>"/>
-							<input type="hidden" name="mode" value="<%=InfiniteCst.POI_DROP%>"/>
-							<input type="submit" value="Drop" class="buttonstyle"/>
-							</form>
-						
+							<button onclick="equip(<%=pois.get(i).getId()%>)">Equip</button>
+							<button onclick="drop(<%=pois.get(i).getId()%>)">Drop</button>
 						</td>
 						<td  style="background-color:<%=(i%2==0)?"#DDCDA5":"transparent" %>;">
 							<div class="iconlarge" style="background-image: url(<%= PagesCst.IMG_ITEM_PATH +  pois.get(i).getItem().getImage() +PagesCst.IMG_ITEM_EXT%>);">
@@ -148,9 +137,40 @@
 </table>
 <%@ include file="../decorators/b1post.jsp"%>
 </div></div>
+
+
+<form name="formequip" action="<%=request.getContextPath()%>/equip" method="POST" >
+<input type="hidden" name="itemid" value=""/>
+<input type="hidden" name="mode" value=""/>
+</form>
+
+
+
 <script type="text/javascript">
-function confirmDrop(){
-	return confirm("Do you really want to drop this item?");
+function goEquip(mode,id){
+	document.forms['formequip'].elements['itemid'].value=id;
+	document.forms['formequip'].elements['mode'].value=mode;
+	document.forms['formequip'].submit();
+	
+}
+
+function equip(id){
+	var mode = "<%=InfiniteCst.POI_EQUIP%>";
+	goEquip(mode,id);
+}
+
+function unequip(id){
+	if( confirm("Do you really want unequip this item?") ){
+		var mode = "<%=InfiniteCst.POI_UNEQUIP%>";
+		goEquip(mode,id);
+	}	
+}
+
+function drop(id){	
+	if( confirm("Do you really want to drop this item?") ){
+		var mode = "<%=InfiniteCst.POI_DROP%>";
+		goEquip(mode,id);
+	}	
 }
 </script>
 </body>
