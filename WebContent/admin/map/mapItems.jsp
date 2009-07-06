@@ -136,10 +136,6 @@
 				<td><input type="text" name="url" ></td>
 			</tr>
 			<tr>
-				<td>direct</td>
-				<td><input type="checkbox" name="direct"> </td>
-			</tr>
-			<tr>
 				<td>loop</td>
 				<td><input type="checkbox" name="loop"></td>
 			</tr>
@@ -249,7 +245,6 @@
 
 					for(var i=0;i<document.forms['formedit'].elements.length;i++){
 						var name = document.forms['formedit'].elements[i].name;
-						console.log(name + "=" + jdata[name]);
 
 						if(document.forms['formedit'].elements[name].type=="checkbox"){
 							document.forms['formedit'].elements[name].checked=jdata[name];

@@ -1,5 +1,6 @@
 package org.infinite.engines.magic;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.infinite.db.Manager;
@@ -8,6 +9,7 @@ import org.infinite.db.dao.PlayerKnowSpell;
 import org.infinite.db.dao.Spell;
 import org.infinite.db.dao.SpellAffectPlayer;
 import org.infinite.engines.fight.PlayerInterface;
+import org.infinite.objects.Character;
 import org.infinite.util.GenericUtil;
 import org.infinite.util.InfiniteCst;
 
@@ -114,7 +116,7 @@ public class MagicEngine {
 	}
 
 	public static int getAvailableSpellSlots(PlayerInterface p) {
-		int slot = p.getIntelligence()/InfiniteCst.CFG_MP_TO_SPELLS_SLOTS - p.getPreparedSpells().size();
+		int slot = p.getIntelligence()/InfiniteCst.CFG_INT_TO_SPELLS_SLOTS - p.getPreparedSpells().size();
 		return slot<0?0:slot;
 	}
 
@@ -134,4 +136,44 @@ public class MagicEngine {
 		
 	}
 
+	
+	public static boolean canUseSpell(Character c, Spell s){
+
+		boolean canUse=( 
+				(s.getReqStr()<=c.getDao().getBaseStr()) &&
+				(s.getReqInt()<=c.getDao().getBaseInt()) &&
+				(s.getReqDex()<=c.getDao().getBaseDex()) &&
+				(s.getReqCha()<=c.getDao().getBaseCha()) &&
+				(s.getLev()<=c.getDao().getBaseInt()/InfiniteCst.CFG_INT_TO_SPELLS_SLOTS) 
+		);
+
+		return canUse;
+	}
+
+	public static void buySpell(Character c, Spell spell, float priceAdj) throws Exception {	
+		
+		ArrayList<PlayerKnowSpell> pks = new ArrayList<PlayerKnowSpell>();
+		pks.addAll(c.getSpellBookFight());
+		pks.addAll(c.getSpellBookHeal());
+		pks.addAll(c.getSpellBookProtect());
+		
+		for (PlayerKnowSpell s : pks) {
+			if( spell.getId().equals(s.getSpell().getId()) ){
+				throw new Exception("Character already knows this spell");
+			}			
+		}		
+		
+		boolean canBuy=( (c.getGold()>=( spell.getPrice()/priceAdj) ) && MagicEngine.canUseSpell(c,spell)	);
+		if(canBuy){		
+			try {
+				c.learnSpell(spell);
+				c.payGold( spell.getPrice() * priceAdj );
+			} catch (Throwable e) {
+				throw new Exception(e);
+			}
+		}
+		else
+			throw new Exception("Character does not met item requirements or price");
+	}
+	
 }

@@ -64,6 +64,7 @@ public class InfiniteCst {
 	
 	public static final int SHOP_SELL=0;
 	public static final int SHOP_BUY=1;
+	public static final int SHOP_LEARN=2;
 	
 	/**
 	 * Amount of milliseconds for let regeneration occurs on Character stats
@@ -74,7 +75,7 @@ public class InfiniteCst {
 	/**
 	 * Magic Points to get a spell slot
 	 */
-	public static final int CFG_MP_TO_SPELLS_SLOTS = 2;
+	public static final int CFG_INT_TO_SPELLS_SLOTS = 2;
 	public static final int CFG_LV_TO_BATTLE_PLAN_SLOTS = 5;
 
 	public static final short CFG_NEXTLEVELPOINTS = 3;

@@ -25,8 +25,7 @@ public class PagesCst {
 	public static final String PAGE_BATTLEPLAN= "/player/battleplan.jsp";
 	public static final String PAGE_NPCDIALOG= "/player/npcdialog.jsp";
 	public static final String PAGE_SHOP= "/player/shop.jsp";
-	
-	
+	public static final String PAGE_SSHOP= "/player/sshop.jsp";
 	
 	//IMAGES
 	public static final String IMG_ITEM_EXT= ".jpg";
@@ -37,6 +36,9 @@ public class PagesCst {
 	
 	public static final String IMG_MONST_EXT= ".jpg";
 	public static final String IMG_MONST_PATH= STATIC_BASEPATH  + "/imgs/monster/";
+	
+	public static final String IMG_NPC_EXT= ".jpg";
+	public static final String IMG_NPC_PATH= STATIC_BASEPATH  + "/imgs/npc/";
 	
 	public static final String CONTEXT_CHARACTER = "character";
 	public static final String CONTEXT_ERROR = "error";

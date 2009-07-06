@@ -96,30 +96,17 @@ function onload(){
 	shopgrid.setColTypes("img,ro,ro,ro,ro");
 	shopgrid.setColSorting("str,str,str,str,str");
 	shopgrid.init();
-	shopgrid.load("./json/shopItemNPC.jsp","json");
+	shopgrid.load("./json/shopSpellsNPC.jsp","json");
 
-	playgrid = new dhtmlXGridObject('playgrid');
-	playgrid.setImagePath("../js/dhtmlxGrid/imgs/"); 
-	playgrid.setHeader("Image,Name,Require,Provide,&nbsp;");
-	playgrid.setInitWidths("58,175,90,90,55");
-	playgrid.setColAlign("center,left,left,left,center"); 
-	playgrid.setColTypes("img,ro,ro,ro,ro");
-	playgrid.setColSorting("str,str,str,str,na");
-	playgrid.init();
-	playgrid.load("./json/shopItemPC.jsp","json");
 }
 
 function buy(id){
-	document.forms['shop'].elements['act'].value="<%=InfiniteCst.SHOP_BUY%>";
+	document.forms['shop'].elements['act'].value="<%=InfiniteCst.SHOP_LEARN%>";
 	document.forms['shop'].elements['it'].value=id;
 	document.forms['shop'].submit();
 }
 
-function sell(id){
-	document.forms['shop'].elements['act'].value="<%=InfiniteCst.SHOP_SELL%>";
-	document.forms['shop'].elements['it'].value=id;
-	document.forms['shop'].submit();
-}
+
 
 </script>
 </body>

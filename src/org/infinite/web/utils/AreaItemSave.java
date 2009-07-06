@@ -39,7 +39,6 @@ public class AreaItemSave extends HttpServlet {
 			String aiLock = ""; 	
 			String aiQLock = ""; 	
 			String aiUrl = ""; 	
-			boolean aiDirect = false; 	
 			boolean aidoublestep = false; 	
 			boolean aiHide = false; 	
 			int aiLevel = 0; 	
@@ -69,9 +68,8 @@ public class AreaItemSave extends HttpServlet {
 				 aiLock = req.getParameter("arealock"); 	
 				 aiQLock = req.getParameter("questlock"); 	
 				 aiUrl = req.getParameter("url"); 	
-				 aiDirect = (""+req.getParameter("direct")).equals("true"); 	
-				 aidoublestep = (""+req.getParameter("loop")).equals("true"); 	 	
-				 aiHide = (""+req.getParameter("hide")).equals("true"); 	 	
+				 aidoublestep = ( (""+req.getParameter("loop")).equals("true") || (""+req.getParameter("loop")).equals("on") ); 	 	
+				 aiHide = ( (""+req.getParameter("hide")).equals("true") || (""+req.getParameter("hide")).equals("on") ); 	 	
 				 aiLevel = GenericUtil.toInt(req.getParameter("areaItemLevel"),-1); 	
 				 aiNpcs = req.getParameter("npcs");
 				 

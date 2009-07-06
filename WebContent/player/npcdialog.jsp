@@ -43,7 +43,8 @@
 
 <%@page import="org.infinite.web.PagesCst"%>
 <%@page import="org.infinite.util.GenericUtil"%>
-<%@page import="org.infinite.engines.dialog.FullDialogEngine"%><html>
+<%@page import="org.infinite.engines.dialog.FullDialogEngine"%>
+<%@page import="org.infinite.util.InfiniteCst"%><html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Talk to <%= npc.getName() %></title>
@@ -54,7 +55,7 @@
 <table>
 	<tr>
 		<td>
-			<img src="<%=request.getContextPath()%>/imgs/npc/<%= npc.getImage() %>.png" />
+			<img src="<%=PagesCst.IMG_NPC_PATH +  npc.getImage() + PagesCst.IMG_NPC_EXT%>" />
 		</td>
 		<td><%= sentence %></td>
 	</tr>
